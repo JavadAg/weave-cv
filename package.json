@@ -10,18 +10,38 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/lucide": "^1.2.68",
+    "@iconify/utils": "^3.0.2",
+    "@internationalized/date": "^3.10.0",
     "@nuxt/eslint": "1.9.0",
-    "@nuxt/ui": "3.3.3",
+    "@nuxt/ui": "4.0.0",
     "@nuxtjs/supabase": "1.6.2",
+    "@pinia/nuxt": "0.11.2",
     "@tailwindcss/vite": "^4.1.13",
+    "@tiptap/extension-text-align": "^2.26.2",
+    "@vueuse/integrations": "^13.9.0",
+    "@vueuse/nuxt": "13.9.0",
+    "dompurify": "^3.2.6",
+    "eslint": "^9.35.0",
+    "isomorphic-dompurify": "^2.26.0",
+    "jszip": "^3.10.1",
     "nuxt": "^4.1.1",
+    "nuxt-tiptap-editor": "2.3.1",
+    "pinia": "^3.0.3",
+    "reka-ui": "^2.5.0",
+    "sortablejs": "^1.15.6",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "vue": "^3.5.21",
+    "vue-draggable-plus": "^0.6.0",
     "vue-router": "^4.5.1",
-    "eslint": "^9.35.0"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-unicorn": "^61.0.2",
+    "jsdom": "^27.0.0",
     "prettier": "^3.6.2"
   }
 }

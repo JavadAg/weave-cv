@@ -1,17 +1,32 @@
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ['@nuxtjs/supabase', '@nuxt/ui', '@nuxt/eslint'],
-  css: ['~/assets/css/tailwind.css'],
+  modules: [
+    "@nuxtjs/supabase",
+    "@nuxt/ui",
+    "@nuxt/eslint",
+    "@vueuse/nuxt",
+    "reka-ui/nuxt",
+    "@pinia/nuxt",
+    "nuxt-tiptap-editor"
+  ],
+  css: ["~/assets/css/tailwind.css"],
   vite: { plugins: [tailwindcss()] },
   supabase: {
+    types: "~/types/database.types.ts",
     redirectOptions: {
-      exclude: ['/', '/register'],
-      login: '/login',
-      callback: '/confirm'
+      exclude: ["/", "/register"],
+      include: ["/dashboard", "/editor/:id"],
+      login: "/login",
+      callback: "/confirm"
+    }
+  },
+  runtimeConfig: {
+    public: {
+      googleFontsKey: process.env.GOOGLE_FONT_APIKEY || ""
     }
   }
 })
