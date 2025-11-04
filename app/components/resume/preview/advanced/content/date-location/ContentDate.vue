@@ -8,22 +8,25 @@ interface Props {
   position: string
   startDate?: string
   endDate?: string
+  present?: boolean
 }
 
 const props = defineProps<Props>()
 
-const configsStore = useConfigsStore()
-const { configs } = storeToRefs(configsStore)
-const { layout, colors } = configs.value.general
+const { configs } = useConfigsStore()
+
+const layout = computed(() => configs.general.layout)
+const colors = computed(() => configs.general.colors)
 
 const columnColors = inject(ColumnColorsKey)
 
 const color = computed(() =>
-  colors.apply.includes("dates") ? columnColors?.value.accentColor : columnColors?.value.textColor
+  colors.value.apply.includes("dates") ? columnColors?.value.accentColor : columnColors?.value.textColor
 )
 
-const startDateFormatted = fmtDate(props.startDate, layout.dateFormat)
-const endDateFormatted = fmtDate(props.endDate, layout.dateFormat)
+const startDateFormatted = computed(() => fmtDate(props.startDate, layout.value.dateFormat))
+const endDateFormatted = computed(() => fmtDate(props.endDate, layout.value.dateFormat))
+const endDateDisplay = computed(() => (props.present ? "Present" : endDateFormatted.value))
 
 const dateStyles = computed<CSSProperties>(() => ({
   color: color.value,
@@ -32,5 +35,5 @@ const dateStyles = computed<CSSProperties>(() => ({
 </script>
 
 <template>
-  <span :style="dateStyles"> {{ startDateFormatted }} {{ endDateFormatted ? `- ${endDateFormatted}` : "" }} </span>
+  <span :style="dateStyles"> {{ startDateFormatted }} {{ endDateDisplay ? `- ${endDateDisplay}` : "" }} </span>
 </template>

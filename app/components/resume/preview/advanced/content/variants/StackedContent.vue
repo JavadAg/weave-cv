@@ -14,6 +14,7 @@ interface Props {
   startDate?: string
   endDate?: string
   location?: string
+  present?: boolean
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
 }
 
@@ -30,7 +31,13 @@ defineProps<Props>()
       :section-type="sectionType"
     />
     <div class="flex justify-end items-start">
-      <DateLocationContent :position="position" :start-date="startDate" :end-date="endDate" :location="location" />
+      <DateLocationContent
+        :position="position"
+        :start-date="startDate"
+        :end-date="endDate"
+        :location="location"
+        :present="present"
+      />
     </div>
   </div>
   <DescriptionContent :html="description ?? ''" />

@@ -10,6 +10,7 @@ interface Props {
   startDate?: string
   endDate?: string
   location?: string
+  present?: boolean
 }
 
 const props = defineProps<Props>()
@@ -32,7 +33,7 @@ const containerClasses = computed(() =>
 
 <template>
   <div ref="containerRef" :style="containerStyles" :class="containerClasses">
-    <ContentDate :position="position" :start-date="startDate" :end-date="endDate" />
+    <ContentDate :position="position" :start-date="startDate" :end-date="endDate" :present="present" />
     <ContentLocation :position="position" :location="location" />
   </div>
 </template>

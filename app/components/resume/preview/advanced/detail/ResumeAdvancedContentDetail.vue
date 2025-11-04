@@ -57,6 +57,7 @@ const titleSubTitle = computed(() => {
       :start-date="content?.startDate"
       :end-date="content?.endDate"
       :location="content?.location"
+      :present="content?.present"
     />
   </div>
 </template>

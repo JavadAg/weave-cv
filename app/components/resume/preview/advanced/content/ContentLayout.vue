@@ -19,6 +19,7 @@ interface Props {
   startDate?: string
   endDate?: string
   location?: string
+  present?: boolean
 }
 
 const props = defineProps<Props>()
@@ -60,6 +61,7 @@ const contentProps = computed(() => ({
   startDate: props.startDate,
   endDate: props.endDate,
   location: props.location,
+  present: props.present,
   sectionType: props.sectionType
 }))
 

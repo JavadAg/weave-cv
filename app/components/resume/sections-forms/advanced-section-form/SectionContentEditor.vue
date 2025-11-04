@@ -113,7 +113,7 @@ const handleDone = () => {
           <ToggleInput
             v-if="hasField('present')"
             :model-value="getBooleanFieldValue('present')"
-            :label="getFieldConfig('present')?.label || 'Currently active'"
+            :label="getFieldConfig('present')?.label || 'Present'"
             @update:model-value="(value) => handleFieldUpdate('present', value)"
           />
         </div>

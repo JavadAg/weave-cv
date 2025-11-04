@@ -14,6 +14,7 @@ interface Props {
   startDate?: string
   endDate?: string
   location?: string
+  present?: boolean
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
 }
 
@@ -37,6 +38,12 @@ const contentLayoutWidth = computed(() => layout.value.contentLayout.contentFirs
     <DescriptionContent :html="description ?? ''" />
   </div>
   <div :style="{ width: `${contentLayoutWidth.right}%` }">
-    <DateLocationContent :position="position" :start-date="startDate" :end-date="endDate" :location="location" />
+    <DateLocationContent
+      :position="position"
+      :start-date="startDate"
+      :end-date="endDate"
+      :location="location"
+      :present="present"
+    />
   </div>
 </template>

@@ -22,7 +22,7 @@ export const DEFAULT_CONFIGS: TConfigs = {
         subtitle: {
           fontStyle: "normal",
           fontCase: "inherit",
-          fontSizeMultiplier: 1.1,
+          fontSizeMultiplier: 1,
           fontWeight: "normal"
         },
         title: {
