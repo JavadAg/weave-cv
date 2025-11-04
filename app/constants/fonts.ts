@@ -1,11 +1,28 @@
-export type Font = {
-  readonly name: string
-  readonly fontFamily?: string
-}
-
 export type FontCut = `${number}-${"normal" | "italic"}`
+export const FONTS = [
+  "calibri",
+  "cambria",
+  "firasans",
+  "garamond",
+  "georgia",
+  "helvetica",
+  "inter",
+  "lato",
+  "opensans",
+  "sourcesanspro",
+  "spacemono",
+  "timesnewroman",
+  "titilliumweb",
+  "verdana",
+  "iransans",
+  "notosansarabic",
+  "sahel",
+  "samim",
+  "shabnam",
+  "vazirmatn"
+] as const
 
-export const LocalFonts: Record<string, FontCut[]> = {
+export const LocalFonts: Record<(typeof FONTS)[number], FontCut[]> = {
   calibri: ["400-normal", "700-normal", "400-italic", "700-italic"],
   cambria: ["400-normal", "700-normal", "400-italic", "700-italic"],
   firasans: ["400-normal", "700-normal", "400-italic", "700-italic"],

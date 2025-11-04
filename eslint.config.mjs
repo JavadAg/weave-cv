@@ -7,6 +7,7 @@ export default withNuxt(eslintPluginUnicorn.configs.recommended, eslintConfigPre
     "vue/html-self-closing": "off",
     "unicorn/filename-case": "off",
     "unicorn/prevent-abbreviations": "off",
+    "unicorn/no-for-loop": "off",
     "unicorn/no-null": "off",
     "vue/no-v-html": "off",
     "vue/no-v-text-v-html-on-component": "off"

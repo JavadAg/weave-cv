@@ -1,8 +1,14 @@
 <script setup lang="ts">
-const props = defineProps<{
-  label: string
-  modelValue: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    label: string
+    modelValue: boolean
+    style?: "start" | "center"
+  }>(),
+  {
+    style: "center"
+  }
+)
 
 const emit = defineEmits<{ (e: "update:modelValue", value: boolean): void }>()
 
@@ -13,5 +19,13 @@ const model = computed({
 </script>
 
 <template>
-  <USwitch v-model="model" :label="props.label" size="sm" :ui="{ label: 'text-sm font-medium text-muted' }" />
+  <USwitch
+    v-model="model"
+    :label="props.label"
+    size="sm"
+    :ui="{
+      label: 'text-sm font-medium text-muted',
+      root: props.style === 'center' ? 'flex justify-between items-center gap-2' : ''
+    }"
+  />
 </template>

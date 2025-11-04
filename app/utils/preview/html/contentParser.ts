@@ -1,0 +1,91 @@
+// Constants for HTML parsing
+const EMPTY_BREAK_TAGS = ["<p><br></p>", "<li><br></li>"] as const
+const EMPTY_BREAK_REPLACEMENT = "<p><br/></p>"
+const LIST_TAG_PATTERNS = [
+  [/<ul>/g, ""],
+  [/<\/ul>/g, ""]
+] as const
+
+/**
+ * Removes trailing break tags from the end of a content array
+ */
+export function trimTrailingEmptyTags(fragments: string[]): string[] {
+  const trimmed = [...fragments]
+
+  while (trimmed.length > 0) {
+    const lastFragment = trimmed.at(-1)
+    if (!lastFragment || !EMPTY_BREAK_TAGS.includes(lastFragment as (typeof EMPTY_BREAK_TAGS)[number])) {
+      break
+    }
+    trimmed.pop()
+  }
+
+  return trimmed
+}
+
+/**
+ * Checks if a DOM node represents an empty text node
+ */
+export function isWhitespaceOnlyNode(node: ChildNode): boolean {
+  return (
+    node.childNodes.length === 1 &&
+    node.firstChild?.nodeType === Node.TEXT_NODE &&
+    node.firstChild?.textContent?.trim() === ""
+  )
+}
+
+/**
+ * Converts a DOM node to its HTML string representation
+ */
+export function nodeToHtmlString(node: ChildNode): string {
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent ?? ""
+  }
+
+  if (node instanceof HTMLElement && "outerHTML" in node) {
+    return node.outerHTML
+  }
+
+  const container = document.createElement("div")
+  container.append(node.cloneNode(true))
+  return container.innerHTML
+}
+
+/**
+ * Parses an HTML string into an array of fragment strings
+ */
+export function extractHtmlFragments(htmlString: string): string[] {
+  const parser = document.createElement("div")
+  parser.innerHTML = htmlString
+  const fragments: string[] = []
+
+  for (const childNode of parser.childNodes) {
+    if (isWhitespaceOnlyNode(childNode)) {
+      fragments.push(EMPTY_BREAK_REPLACEMENT)
+    } else {
+      fragments.push(nodeToHtmlString(childNode))
+    }
+  }
+
+  return fragments
+}
+
+/**
+ * Removes list container tags from HTML string
+ */
+export function sanitizeListMarkup(htmlString: string): string {
+  let sanitized = htmlString
+  for (const [pattern, replacement] of LIST_TAG_PATTERNS) {
+    sanitized = sanitized.replace(pattern, replacement)
+  }
+  return sanitized
+}
+
+/**
+ * Processes HTML description into content fragments
+ */
+export function processDescriptionContent(description: string): string[] {
+  const sanitized = sanitizeListMarkup(description)
+  const fragments = extractHtmlFragments(sanitized)
+  return trimTrailingEmptyTags(fragments)
+}

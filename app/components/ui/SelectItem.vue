@@ -5,6 +5,7 @@ const props = withDefaults(
   defineProps<{
     label: string
     labelVariant?: "inline" | "stacked"
+    disabled?: boolean
     modelValue: string
     options: Option[]
   }>(),
@@ -25,11 +26,12 @@ const model = computed({
   <UFormField
     :label="props.label"
     :class="props.labelVariant === 'inline' ? 'flex items-center gap-2 justify-between' : ''"
-    :ui="{ label: 'text-sm text-muted ', container: 'basis-1/2' }"
+    :ui="{ label: 'text-sm text-muted ', container: `basis-1/2 ${props.labelVariant === 'inline' ? 'mt-0' : ''}` }"
   >
     <USelect
       :id="props.label"
       v-model="model"
+      :disabled="props.disabled"
       class="w-full"
       :items="props.options"
       option-attribute="label"

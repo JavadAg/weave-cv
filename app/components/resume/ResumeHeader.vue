@@ -32,7 +32,6 @@ const handleSave = async () => {
 <template>
   <div class="flex items-center justify-between gap-4">
     <UInput v-model="title" placeholder="عنوان رزومه" size="lg" class="font-medium" icon="i-heroicons-document-text" />
-
     <div class="flex items-center gap-3">
       <UButton
         to="/dashboard"

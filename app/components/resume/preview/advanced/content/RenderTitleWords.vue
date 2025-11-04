@@ -1,0 +1,38 @@
+<script setup lang="ts">
+import { computed, type CSSProperties } from "vue"
+import type { TLayout } from "~/utils/schemas/configs/generalConfigs.schema"
+import LinkIcon from "./LinkIcon.vue"
+
+interface Props {
+  title: string
+  url?: string
+  isInlineLayout: boolean
+  isLinkIconNextToTitle?: boolean
+  titleConfig: TLayout["contentLayout"]["title"]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isLinkIconNextToTitle: false,
+  url: ""
+})
+
+const showLinkIcon = computed(() => props.url && props.isLinkIconNextToTitle)
+
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const typography = computed(() => configs.value.general.typography)
+
+const titleStyles = computed<CSSProperties>(() => {
+  const fontSize = typography.value.fontSize * props.titleConfig.fontSizeMultiplier
+  return {
+    fontWeight: props.titleConfig.fontWeight,
+    fontStyle: props.titleConfig.fontStyle,
+    fontSize: `${fontSize}pt`,
+    textTransform: props.titleConfig.fontCase,
+    display: props.isInlineLayout ? "" : "block"
+  }
+})
+</script>
+<template v-if="title">
+  <span :style="titleStyles" class="whitespace-pre-wrap">{{ title }}<LinkIcon v-if="showLinkIcon" /></span>
+</template>

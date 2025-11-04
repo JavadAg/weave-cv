@@ -4,11 +4,14 @@ const props = withDefaults(
     label: string
     labelVariant?: "inline" | "stacked"
     modelValue: number
-    min: number
-    max: number
+    min?: number
+    max?: number
     step?: number
+    disabled?: boolean
   }>(),
   {
+    min: undefined,
+    max: undefined,
     step: 1,
     labelVariant: "inline"
   }
@@ -28,6 +31,6 @@ const model = computed({
     :class="props.labelVariant === 'inline' ? 'flex flex-row justify-between items-center gap-2' : ''"
     :ui="{ label: 'text-sm font-medium text-muted', container: 'basis-1/2' }"
   >
-    <UInputNumber v-model="model" :min="props.min" :max="props.max" :step="props.step" size="sm" />
+    <UInputNumber v-model="model" :disabled="disabled" :min="props.min" :max="props.max" :step="props.step" size="sm" />
   </UFormField>
 </template>

@@ -5,6 +5,7 @@ const props = withDefaults(
     labelVariant?: "inline" | "stacked"
     modelValue: string
     color: string
+    disabled?: boolean
   }>(),
   {
     labelVariant: "inline"
@@ -19,13 +20,16 @@ const model = computed({
 })
 
 const chip = computed(() => ({ backgroundColor: model.value }))
+console.log(model.value)
 </script>
 
 <template>
   <UPopover>
     <UButton
+      :disabled="props.disabled"
       :label="label"
       color="neutral"
+      size="sm"
       variant="outline"
       class="w-full justify-between"
       :ui="{ label: 'text-muted' }"
@@ -36,7 +40,14 @@ const chip = computed(() => ({ backgroundColor: model.value }))
     </UButton>
 
     <template #content>
-      <UColorPicker v-model="model" format="hsl" :throttle="50" class="p-2" />
+      <color-picker-block
+        v-model="model"
+        :with-hex-input="true"
+        :disabled="props.disabled"
+        format="hsl"
+        :throttle="50"
+        class="p-2"
+      />
     </template>
   </UPopover>
 </template>

@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import { computed, type CSSProperties } from "vue"
+import type { TLayout } from "~/utils/schemas/configs/generalConfigs.schema"
+import LinkIcon from "./LinkIcon.vue"
+
+interface Props {
+  subtitle: string
+  url?: string
+  isLinkIconNextToTitle?: boolean
+  subtitleConfig: TLayout["contentLayout"]["subtitle"]
+}
+
+const props = defineProps<Props>()
+
+const showLinkIcon = computed(() => props.url && !props.isLinkIconNextToTitle)
+
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const typography = computed(() => configs.value.general.typography)
+
+const subtitleStyles = computed<CSSProperties>(() => {
+  const fontSize = typography.value.fontSize * props.subtitleConfig.fontSizeMultiplier
+  return {
+    fontWeight: props.subtitleConfig.fontWeight,
+    fontStyle: props.subtitleConfig.fontStyle,
+    fontSize: `${fontSize}pt`,
+    textTransform: props.subtitleConfig.fontCase
+  }
+})
+</script>
+<template v-if="subtitle">
+  <span class="whitespace-pre-wrap" :style="subtitleStyles">
+    {{ subtitle }}
+    <LinkIcon v-if="showLinkIcon" usage="EntryTitle" />
+  </span>
+</template>

@@ -12,12 +12,3 @@ export const PAPER_SIZES = {
 export const MM_TO_PX = 3.78
 
 export type TPaperSize = keyof typeof PAPER_SIZES
-
-export const pxToMM = (px: number) => (px * 25.4) / 96
-export const sizeToPx = (size: TPaperSize, v: "h" | "w") => Math.trunc(PAPER_SIZES[size][v] * MM_TO_PX)
-
-export const PX_PER_MM = 96 / 25.4
-
-export function pxFromMM(mm: number) {
-  return mm * PX_PER_MM
-}

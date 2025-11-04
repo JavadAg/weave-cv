@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import ZoomComponent from "~/components/ZoomComponent.vue"
-import { sizeToPx } from "~/constants/papers"
+import { sizeToPx } from "~/utils/preview/helpers"
 
 interface Props {
   loading: boolean
+  scale: number
 }
 
-const { loading } = defineProps<Props>()
+const emit = defineEmits<{
+  (e: "update:scale", value: number): void
+}>()
 
-const scale = ref(1)
+const { loading, scale } = defineProps<Props>()
+
 const zoom = ref<InstanceType<typeof ZoomComponent>>()
 const container = ref<HTMLElement>()
 
@@ -17,7 +21,7 @@ const { configs } = useConfigsStore()
 
 const fitWidth = () => {
   const newScale = width.value / sizeToPx(configs.general.layout.size, "w")
-  scale.value = newScale
+  emit("update:scale", newScale)
 }
 
 watch(width, fitWidth)

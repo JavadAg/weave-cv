@@ -11,7 +11,8 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "reka-ui/nuxt",
     "@pinia/nuxt",
-    "nuxt-tiptap-editor"
+    "nuxt-tiptap-editor",
+    "nuxt-color-picker"
   ],
   css: ["~/assets/css/tailwind.css"],
   vite: { plugins: [tailwindcss()] },
@@ -22,6 +23,11 @@ export default defineNuxtConfig({
       include: ["/dashboard", "/editor/:id"],
       login: "/login",
       callback: "/confirm"
+    }
+  },
+  routeRules: {
+    "/editor/**": {
+      ssr: false
     }
   },
   runtimeConfig: {
