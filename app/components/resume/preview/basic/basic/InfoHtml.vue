@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue"
 import type { TBasicSectionConfigs } from "~/utils/schemas/configs/sectionsConfigs.schema"
-import HtmlWithDelimiter from "./HtmlWithDelimiter.vue"
+import HtmlWithSeparator from "./HtmlWithSeparator.vue"
 
 interface Props {
   description: string
@@ -22,7 +22,7 @@ const spanStyle = computed<CSSProperties>(() => ({
 <template>
   <span :style="spanStyle">
     {{ titleStyle === "bracket" ? " (" : " " }}
-    <HtmlWithDelimiter :html="description" :separator="sectionConfigs.separator" />
+    <HtmlWithSeparator :html="description" :separator="sectionConfigs.separator" />
     <span v-if="titleStyle === 'bracket'">)</span>
   </span>
 </template>

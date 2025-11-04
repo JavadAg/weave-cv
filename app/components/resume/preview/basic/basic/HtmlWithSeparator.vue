@@ -24,21 +24,17 @@ const shouldRenderNode = (node: Node): boolean => {
   return true
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const processNode = (node: Node, isFirst: boolean, index: number): any => {
+const processNode = (node: Node, isFirst: boolean, index: number): VNode | null => {
   const nodeName = node.nodeName.toLowerCase()
 
-  // Handle text nodes
   if (node.nodeType === Node.TEXT_NODE) {
-    return node.nodeValue
+    return h("span", { key: `text-${index}` }, node.nodeValue ?? "")
   }
 
-  // Recursively process child nodes
   const childNodes = [...node.childNodes]
     .map((child, childIndex) => processNode(child, isFirst && childIndex === 0, childIndex))
     .filter((child) => child !== null)
 
-  // Handle paragraph or list item nodes
   if (/* nodeName === "p" || */ nodeName === "li") {
     if (!shouldRenderNode(node)) return null
 
@@ -51,7 +47,6 @@ const processNode = (node: Node, isFirst: boolean, index: number): any => {
     return isFirst ? content : h("span", { key: `delimiter-${index}-${Math.random()}` }, [",", content])
   }
 
-  // Render based on node type
   switch (nodeName) {
     case "strong": {
       return h("strong", { key: `strong-${index}`, style: { fontWeight: "bold" } }, childNodes)
@@ -94,7 +89,7 @@ const processNode = (node: Node, isFirst: boolean, index: number): any => {
       )
     }
     default: {
-      return childNodes.length > 0 ? childNodes : null
+      return childNodes.length > 0 ? h(Fragment, { key: `fragment-${index}` }, childNodes) : null
     }
   }
 }

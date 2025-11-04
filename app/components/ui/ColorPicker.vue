@@ -20,7 +20,6 @@ const model = computed({
 })
 
 const chip = computed(() => ({ backgroundColor: model.value }))
-console.log(model.value)
 </script>
 
 <template>

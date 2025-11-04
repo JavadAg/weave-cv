@@ -45,7 +45,7 @@ const processedContents = computed(() => {
   <div v-if="isSummary" ref="elementRef">
     <DescriptionContent :html="processedContents[0]?.description ?? ''" :is-profile-section="true" />
   </div>
-  <div v-if="contents.length > 0" ref="elementRef" class="whitespace-pre-wrap">
+  <div v-else-if="contents.length > 0" ref="elementRef" class="whitespace-pre-wrap">
     <GridItems v-if="sectionConfigs.variant === 'grid'" :contents="contents" :section-configs="sectionConfigs" />
     <InlineItems
       v-else-if="sectionConfigs.variant === 'inline'"

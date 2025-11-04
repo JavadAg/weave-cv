@@ -66,7 +66,7 @@ const setTextAlign = (alignment: "left" | "center" | "right" | "justify") => {
 </script>
 
 <template>
-  <div v-if="editor" class="flex items-center gap-4 bg-muted rounded-lg p-2">
+  <div v-if="editor" class="flex items-center flex-wrap gap-4 bg-muted rounded-lg p-2">
     <ToolbarButton
       icon="i-lucide-bold"
       tooltip="Bold"

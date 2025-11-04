@@ -2,6 +2,7 @@
 import { computed } from "vue"
 import type { TBasicSectionConfigs } from "~/utils/schemas/configs/sectionsConfigs.schema"
 import type { TBasicContent } from "~/utils/schemas/content.schema"
+import type { TSeparator } from "~/utils/schemas/shared.schema"
 import BasicTitle from "./BasicTitle.vue"
 import InfoHtml from "./InfoHtml.vue"
 
@@ -12,10 +13,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const delimiter = computed(() => props.sectionConfigs.separator)
+const separator = computed(() => props.sectionConfigs.separator)
 
-const getDelimiterContent = (delimiterType: string) => {
-  switch (delimiterType) {
+const getSeparator = (separator: TSeparator) => {
+  switch (separator) {
     case "pipe": {
       return "|"
     }
@@ -47,7 +48,7 @@ const getDelimiterContent = (delimiterType: string) => {
     <InfoHtml v-if="content.description" :description="content.description" :section-configs="sectionConfigs" />
     <span v-if="index !== contents.length - 1" class="px-1 inline-block align-middle">
       <span class="flex items-center justify-center" style="height: 1ch; margin-bottom: 0.3em">
-        {{ getDelimiterContent(delimiter) }}
+        {{ getSeparator(separator) }}
       </span>
     </span>
   </span>
