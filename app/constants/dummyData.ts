@@ -385,6 +385,13 @@ export const DUMMY_CORE_SECTIONS_DATA: TCoreSections = {
     title: "Languages",
     contents: DUMMY_LANGUAGE_DATA
   },
+  certificates: {
+    type: "certificates",
+    isTitleVisible: true,
+    isSectionVisible: true,
+    title: "Certificates",
+    contents: DUMMY_CERTIFICATE_DATA
+  },
   skills: {
     isTitleVisible: true,
     isSectionVisible: true,

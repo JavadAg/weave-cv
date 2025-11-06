@@ -24,11 +24,11 @@ const shouldRenderNode = (node: Node): boolean => {
   return true
 }
 
-const processNode = (node: Node, isFirst: boolean, index: number): VNode | null => {
+const processNode = (node: Node, isFirst: boolean, index: number): VNode | string | null => {
   const nodeName = node.nodeName.toLowerCase()
 
   if (node.nodeType === Node.TEXT_NODE) {
-    return h("span", { key: `text-${index}` }, node.nodeValue ?? "")
+    return node.textContent
   }
 
   const childNodes = [...node.childNodes]
@@ -42,9 +42,9 @@ const processNode = (node: Node, isFirst: boolean, index: number): VNode | null 
       .map((child, childIndex) => processNode(child, false, childIndex))
       .filter((child) => child !== null)
 
-    const content = h(Fragment, { key: `pli-${index}` }, children)
+    const content = h(Fragment, children)
 
-    return isFirst ? content : h("span", { key: `delimiter-${index}-${Math.random()}` }, [",", content])
+    return isFirst ? content : h("span", { key: `delimiter-${index}-${Math.random()}` }, [", ", content])
   }
 
   switch (nodeName) {

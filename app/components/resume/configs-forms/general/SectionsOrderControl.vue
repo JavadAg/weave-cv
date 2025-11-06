@@ -33,9 +33,11 @@ const sections = computed(() => {
 const leftColumnSections = computed(() => {
   const leftSectionOrder = configs.general.layout.order.twoCol.left || []
   if (!isTwoColumnLayout.value) return []
+
+  console.log(core)
+
   return leftSectionOrder
     .map((sectionType: string) => {
-      // Find the section with this type that is visible
       const sectionEntry = Object.entries(core).find(
         ([_, section]) => section.type === sectionType && section.isSectionVisible
       )
@@ -47,6 +49,7 @@ const leftColumnSections = computed(() => {
 const rightColumnSections = computed(() => {
   const rightSectionOrder = configs.general.layout.order.twoCol.right || []
   if (!isTwoColumnLayout.value) return []
+
   return rightSectionOrder
     .map((sectionType: string) => {
       // Find the section with this type that is visible

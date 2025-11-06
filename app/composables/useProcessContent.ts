@@ -6,8 +6,7 @@ function getOrCreateCacheContent(resumeTitle: string): ContentCacheEntry {
 
   if (!contentCache.has(cacheKey)) {
     contentCache.set(cacheKey, {
-      previousState: {} as TCoreSections,
-      processedContents: {}
+      previousState: {} as TCoreSections
     })
   }
 
@@ -16,12 +15,15 @@ function getOrCreateCacheContent(resumeTitle: string): ContentCacheEntry {
 
 const contentCache = new Map<string, ContentCacheEntry>()
 
-export function useProcessContent(sections: TCoreSections, resumeTitle: string) {
-  const cache = getOrCreateCacheContent(resumeTitle)
+export function useProcessContent(sections: Ref<TCoreSections>, resumeTitle: Ref<string>) {
+  function processContent() {
+    const cache = getOrCreateCacheContent(resumeTitle.value)
+    const previewStore = usePreviewStore()
 
-  processContents(sections, cache)
+    const processedContents = new Map(previewStore.contentLines)
+    processContents(sections.value, cache, processedContents)
+    previewStore.setContentLines(processedContents)
+  }
 
-  cache.previousState = sections
-
-  return cache.processedContents
+  watch([sections, resumeTitle], processContent, { deep: true, immediate: true })
 }

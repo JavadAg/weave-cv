@@ -1,17 +1,10 @@
-import type { Ref } from "vue"
 import type { TSectionsOrder } from "./layoutGenerator"
 import { generateSectionElements } from "./sectionElements"
-import type { TResumeElement, TResumeElements } from "./types"
+import type { TResumeElements } from "./types"
 
 interface TwoColumnSection {
   left: string[]
   right: string[]
-}
-
-interface GenerateElementsProps {
-  sectionsOrder: TSectionsOrder
-  resumeElementsRef: Ref<Record<string, TResumeElement>>
-  processedContentsRef: Ref<Record<string, string[]>>
 }
 
 function isTwoColumnSection(section: unknown): section is TwoColumnSection {
@@ -23,30 +16,14 @@ function isTwoColumnSection(section: unknown): section is TwoColumnSection {
   return "left" in candidate && "right" in candidate && Array.isArray(candidate.left) && Array.isArray(candidate.right)
 }
 
-function generateSingleColumnSectionElements(
-  sectionId: string,
-  resumeElementsRef: Ref<Record<string, TResumeElement>>,
-  processedContentsRef: Ref<Record<string, string[]>>
-): TResumeElements[] {
-  return generateSectionElements({
-    sectionId,
-    resumeElementsRef,
-    processedContentsRef
-  })
+function generateSingleColumnSectionElements(sectionId: string): TResumeElements[] {
+  return generateSectionElements(sectionId)
 }
 
-function generateTwoColumnSectionElements(
-  section: TwoColumnSection,
-  resumeElementsRef: Ref<Record<string, TResumeElement>>,
-  processedContentsRef: Ref<Record<string, string[]>>
-): TResumeElements {
-  const leftElements = section.left.flatMap((sectionId) =>
-    generateSectionElements({ sectionId, resumeElementsRef, processedContentsRef })
-  )
+function generateTwoColumnSectionElements(section: TwoColumnSection): TResumeElements {
+  const leftElements = section.left.flatMap((sectionId) => generateSectionElements(sectionId))
 
-  const rightElements = section.right.flatMap((sectionId) =>
-    generateSectionElements({ sectionId, resumeElementsRef, processedContentsRef })
-  )
+  const rightElements = section.right.flatMap((sectionId) => generateSectionElements(sectionId))
 
   return {
     leftCol: leftElements,
@@ -54,11 +31,7 @@ function generateTwoColumnSectionElements(
   }
 }
 
-export function generateElements({
-  sectionsOrder,
-  resumeElementsRef,
-  processedContentsRef
-}: GenerateElementsProps): Array<Array<TResumeElements>> {
+export function generateElements(sectionsOrder: TSectionsOrder) {
   const pageElements: TResumeElements[] = []
 
   for (const section of sectionsOrder) {
@@ -67,10 +40,10 @@ export function generateElements({
     }
 
     if (typeof section === "string") {
-      const sectionElements = generateSingleColumnSectionElements(section, resumeElementsRef, processedContentsRef)
+      const sectionElements = generateSingleColumnSectionElements(section)
       pageElements.push(...sectionElements)
     } else if (isTwoColumnSection(section)) {
-      const columnElement = generateTwoColumnSectionElements(section, resumeElementsRef, processedContentsRef)
+      const columnElement = generateTwoColumnSectionElements(section)
       pageElements.push(columnElement)
     }
   }

@@ -3,14 +3,17 @@ import { processDescriptionContent } from "../html/contentParser"
 
 interface ContentCacheEntry {
   previousState: TCoreSections
-  processedContents: Record<string, string[]>
 }
 
 /**
- * Processes content sections and updates the cache with processed fragments
+ * Processes content sections and updates the store with processed fragments.
+ * Uses cache to avoid re-processing unchanged content for performance.
  */
-export function processContents(sections: TCoreSections, cache: ContentCacheEntry) {
-  const { processedContents } = cache
+export function processContents(
+  sections: TCoreSections,
+  cache: ContentCacheEntry,
+  processedContents: Map<string, string[]>
+) {
   const sectionKeys = Object.keys(sections)
 
   for (const sectionKey of sectionKeys) {
@@ -27,13 +30,14 @@ export function processContents(sections: TCoreSections, cache: ContentCacheEntr
       }
 
       const previousContent = cache.previousState[sectionKey]?.contents?.find((e) => e?.id === currentContent.id)
+
       const descriptionChanged =
         typeof currentContent.description === "string" && previousContent?.description !== currentContent.description
 
       if (descriptionChanged) {
-        processedContents[currentContent.id] = processDescriptionContent(currentContent.description)
-      } else if (!processedContents[currentContent.id] && currentContent.description) {
-        processedContents[currentContent.id] = processDescriptionContent(currentContent.description)
+        processedContents.set(currentContent.id, processDescriptionContent(currentContent.description))
+      } else if (!processedContents.has(currentContent.id) && currentContent.description) {
+        processedContents.set(currentContent.id, processDescriptionContent(currentContent.description))
       }
     }
   }

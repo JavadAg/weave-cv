@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { useElementHeightUpdate } from "~/composables/useElementHeightContext"
-
 const props = defineProps<{
   elementId: string
 }>()
 
-const { updateHeight } = useElementHeightUpdate()
+const { updateHeight } = usePreviewStore()
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { useElementHeightUpdate } from "~/composables/useElementHeightContext"
 import type { BasicSectionTypeSchema } from "~/utils/schemas/content.schema"
 import DescriptionContent from "../advanced/content/DescriptionContent.vue"
 import GridItems from "./basic/GridItems.vue"
@@ -14,8 +13,7 @@ interface Props {
 
 const { sectionId, sectionType } = defineProps<Props>()
 
-const { updateHeight } = useElementHeightUpdate()
-
+const { updateHeight } = usePreviewStore()
 const { elementRef } = useSelfResizeObserver((height) => {
   updateHeight(sectionId, height)
 })

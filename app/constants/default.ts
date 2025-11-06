@@ -9,7 +9,7 @@ export const DEFAULT_CONFIGS: TConfigs = {
       size: "A4",
       verticalMargin: 12,
       horizontalMargin: 12,
-      columns: "1",
+      columns: "2",
       sectionGap: 12,
       columnsWidth: {
         left: 50,

@@ -1,12 +1,12 @@
 import type { Component } from "vue"
 
-export type ResumeElementKind = "heading" | "space" | "personal" | "description" | "detail"
+export type ResumeElementType = "heading" | "space"
 
 export interface TResumeElement {
   id: string
   component: Component
   height: number
-  kind: ResumeElementKind
+  type?: ResumeElementType
 }
 
 export type TResumeElements =

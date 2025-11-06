@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { useElementHeightUpdate } from "~/composables/useElementHeightContext"
-import { splitContentFragments } from "~/utils/preview/core/sectionElementGenerator"
+import { determineDisplayMode, isContentEmpty } from "~/utils/preview/core/entryUtils"
 import type { AdvancedSectionTypeSchema, TAdvancedContent } from "~/utils/schemas/content.schema"
-import ContentLayout from "../content/ContentLayout.vue"
+import type { TAdvancedSectionVariant } from "~/utils/schemas/shared.schema"
+import ContentTitleSubtitle from "../content/ContentTitleSubtitle.vue"
+import DateLocationContent from "../content/DateLocationContent.vue"
 
 interface Props {
   content: TAdvancedContent
-  sectionId: string
   contentId: string
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
-  processedContent: string[]
-  isLast: boolean
 }
 
-const { content, sectionId, contentId, sectionType, processedContent, isLast } = defineProps<Props>()
+const { content, contentId, sectionType } = defineProps<Props>()
 
-const { updateHeight } = useElementHeightUpdate()
+const { updateHeight } = usePreviewStore()
 
 const { elementRef } = useSelfResizeObserver((height) => {
   updateHeight(contentId, height)
@@ -27,37 +25,128 @@ const { configs } = storeToRefs(configsStore)
 
 const sectionConfigs = computed(() => configs.value[sectionType])
 
-const hasContentFragments = computed(() => processedContent.length > 0)
-
-const splitedContentFragment = computed(() =>
-  splitContentFragments(processedContent, configs.value.general.layout.columns, sectionConfigs.value)
-)
-
-const noParagraphTags = computed(() => splitedContentFragment.value.contentFragmentsForParagraphs.length === 0)
-
 const titleSubTitle = computed(() => {
   if (sectionConfigs.value.subTitleFirst) {
     return [content.subtitle, content.title]
   }
   return [content.title, content.subtitle]
 })
+
+const layout = computed(() => configs.value.general.layout)
+
+const displayMode = computed<TAdvancedSectionVariant | "columns">(() =>
+  determineDisplayMode({
+    columns: layout.value.columns,
+    displayMode: sectionConfigs.value.variant
+  })
+)
+
+const contentStyle = computed(() => ({
+  width: "100%",
+  display: "flex",
+  flexDirection: displayMode.value === "columns" || displayMode.value === "stacked" ? ("column" as const) : undefined
+}))
+
+const contentLayoutWidth = computed(() =>
+  displayMode.value === "contentFirst"
+    ? layout.value.contentLayout.contentFirstWidth
+    : layout.value.contentLayout.dateFirstWidth
+)
+const hasDateOrLocation = computed(() => content.startDate || content.endDate || content.location)
+
+const dateLocationStyles = computed(() => ({
+  display: hasDateOrLocation.value ? "block" : "none",
+  paddingTop: `${0.1 * configs.value.general.typography.lineHeight}em`,
+  paddingBottom: `${0.1 * configs.value.general.typography.lineHeight}em`
+}))
 </script>
 <template>
-  <div ref="elementRef">
-    <ContentLayout
-      :content-id="content.id!"
-      :section-id="sectionId"
-      :section-type="sectionType"
-      :title="titleSubTitle[0]!"
-      :subtitle="titleSubTitle[1]!"
-      :url="content.url"
-      :description="splitedContentFragment.contentFragmentsForEntry.join('')"
-      :is-last="isLast"
-      :add-entry-padding-bottom="!hasContentFragments || noParagraphTags"
-      :start-date="content?.startDate"
-      :end-date="content?.endDate"
-      :location="content?.location"
-      :present="content?.present"
-    />
+  <div
+    v-if="content && !isContentEmpty(content)"
+    ref="elementRef"
+    :style="{
+      wordBreak: 'break-word'
+    }"
+  >
+    <div :style="contentStyle">
+      <template v-if="displayMode === 'contentFirst'">
+        <div :style="{ width: `${contentLayoutWidth.left}%` }">
+          <ContentTitleSubtitle
+            :title="titleSubTitle[0]"
+            :subtitle="titleSubTitle[1]"
+            :url="content.url"
+            :is-in-column="false"
+            :section-type="sectionType"
+          />
+        </div>
+        <div :style="{ width: `${contentLayoutWidth.right}%` }">
+          <DateLocationContent
+            :position="displayMode"
+            :start-date="content.startDate"
+            :end-date="content.endDate"
+            :location="content.location"
+            :present="content.present"
+          />
+        </div>
+      </template>
+      <template v-if="displayMode === 'dateFirst'">
+        <div :style="{ width: `${contentLayoutWidth.left}%` }">
+          <DateLocationContent
+            :position="displayMode"
+            :start-date="content.startDate"
+            :end-date="content.endDate"
+            :location="content.location"
+            :present="content.present"
+          />
+        </div>
+        <div :style="{ width: `${contentLayoutWidth.right}%` }">
+          <ContentTitleSubtitle
+            :title="titleSubTitle[0]"
+            :subtitle="titleSubTitle[1]"
+            :url="content.url"
+            :is-in-column="false"
+            :section-type="sectionType"
+          />
+        </div>
+      </template>
+      <template v-if="displayMode === 'stacked'">
+        <div class="flex justify-between [&>*]:max-w-[50%]">
+          <ContentTitleSubtitle
+            :title="titleSubTitle[0]"
+            :subtitle="titleSubTitle[1]"
+            :url="content.url"
+            :is-in-column="false"
+            :section-type="sectionType"
+          />
+          <div class="flex justify-end items-start">
+            <DateLocationContent
+              :position="displayMode"
+              :start-date="content.startDate"
+              :end-date="content.endDate"
+              :location="content.location"
+              :present="content.present"
+            />
+          </div>
+        </div>
+      </template>
+      <template v-if="displayMode === 'columns'">
+        <ContentTitleSubtitle
+          :title="titleSubTitle[0]"
+          :subtitle="titleSubTitle[1]"
+          :url="content.url"
+          :is-in-column="true"
+          :section-type="sectionType"
+        />
+        <div v-if="content.startDate || content.endDate || content.location" :style="dateLocationStyles">
+          <DateLocationContent
+            :position="displayMode"
+            :start-date="content.startDate"
+            :end-date="content.endDate"
+            :location="content.location"
+            :present="content.present"
+          />
+        </div>
+      </template>
+    </div>
   </div>
 </template>

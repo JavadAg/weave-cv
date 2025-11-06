@@ -200,7 +200,6 @@ const indentConstraints = extractNumberConstraintsFromPath(ContentLayoutSchema, 
       :options="listTypeOptions"
       @update:model-value="(value) => handleUpdate('contentLayout.listType', value)"
     />
-
     <SectionsOrderControl />
   </ConfigsContainer>
 </template>

@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { useElementHeightUpdate } from "~/composables/useElementHeightContext"
 import NameAndRole from "./NameAndRole.vue"
 import DetailsContainer from "./details/DetailsContainer.vue"
 
-const { updateHeight } = useElementHeightUpdate()
+const { updateHeight } = usePreviewStore()
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)

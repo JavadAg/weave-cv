@@ -57,13 +57,13 @@ export function processPages({ resumeElements, elements }: IProcessPagesProps) {
 
           const leftElement = resumeElements[leftIds[0] ?? ""]
           if (leftElement && !leftDone) {
-            if (leftElement.kind === "heading") {
+            if (leftElement.type === "heading") {
               currentLeftHeading = leftElement
               leftIds.splice(0, 1)
             } else {
               let elementHeight = leftElement.height
               if (currentLeftHeading) elementHeight += currentLeftHeading.height
-              if (leftHeight === 0 && leftElement.kind === "space" && leftElement.height !== 0) {
+              if (leftHeight === 0 && leftElement.type === "space" && leftElement.height !== 0) {
                 leftIds.splice(0, 1)
               } else if (leftHeight + elementHeight < pageHeightLimit || leftHeight === 0) {
                 const currentPage = processedPages.at(-1)
@@ -83,13 +83,13 @@ export function processPages({ resumeElements, elements }: IProcessPagesProps) {
 
           const rightElement = resumeElements[rightIds[0] ?? ""]
           if (rightElement && !rightDone) {
-            if (rightElement.kind === "heading") {
+            if (rightElement.type === "heading") {
               currentRightHeading = rightElement
               rightIds.splice(0, 1)
             } else {
               let elementHeight = rightElement.height
               if (currentRightHeading) elementHeight += currentRightHeading.height
-              if (rightHeight === 0 && rightElement.kind === "space" && rightElement.height !== 0) {
+              if (rightHeight === 0 && rightElement.type === "space" && rightElement.height !== 0) {
                 rightIds.splice(0, 1)
               } else if (rightHeight + elementHeight < pageHeightLimit || rightHeight === 0) {
                 const currentPage = processedPages.at(-1)
@@ -126,7 +126,7 @@ export function processPages({ resumeElements, elements }: IProcessPagesProps) {
           isFirstPage
         })
 
-        if (element.kind === "heading") {
+        if (element.type === "heading") {
           currentHeading = element
         } else {
           let elementHeight = element.height
@@ -136,7 +136,7 @@ export function processPages({ resumeElements, elements }: IProcessPagesProps) {
             currentHeight = 0
             isFirstPage = false
           }
-          if (!(currentHeight === 0 && element.kind === "space" && element.height !== 0)) {
+          if (!(currentHeight === 0 && element.type === "space" && element.height !== 0)) {
             if (currentHeading) {
               processedPages.at(-1)?.push(currentHeading)
               currentHeading = undefined

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
-import { useElementHeightUpdate } from "~/composables/useElementHeightContext"
 import { ColumnColorsKey } from "../../pages/columnColorsContext"
 import HeadingBorder from "./HeadingBorder.vue"
 import HeadingPill from "./HeadingPill.vue"
@@ -14,7 +13,7 @@ const props = defineProps<{
   elementId: string
 }>()
 
-const { updateHeight } = useElementHeightUpdate()
+const { updateHeight } = usePreviewStore()
 
 const { elementRef } = useSelfResizeObserver((height) => {
   updateHeight(props.elementId, height)
