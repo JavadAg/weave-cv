@@ -1,22 +1,12 @@
-import { LocalFonts } from "~/constants/fonts"
+import { FONTS_CUTS, type TFontFamily } from "~/constants/fonts"
+import type { TFontStyle, TFontWeight } from "~/utils/schemas/shared.schema"
 
-// ---------- Types ----------
-export type CatalogItem = { family: string; category?: string }
-
-export type FontWeight = "400" | "700"
-
-export type FontRequest = {
-  family: string
-  weights?: FontWeight[]
-  ital?: boolean
-}
-
-export async function preloadLocalFont(family: string) {
-  const cuts = LocalFonts[family]
+export async function preloadLocalFont(family: TFontFamily) {
+  const cuts = FONTS_CUTS[family]
   if (!cuts) return
 
   const faces = cuts.map((cut) => {
-    const [weight] = cut.split("-") as [string, "normal" | "italic"]
+    const [weight] = cut.split("-")
     return `${weight} 16px "${family}"`
   })
 
@@ -24,9 +14,9 @@ export async function preloadLocalFont(family: string) {
   await document.fonts.ready
 }
 
-const loadedFonts: Record<string, boolean> = {}
+const loadedFonts: Partial<Record<TFontFamily, boolean>> = {}
 
-export function loadLocalFont(family: string) {
+export function loadLocalFont(family: TFontFamily) {
   if (loadedFonts[family]) return
 
   const css = buildFontCss(family)
@@ -39,21 +29,21 @@ export function loadLocalFont(family: string) {
   loadedFonts[family] = true
 }
 
-function normalizeFontName(family: string) {
+function normalizeFontName(family: TFontFamily) {
   return family.toLowerCase().replaceAll(/\s+/g, "")
 }
 
-export function buildFontCss(family: string): string {
-  const cuts = LocalFonts[family]
+export function buildFontCss(family: TFontFamily) {
+  const cuts = FONTS_CUTS[family]
   if (!cuts) return ""
 
   const normalized = normalizeFontName(family)
 
   return cuts
     .map((cut) => {
-      const [weight, style] = cut.split("-") as [string, "normal" | "italic"]
+      const [weight, style] = cut.split("-") as [TFontWeight, TFontStyle]
 
-      const url = `/fonts/${normalized}/${normalized}-${weight}-${style}.woff2`
+      const url = `/fonts/${normalized}/${normalized}-${weight}-${style.toLowerCase()}.woff2`
 
       return `
       @font-face {

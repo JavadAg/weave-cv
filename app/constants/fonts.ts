@@ -1,28 +1,31 @@
-export type FontCut = `${number}-${"normal" | "italic"}`
-export const FONTS = [
-  "calibri",
-  "cambria",
-  "firasans",
-  "garamond",
-  "georgia",
-  "helvetica",
-  "inter",
-  "lato",
-  "opensans",
-  "sourcesanspro",
-  "spacemono",
-  "timesnewroman",
-  "titilliumweb",
-  "verdana",
-  "iransans",
-  "notosansarabic",
-  "sahel",
-  "samim",
-  "shabnam",
-  "vazirmatn"
+export type TFontCut = `${number}-${"normal" | "italic"}`
+
+export type TFontFamily = (typeof FONT_OPTIONS)[number]["value"]
+
+export const FONT_OPTIONS = [
+  { label: "Calibri", value: "calibri" },
+  { label: "Cambria", value: "cambria" },
+  { label: "Fira Sans", value: "firasans" },
+  { label: "Garamond", value: "garamond" },
+  { label: "Georgia", value: "georgia" },
+  { label: "Helvetica", value: "helvetica" },
+  { label: "Inter", value: "inter" },
+  { label: "Lato", value: "lato" },
+  { label: "Open Sans", value: "opensans" },
+  { label: "Source Sans Pro", value: "sourcesanspro" },
+  { label: "Space Mono", value: "spacemono" },
+  { label: "Times New Roman", value: "timesnewroman" },
+  { label: "Titillium Web", value: "titilliumweb" },
+  { label: "Verdana", value: "verdana" },
+  { label: "ایران سنس", value: "iransans" },
+  { label: "Noto Sans Arabic", value: "notosansarabic" },
+  { label: "ساحل", value: "sahel" },
+  { label: "صمیم", value: "samim" },
+  { label: "شبنم", value: "shabnam" },
+  { label: "وزیر", value: "vazirmatn" }
 ] as const
 
-export const LocalFonts: Record<(typeof FONTS)[number], FontCut[]> = {
+export const FONTS_CUTS: Record<TFontFamily, TFontCut[]> = {
   calibri: ["400-normal", "700-normal", "400-italic", "700-italic"],
   cambria: ["400-normal", "700-normal", "400-italic", "700-italic"],
   firasans: ["400-normal", "700-normal", "400-italic", "700-italic"],

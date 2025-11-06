@@ -34,8 +34,6 @@ const leftColumnSections = computed(() => {
   const leftSectionOrder = configs.general.layout.order.twoCol.left || []
   if (!isTwoColumnLayout.value) return []
 
-  console.log(core)
-
   return leftSectionOrder
     .map((sectionType: string) => {
       const sectionEntry = Object.entries(core).find(

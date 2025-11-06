@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { FONTS } from "~/constants/fonts"
+import { FONT_OPTIONS } from "~/constants/fonts"
 import { PAPER_SIZES, type TPaperSize } from "~/constants/papers"
 import { SectionTypeSchema } from "../content.schema"
 import { DateFormat, FontCase, FontStyle, FontWeight, LinkIconType, ListType, PersonalPosition } from "../shared.schema"
@@ -74,7 +74,7 @@ export const LinksSchema = z.object({
 })
 
 export const TypographySchema = z.object({
-  fontFamily: z.enum(FONTS),
+  fontFamily: z.enum(FONT_OPTIONS.map((option) => option.value)),
   fontSize: z.number().min(6).max(24),
   lineHeight: z.number().min(1).max(2),
   letterSpacing: z.number().min(-2).max(10)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NumberInput from "~/components/ui/NumberInput.vue"
 import SelectItem from "~/components/ui/SelectItem.vue"
-import { LocalFonts } from "~/constants/fonts"
+import { FONT_OPTIONS, type TFontFamily } from "~/constants/fonts"
 import { loadLocalFont, preloadLocalFont } from "~/utils/preview/core/fontUtils"
 import { ContentLayoutSchema, TypographySchema } from "~/utils/schemas/configs/generalConfigs.schema"
 import { PersonalConfigsSchema } from "~/utils/schemas/configs/sectionsConfigs.schema"
@@ -10,13 +10,11 @@ import SectionTypography from "../sections/SectionTypography.vue"
 import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 
-const localFontOptions = Object.keys(LocalFonts).map((f) => ({ label: f, value: f }))
-
 const { configs, updateConfig } = useConfigsStore()
 
 const handleUpdate = async (key: string, value: unknown) => {
   if (key === "fontFamily") {
-    loadLocalFont(value as string)
+    loadLocalFont(value as TFontFamily)
 
     updateConfig(`general.typography.fontFamily`, value)
   } else {
@@ -40,7 +38,7 @@ onMounted(async () => {
         v-model="configs.general.typography.fontFamily"
         label-variant="stacked"
         label="Font Family"
-        :options="localFontOptions"
+        :options="FONT_OPTIONS.map((option) => ({ label: option.label, value: option.value }))"
         @update:model-value="(v) => handleUpdate('fontFamily', v)"
       />
       <NumberInput

@@ -8,8 +8,6 @@ export const usePreviewStore = defineStore("preview", {
   }),
   actions: {
     setContentLines(lines: Map<string, string[]>) {
-      console.log("setContentLines", lines)
-
       this.contentLines.clear()
       for (const [key, value] of lines) {
         this.contentLines.set(key, value)
