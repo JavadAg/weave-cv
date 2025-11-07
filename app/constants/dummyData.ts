@@ -145,7 +145,7 @@ export const DUMMY_EXPERIENCE_DATA: TAdvancedContent[] = [
   {
     id: "experience-1",
     isHidden: false,
-    url: "https://innovatecorp.com",
+    url: "",
     subtitle: "InnovateCorp Solutions",
     title: "Senior Software Engineer",
     startDate: "2022-03-01",

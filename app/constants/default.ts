@@ -9,13 +9,13 @@ export const DEFAULT_CONFIGS: TConfigs = {
       size: "A4",
       verticalMargin: 12,
       horizontalMargin: 12,
-      columns: "1",
+      columns: "2",
       sectionGap: 12,
       columnsWidth: {
         left: 50,
         right: 50
       },
-      personalPosition: "top",
+      personalPosition: "left",
       contentLayout: {
         listType: "disc",
         indent: 0,

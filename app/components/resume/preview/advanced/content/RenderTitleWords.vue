@@ -23,11 +23,10 @@ const { configs } = storeToRefs(configsStore)
 const typography = computed(() => configs.value.general.typography)
 
 const titleStyles = computed<CSSProperties>(() => {
-  const fontSize = typography.value.fontSize * props.titleConfig.fontSizeMultiplier
   return {
     fontWeight: props.titleConfig.fontWeight,
     fontStyle: props.titleConfig.fontStyle,
-    fontSize: `${fontSize}pt`,
+    fontSize: `${typography.value.fontSize * props.titleConfig.fontSizeMultiplier}pt`,
     textTransform: props.titleConfig.fontCase,
     display: props.isInlineLayout ? "" : "block",
     whiteSpace: "pre-wrap"
