@@ -26,37 +26,25 @@ const handleDownload = async () => {
   }
 
   try {
-    // Clone the element to avoid modifying the original
     const clonedElement = element.cloneNode(true) as HTMLElement
 
-    // Remove preview-only classes and styles that shouldn't appear in PDF
-    const resumePages = clonedElement.querySelectorAll(".resumePage")
-    for (const page of resumePages) {
-      page.classList.remove("resumePage")
-      // Remove any inline margin-bottom if present
-      const pageEl = page as HTMLElement
-      if (pageEl.style.marginBottom) {
-        pageEl.style.marginBottom = ""
-      }
-    }
+    clonedElement.classList.remove("resumePage")
 
-    // Get the cleaned HTML content
     const html = clonedElement.outerHTML
 
-    // Get the paper format from configs
     const format = configs.value.general.layout.size
+    const fontFamily = configs.value.general.typography.fontFamily
 
-    // Call the PDF generation API
     const response = await $fetch<Blob>("/api/pdf", {
       method: "POST",
       body: {
         html,
-        format
+        format,
+        fontFamily
       },
       responseType: "blob"
     })
 
-    // Create a download link
     const blob = new Blob([response], { type: "application/pdf" })
     const url = globalThis.URL.createObjectURL(blob)
     const link = document.createElement("a")

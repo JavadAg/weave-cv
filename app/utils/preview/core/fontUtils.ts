@@ -33,7 +33,7 @@ function normalizeFontName(family: TFontFamily) {
   return family.toLowerCase().replaceAll(/\s+/g, "")
 }
 
-export function buildFontCss(family: TFontFamily) {
+export function buildFontCss(family: TFontFamily, baseUrl?: string) {
   const cuts = FONTS_CUTS[family]
   if (!cuts) return ""
 
@@ -43,7 +43,9 @@ export function buildFontCss(family: TFontFamily) {
     .map((cut) => {
       const [weight, style] = cut.split("-") as [TFontWeight, TFontStyle]
 
-      const url = `/fonts/${normalized}/${normalized}-${weight}-${style.toLowerCase()}.woff2`
+      const url = baseUrl
+        ? `${baseUrl}/fonts/${normalized}/${normalized}-${weight}-${style.toLowerCase()}.woff2`
+        : `/fonts/${normalized}/${normalized}-${weight}-${style.toLowerCase()}.woff2`
 
       return `
       @font-face {

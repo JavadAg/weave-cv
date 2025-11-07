@@ -8,7 +8,9 @@ const DEBOUNCE_DELAY = 20
 
 export function useGeneratePages(sectionsOrder: Ref<TSectionsOrder> | ComputedRef<TSectionsOrder>) {
   const resumeStore = useResumeStore()
-  const { core, title } = storeToRefs(resumeStore)
+  const { core } = storeToRefs(resumeStore)
+  const configsStore = useConfigsStore()
+  const { configs } = storeToRefs(configsStore)
 
   const pages = ref<TResumeElements[][]>([[]])
 
@@ -25,7 +27,19 @@ export function useGeneratePages(sectionsOrder: Ref<TSectionsOrder> | ComputedRe
 
   previewStore.setUpdateHeightCallback(useDebounceFn(updatePages, DEBOUNCE_DELAY))
 
-  watch([() => unref(sectionsOrder), core, title], updatePages, { deep: true, immediate: true })
+  watch(
+    [
+      () => unref(sectionsOrder),
+      core,
+      () => configs.value.general.layout.verticalMargin,
+      () => configs.value.general.layout.horizontalMargin
+    ],
+    updatePages,
+    {
+      deep: true,
+      immediate: true
+    }
+  )
 
   return pages
 }

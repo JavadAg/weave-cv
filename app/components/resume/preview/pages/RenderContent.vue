@@ -26,10 +26,11 @@ const contentStyles = computed<CSSProperties>(() => {
 
   return {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: layout.value.columns === "1" ? "column" : "row",
+    height: "100%",
     flexGrow: "1",
     paddingTop: `${paddingTop}mm`,
-    paddingBottom: `${layout.value.verticalMargin}mm`,
+    paddingBottom: layout.value.columns === "1" ? `${layout.value.verticalMargin}mm` : "0",
     paddingLeft: `${paddingHorizontal}mm`,
     paddingRight: `${paddingHorizontal}mm`,
     backgroundColor: bgColor,

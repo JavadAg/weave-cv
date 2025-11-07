@@ -25,8 +25,7 @@ export default defineEventHandler(async (event) => {
       updated_at: new Date().toISOString()
     })
     .eq("id", id)
-  if (error)
-    throw createError({ statusCode: 500, statusMessage: error.message })
+  if (error) throw createError({ statusCode: 500, statusMessage: error.message })
 
   return { ok: true }
 })

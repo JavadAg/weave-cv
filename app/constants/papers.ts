@@ -1,10 +1,10 @@
 export const PAPER_SIZES = {
   A4: {
-    h: 297 + 2,
+    h: 297,
     w: 210
   },
   Letter: {
-    h: 279.4 + 3,
+    h: 279.4,
     w: 215.9
   }
 }
