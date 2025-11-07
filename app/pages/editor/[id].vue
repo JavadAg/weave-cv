@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router"
 import ResumeConfigs from "~/components/resume/configs-forms/ResumeConfigsForms.vue"
+import ResumeHeader from "~/components/resume/resume-header/ResumeHeader.vue"
 import ResumeSectionsForms from "~/components/resume/sections-forms/ResumeSectionsForms.vue"
 import type { Tables } from "~/types/database.types"
 import { loadLocalFont } from "~/utils/preview/core/fontUtils"
@@ -39,7 +40,7 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
 onMounted(() => {
   const fontFamily = configs.general.typography.fontFamily
   if (fontFamily) {
-    loadLocalFont(fontFamily.toLowerCase())
+    loadLocalFont(fontFamily)
   }
 })
 

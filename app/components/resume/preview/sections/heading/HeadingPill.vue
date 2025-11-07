@@ -12,8 +12,16 @@ const backgroundColor = computed(() => {
 
 <template>
   <div
-    class="flex items-center justify-center w-full px-3 py-2 rounded-full"
-    :style="{ backgroundColor: backgroundColor, color: props.headingColor }"
+    :style="{
+      backgroundColor: backgroundColor,
+      color: props.headingColor,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      padding: '0.3em 1em',
+      borderRadius: '1.5em'
+    }"
   >
     {{ props.section.title }}
   </div>

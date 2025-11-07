@@ -29,10 +29,11 @@ const titleStyles = computed<CSSProperties>(() => {
     fontStyle: props.titleConfig.fontStyle,
     fontSize: `${fontSize}pt`,
     textTransform: props.titleConfig.fontCase,
-    display: props.isInlineLayout ? "" : "block"
+    display: props.isInlineLayout ? "" : "block",
+    whiteSpace: "pre-wrap"
   }
 })
 </script>
 <template v-if="title">
-  <span :style="titleStyles" class="whitespace-pre-wrap">{{ title }}<LinkIcon v-if="showLinkIcon" /></span>
+  <span :style="titleStyles">{{ title }}<LinkIcon v-if="showLinkIcon" /></span>
 </template>

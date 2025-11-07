@@ -110,7 +110,7 @@ const dateLocationStyles = computed(() => ({
         </div>
       </template>
       <template v-if="displayMode === 'stacked'">
-        <div class="flex justify-between [&>*]:max-w-[50%]">
+        <div :style="{ display: 'flex', justifyContent: 'space-between' }">
           <ContentTitleSubtitle
             :title="titleSubTitle[0]"
             :subtitle="titleSubTitle[1]"
@@ -118,7 +118,7 @@ const dateLocationStyles = computed(() => ({
             :is-in-column="false"
             :section-type="sectionType"
           />
-          <div class="flex justify-end items-start">
+          <div :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'start' }">
             <DateLocationContent
               :position="displayMode"
               :start-date="content.startDate"

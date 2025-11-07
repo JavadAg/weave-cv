@@ -29,7 +29,10 @@ const isVisible = computed(() => linkIconStyles.value.visible)
 </script>
 
 <template>
-  <span v-if="isVisible" class="inline-flex pl-0.5 items-center align-sub">
+  <span
+    v-if="isVisible"
+    :style="{ display: 'inline-flex', paddingLeft: '0.5em', alignItems: 'center', verticalAlign: 'sub' }"
+  >
     <svg
       :style="svgStyles"
       fill="currentColor"

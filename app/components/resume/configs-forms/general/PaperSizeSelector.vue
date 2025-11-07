@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { PAPER_SIZES, type PaperSize } from "~/constants/papers"
+import { PAPER_SIZES, type TPaperSize } from "~/constants/papers"
 
 interface Emits {
-  (e: "update:paper-size", value: PaperSize): void
+  (e: "update:paper-size", value: TPaperSize): void
 }
 
 const props = defineProps<{
-  paperSize: PaperSize
+  paperSize: TPaperSize
 }>()
 const emit = defineEmits<Emits>()
 
 const paperSizeModel = computed({
   get: () => props.paperSize,
-  set: (value: PaperSize) => emit("update:paper-size", value)
+  set: (value: TPaperSize) => emit("update:paper-size", value)
 })
 </script>
 

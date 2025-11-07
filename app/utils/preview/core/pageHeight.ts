@@ -1,21 +1,21 @@
-import { calculateHeaderMargin, convertMmToPx, getPageDimensionsInPx } from "~/utils/preview/helpers"
+import { convertMmToPx, getPageDimensionsInPx } from "~/utils/preview/helpers"
 
 export interface PageHeightConfig {
   pageFormat: string
   verticalMargin: number
-  isHeaderBackgroundActive: boolean
+  isTopPersonal: boolean
   isFirstPage: boolean
 }
 
-export function calculatePageHeight(config: PageHeightConfig): number {
-  const { pageFormat, verticalMargin, isHeaderBackgroundActive, isFirstPage } = config
+export function calculatePageHeight({ pageFormat, verticalMargin, isTopPersonal, isFirstPage }: PageHeightConfig) {
+  const marginPx = convertMmToPx(verticalMargin)
 
-  const marginHeight = convertMmToPx(verticalMargin)
+  const pageHeightPx = getPageDimensionsInPx(pageFormat).heightInPx
 
-  let availableHeight = getPageDimensionsInPx(pageFormat).heightInPx - marginHeight * 2
+  let availableHeight = pageHeightPx - marginPx
 
-  if (!isHeaderBackgroundActive || !isFirstPage) {
-    availableHeight -= convertMmToPx(calculateHeaderMargin(verticalMargin, isFirstPage))
+  if (!isTopPersonal || !isFirstPage) {
+    availableHeight -= marginPx
   }
 
   return availableHeight

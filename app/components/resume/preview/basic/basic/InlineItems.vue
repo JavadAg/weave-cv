@@ -46,8 +46,19 @@ const getSeparator = (separator: TSeparator) => {
   <template v-for="(content, index) in contents" :key="index">
     <BasicTitle :title="content.title" :url="content.url" :section-configs="sectionConfigs" />
     <InfoHtml v-if="content.description" :description="content.description" :section-configs="sectionConfigs" />
-    <span v-if="index !== contents.length - 1" class="px-1 inline-block align-middle">
-      <span class="flex items-center justify-center" style="height: 1ch; margin-bottom: 0.3em">
+    <span
+      v-if="index !== contents.length - 1"
+      :style="{ paddingInline: '0.5em', display: 'inline-block', verticalAlign: 'middle' }"
+    >
+      <span
+        :style="{
+          height: '1ch',
+          marginBottom: '0.3em',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }"
+      >
         {{ getSeparator(separator) }}
       </span>
     </span>

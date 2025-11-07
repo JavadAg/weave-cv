@@ -22,7 +22,6 @@ function generateSingleColumnSectionElements(sectionId: string): TResumeElements
 
 function generateTwoColumnSectionElements(section: TwoColumnSection): TResumeElements {
   const leftElements = section.left.flatMap((sectionId) => generateSectionElements(sectionId))
-
   const rightElements = section.right.flatMap((sectionId) => generateSectionElements(sectionId))
 
   return {
@@ -48,5 +47,5 @@ export function generateElements(sectionsOrder: TSectionsOrder) {
     }
   }
 
-  return [pageElements]
+  return pageElements
 }

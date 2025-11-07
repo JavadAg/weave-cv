@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { findPersonalElement, isTwoColumnSection, shouldRenderSection } from "~/utils/preview/core/pageRenderUtils"
 import type { TResumeElement, TResumeElements } from "~/utils/preview/core/types"
-import RenderColumn from "./RenderColumn.vue"
 import RenderContent from "./RenderContent.vue"
 import RenderPage from "./RenderPage.vue"
+import TwoColumnSection from "./TwoColumnSection.vue"
 
 interface Props {
   pages: Array<Array<TResumeElements>>
@@ -13,47 +14,26 @@ const props = defineProps<Props>()
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 
-const layout = computed(() => configs.value.general.layout)
-
-const personalPosition = computed(() => layout.value.personalPosition)
-
-const isTopPersonal = computed(() => personalPosition.value === "top")
-const isSidePersonal = computed(() => personalPosition.value === "left" || personalPosition.value === "right")
-
-const headerElement = computed<TResumeElement | null>(() => {
-  if (isTopPersonal.value && props.pages[0]?.[0] && "id" in props.pages[0][0] && props.pages[0][0].id === "personal") {
-    return props.pages[0].find((item) => "id" in item && item.id === "personal") as TResumeElement
-  }
-
-  return null
-})
+const isTopPersonal = computed(() => configs.value.general.layout.personalPosition === "top")
+const personalHeader = computed(() =>
+  isTopPersonal.value && props.pages[0] ? findPersonalElement(props.pages[0]) : null
+)
 </script>
+
 <template>
   <div id="resumePages">
     <RenderPage v-for="(page, pageIndex) in pages" :key="pageIndex">
-      <template v-if="isTopPersonal && headerElement && pageIndex === 0 && 'component' in headerElement">
-        <component :is="headerElement.component" />
-      </template>
-
+      <component :is="personalHeader!.component" v-if="personalHeader && pageIndex === 0" />
       <RenderContent :is-first-page="pageIndex === 0">
         <template v-for="(section, sectionIndex) in page" :key="sectionIndex">
-          <template v-if="section && !(isTopPersonal && 'id' in section && section.id === 'personal')">
-            <component :is="section.component" v-if="'id' in section && section.id" />
-            <div
-              v-else-if="'leftCol' in section && 'rightCol' in section && section.leftCol && section.rightCol"
-              :style="{
-                display: 'flex',
-                width: '100%',
-                flexGrow: isSidePersonal ? '1' : 'unset'
-              }"
-            >
-              <RenderColumn side="left">
-                <component :is="item.component" v-for="(item, itemIndex) in section.leftCol" :key="itemIndex" />
-              </RenderColumn>
-              <RenderColumn side="right">
-                <component :is="item.component" v-for="(item, itemIndex) in section.rightCol" :key="itemIndex" />
-              </RenderColumn>
-            </div>
+          <template v-if="shouldRenderSection(section, isTopPersonal, pageIndex === 0)">
+            <component :is="(section as TResumeElement).component" v-if="'id' in section && 'component' in section" />
+            <TwoColumnSection
+              v-else-if="isTwoColumnSection(section)"
+              :left-col="section.leftCol"
+              :right-col="section.rightCol"
+              :is-top-personal="isTopPersonal"
+            />
           </template>
         </template>
       </RenderContent>

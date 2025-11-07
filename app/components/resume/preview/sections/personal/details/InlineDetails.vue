@@ -113,7 +113,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="containerRef" class="flex flex-wrap items-center" :style="{ justifyContent: props.align }">
+  <div
+    ref="containerRef"
+    :style="{ justifyContent: props.align, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }"
+  >
     <template v-for="(detailItem, index) in detailItems" :key="`wrapper${index}`">
       <DetailWrapper
         :url="detailItem.url"

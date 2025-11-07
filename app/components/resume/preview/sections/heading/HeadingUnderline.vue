@@ -2,7 +2,7 @@
 const props = defineProps<{ section: { title: string }; headingColor: string }>()
 </script>
 <template>
-  <div class="flex items-center border-b-2 pb-1" :style="{ borderBottomColor: props.headingColor }">
+  <div :style="{ borderBottomColor: props.headingColor, borderBottomWidth: '0.2em', paddingBottom: '0.15em' }">
     {{ props.section.title }}
   </div>
 </template>

@@ -9,14 +9,14 @@ interface Props {
   sectionId: string
   contentId: string
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
-  descriptionId: string
+  lineId: string
 }
 
-const { index, sectionId, contentId, sectionType, descriptionId } = defineProps<Props>()
+const { index, sectionId, contentId, sectionType, lineId } = defineProps<Props>()
 
 const { updateHeight } = usePreviewStore()
 const { elementRef } = useSelfResizeObserver((height) => {
-  updateHeight(descriptionId, height)
+  updateHeight(lineId, height)
 })
 
 const { getContentLine } = usePreviewStore()

@@ -1,6 +1,6 @@
 import { h } from "vue"
-import ResumeAdvancedContentDescription from "~/components/resume/preview/advanced/description/ResumeAdvancedContentDescription.vue"
-import ResumeAdvancedContentDetail from "~/components/resume/preview/advanced/detail/ResumeAdvancedContentDetail.vue"
+import AdvancedLineBlock from "~/components/resume/preview/advanced/description/AdvancedLineBlock.vue"
+import AdvancedDetailBlock from "~/components/resume/preview/advanced/detail/AdvancedDetailBlock.vue"
 import type { AdvancedSectionTypeSchema, TAdvancedContent, TCoreSection } from "~/utils/schemas/content.schema"
 import type { TResumeElement } from "./types"
 
@@ -24,7 +24,7 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
 
     const detailElement = blocks.get(contentId) ?? {
       id: contentId,
-      component: h(ResumeAdvancedContentDetail, {
+      component: h(AdvancedDetailBlock, {
         content: content as TAdvancedContent,
         sectionId,
         contentId,
@@ -35,14 +35,14 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
 
     setBlock(detailElement.id, detailElement)
 
-    const descriptionElements = getContentLine(contentId).map((_, index) => {
-      const descriptionId = `${content.id}-${index}`
+    const lineBlocks = getContentLine(contentId).map((_, index) => {
+      const lineId = `${content.id}-${index}`
 
-      const descriptionElement = blocks.get(descriptionId) ?? {
-        id: descriptionId,
-        component: h(ResumeAdvancedContentDescription, {
+      const lineBlock = blocks.get(lineId) ?? {
+        id: lineId,
+        component: h(AdvancedLineBlock, {
           sectionId,
-          descriptionId,
+          lineId,
           index,
           contentId: content.id,
           sectionType
@@ -50,11 +50,11 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
         height: 0
       }
 
-      setBlock(descriptionId, descriptionElement)
-      return descriptionElement
+      setBlock(lineId, lineBlock)
+      return lineBlock
     })
 
-    elements.push(detailElement, ...descriptionElements)
+    elements.push(detailElement, ...lineBlocks)
   }
 
   return elements

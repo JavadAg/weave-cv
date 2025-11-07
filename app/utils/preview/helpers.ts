@@ -1,14 +1,8 @@
 import { icons } from "@iconify-json/lucide"
 import { getIconData, iconToHTML, iconToSVG, replaceIDs } from "@iconify/utils"
-import clsx, { type ClassValue } from "clsx"
 import DOMPurify from "dompurify"
-import { twMerge } from "tailwind-merge"
 import { MM_TO_PX, PAPER_SIZES, type TPaperSize } from "~/constants/papers"
 import type { TBasicContent } from "../schemas/content.schema"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
 
 export const createOptionsFromEnum = (enumValues: readonly string[], labelFormatter?: (value: string) => string) => {
   return enumValues.map((value) => ({

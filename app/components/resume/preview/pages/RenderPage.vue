@@ -4,28 +4,30 @@ import { PAPER_SIZES } from "~/constants/papers"
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
+const typography = computed(() => configs.value.general.typography)
 
-const pageFormat = computed(() => configs.value.general.layout.size)
+const pageStyles = computed<CSSProperties>(() => {
+  const paperSize = PAPER_SIZES[configs.value.general.layout.size]
 
-const pageStyles = computed<CSSProperties>(() => ({
-  position: "relative",
-  overflow: "hidden",
-  display: "flex",
-  flexDirection: "column",
-  lineHeight: `${configs.value.general.typography.lineHeight}`,
-  fontSize: `${configs.value.general.typography.fontSize}pt`,
-  fontFamily: `${configs.value.general.typography.fontFamily}, sans-serif`,
-  fontStretch: "normal",
-  textRendering: "geometricPrecision",
-  fontVariantLigatures: "none",
-  borderRadius: "4px",
-  marginBottom: "32px",
-  width: `${PAPER_SIZES[pageFormat.value].w}mm`,
-  minWidth: `${PAPER_SIZES[pageFormat.value].w}mm`,
-  height: `${PAPER_SIZES[pageFormat.value].h}mm`,
-  minHeight: `${PAPER_SIZES[pageFormat.value].h}mm`
-}))
+  return {
+    position: "relative",
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
+    lineHeight: `${typography.value.lineHeight}`,
+    fontSize: `${typography.value.fontSize}pt`,
+    fontFamily: `${typography.value.fontFamily}, sans-serif`,
+    fontStretch: "normal",
+    textRendering: "geometricPrecision",
+    fontVariantLigatures: "none",
+    width: `${paperSize.w}mm`,
+    minWidth: `${paperSize.w}mm`,
+    height: `${paperSize.h}mm`,
+    minHeight: `${paperSize.h}mm`
+  }
+})
 </script>
+
 <template>
   <div class="resumePage" :style="pageStyles">
     <slot />

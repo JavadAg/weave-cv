@@ -39,6 +39,8 @@ const splitIntoColumns = (numColumns: number) => {
 const columns = computed(() => splitIntoColumns(nrOfColumns.value))
 
 const gridStyle = computed(() => ({
+  display: "grid",
+  gap: "1.5em",
   gridTemplateColumns: Array.from({ length: nrOfColumns.value }, () => "1fr").join(" ")
 }))
 
@@ -48,18 +50,19 @@ const getItemContainerStyle = (isLast: boolean): CSSProperties => {
     : `${(hasInfo.value ? 0.75 : 0.45) * lineHeight.value * Math.sqrt(spacingFactor.value)}em`
 
   return {
+    display: "flex",
+    flexDirection: "column",
     marginBottom
   }
 }
 </script>
 
 <template>
-  <div :style="gridStyle" class="grid gap-6">
+  <div :style="gridStyle">
     <div v-for="(columnItems, colIndex) in columns" :key="colIndex">
       <div
         v-for="(content, itemIndex) in columnItems"
         :key="`col-${colIndex}-item-${itemIndex}`"
-        class="flex flex-col"
         :style="getItemContainerStyle(itemIndex === columnItems.length - 1)"
       >
         <BasicTitle :title="content.title" :url="content.url" :section-configs="sectionConfigs" />

@@ -3,12 +3,11 @@ import RenderPersonal from "~/components/resume/preview/sections/personal/Render
 import PersonalSpace from "~/components/resume/preview/sections/PersonalSpace.vue"
 import type { OTHER_SECTION_TYPES } from "~/constants/sectionTypes"
 import { generateCoreElements } from "./sectionElementGenerator"
-import type { ResumeElementType, TResumeElement } from "./types"
+import type { TResumeElement } from "./types"
 
 type SimpleSectionConfig = {
   id: string
   component: Parameters<typeof h>[0]
-  type?: ResumeElementType
 }
 
 const OTHER_SECTIONS: Record<(typeof OTHER_SECTION_TYPES)[number], TResumeElement> = {
@@ -20,8 +19,7 @@ const OTHER_SECTIONS: Record<(typeof OTHER_SECTION_TYPES)[number], TResumeElemen
   space: {
     id: "personalSpace",
     component: PersonalSpace,
-    height: 0,
-    type: "space"
+    height: 0
   }
 }
 

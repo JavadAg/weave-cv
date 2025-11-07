@@ -24,12 +24,13 @@ const subtitleStyles = computed<CSSProperties>(() => {
     fontWeight: props.subtitleConfig.fontWeight,
     fontStyle: props.subtitleConfig.fontStyle,
     fontSize: `${fontSize}pt`,
-    textTransform: props.subtitleConfig.fontCase
+    textTransform: props.subtitleConfig.fontCase,
+    whiteSpace: "pre-wrap"
   }
 })
 </script>
 <template v-if="subtitle">
-  <span class="whitespace-pre-wrap" :style="subtitleStyles">
+  <span :style="subtitleStyles">
     {{ subtitle }}
     <LinkIcon v-if="showLinkIcon" usage="EntryTitle" />
   </span>

@@ -14,7 +14,7 @@ const titleStyle = computed(() => props.sectionConfigs.titleStyle)
 </script>
 
 <template>
-  <span class="whitespace-normal wrap-break-word">
+  <span :style="{ whiteSpace: 'normal', overflowWrap: 'break-word' }">
     {{ titleStyle === "bracket" ? " (" : " " }}
     <HtmlWithSeparator :html="description" :separator="sectionConfigs.separator" />
     <span v-if="titleStyle === 'bracket'">)</span>

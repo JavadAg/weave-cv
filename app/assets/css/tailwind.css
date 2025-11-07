@@ -105,3 +105,7 @@
 .ProseMirror ol ol ol {
   list-style-type: lower-roman;
 }
+
+.resumePage {
+  margin-bottom: 32px;
+}

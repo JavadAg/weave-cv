@@ -22,7 +22,11 @@ const detailItems = computed(() => {
       gridColumnGap: '1em'
     }"
   >
-    <div v-for="(detailItem, index) in detailItems" :key="index" class="flex items-center justify-center">
+    <div
+      v-for="(detailItem, index) in detailItems"
+      :key="index"
+      :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center' }"
+    >
       <DetailWrapper
         :url="detailItem?.url"
         :style="{
