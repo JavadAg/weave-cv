@@ -1,4 +1,4 @@
-import { computed, type CSSProperties } from "vue"
+import { computed } from "vue"
 
 export function useLinkConfigs(url?: string) {
   const configsStore = useConfigsStore()
@@ -18,7 +18,7 @@ export function useLinkConfigs(url?: string) {
     }
   })
 
-  const linkStyles = computed<CSSProperties>(() => {
+  const linkStyles = computed<{ textDecoration: string; color: string }>(() => {
     return {
       textDecoration: linksConfig.value.underline ? "underline" : "none",
       color: linksConfig.value.color

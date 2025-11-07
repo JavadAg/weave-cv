@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, type CSSProperties } from "vue"
 import type { TLinkIconType } from "~/utils/schemas/shared.schema"
 
-const { linkIconStyles } = useLinkConfigs()
+const { linkIconStyles, linkStyles } = useLinkConfigs()
 
 const LINK_ICON_PATHS: Record<TLinkIconType, string[]> = {
   arrow: [
@@ -16,12 +16,24 @@ const LINK_ICON_PATHS: Record<TLinkIconType, string[]> = {
   ]
 }
 
-const svgStyles = computed(() => ({
+const svgStyles = computed<CSSProperties>(() => ({
   display: "inline-block",
+  position: "absolute",
+  top: linkStyles.value.textDecoration === "underline" ? "0.3em" : "0.25em",
   fill: linkIconStyles.value.color,
   width: "0.8em",
   height: "0.8em",
   flexShrink: 0
+}))
+
+const wrapperStyles = computed<CSSProperties>(() => ({
+  display: "inline-flex",
+  paddingLeft: linkStyles.value.textDecoration === "underline" ? "0.3em" : "0",
+  height: "1em",
+  width: "1em",
+  position: "relative",
+  alignItems: "center",
+  justifyContent: "center"
 }))
 
 const selectedIconPaths = computed(() => LINK_ICON_PATHS[linkIconStyles.value.type] || LINK_ICON_PATHS.arrow)
@@ -29,10 +41,7 @@ const isVisible = computed(() => linkIconStyles.value.visible)
 </script>
 
 <template>
-  <span
-    v-if="isVisible"
-    :style="{ display: 'inline-flex', paddingLeft: '0.5em', alignItems: 'center', verticalAlign: 'sub' }"
-  >
+  <span v-if="isVisible" :style="wrapperStyles">
     <svg
       :style="svgStyles"
       fill="currentColor"

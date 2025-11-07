@@ -6,11 +6,11 @@ interface Props {
   url?: string
 }
 
-const { style, url } = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   url: undefined
 })
 
-const hasUrl = computed(() => url && url.trim() !== "")
+const hasUrl = computed(() => props.url && props.url.trim() !== "")
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
@@ -18,7 +18,7 @@ const { configs } = storeToRefs(configsStore)
 const combinedStyle = computed<CSSProperties>(() => ({
   color: configs.value.general.colors.primary.textColor,
   minWidth: "0",
-  ...style
+  ...props.style
 }))
 </script>
 

@@ -15,6 +15,7 @@ const props = defineProps<Props>()
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 
+const typography = computed(() => configs.value.general.typography)
 const titleConfigs = computed(() => configs.value.general.layout.contentLayout.title)
 
 const displayText = computed(() => {
@@ -31,7 +32,7 @@ const displayText = computed(() => {
 const baseTextStyles = computed<CSSProperties>(() => ({
   overflowWrap: "break-word",
   fontWeight: titleConfigs.value.fontWeight,
-  fontSize: `${titleConfigs.value.fontSize}pt`,
+  fontSize: `${typography.value.fontSize * titleConfigs.value.fontSizeMultiplier}pt`,
   fontCase: titleConfigs.value.fontCase,
   fontStyle: titleConfigs.value.fontStyle
 }))
