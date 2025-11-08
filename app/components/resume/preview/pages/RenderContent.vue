@@ -26,7 +26,7 @@ const contentStyles = computed<CSSProperties>(() => {
 
   return {
     display: "flex",
-    flexDirection: layout.value.columns === "1" ? "column" : "row",
+    flexDirection: "column",
     height: "100%",
     flexGrow: "1",
     paddingTop: `${paddingTop}mm`,

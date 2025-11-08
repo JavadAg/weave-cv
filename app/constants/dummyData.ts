@@ -1,6 +1,6 @@
 import type { TAdvancedContent, TBasicContent, TCoreSections, TPersonalContent } from "~/utils/schemas/content.schema"
 
-export const DUMMY_TITLE = "Professional Resume"
+export const DUMMY_TITLE = "Untitled Resume"
 
 export const DUMMY_SUMMARY_ITEM: Omit<TBasicContent, "id"> = {
   isHidden: false,
@@ -100,7 +100,7 @@ export const DUMMY_ADVANCED_SECTION_ITEM = {
   courses: DUMMY_COURSE_ITEM
 }
 
-export const DUMMY_PERSONAL_CONTENT: TPersonalContent = {
+export const DUMMY_PERSONAL_SECTION: TPersonalContent = {
   title: "Sarah Johnson",
   subtitle: "Senior Software Engineer",
   details: [
@@ -335,7 +335,7 @@ export const DUMMY_SKILL_DATA: TBasicContent[] = [
   }
 ]
 
-export const DUMMY_CORE_SECTIONS_DATA: TCoreSections = {
+export const DUMMY_CORE_SECTIONS: TCoreSections = {
   summary: {
     title: "Summary",
     isTitleVisible: true,

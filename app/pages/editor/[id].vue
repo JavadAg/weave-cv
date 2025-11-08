@@ -6,13 +6,8 @@ import ResumeHeader from "~/components/resume/resume-header/ResumeHeader.vue"
 import ResumeSectionsForms from "~/components/resume/sections-forms/ResumeSectionsForms.vue"
 import type { Tables } from "~/types/database.types"
 import { loadLocalFont } from "~/utils/preview/core/fontUtils"
-import { ConfigsSchema } from "~/utils/schemas/configs/configs.schema"
-import {
-  CoreSectionsSchema,
-  PersonalContentSchema,
-  type TCoreSections,
-  type TPersonalContent
-} from "~/utils/schemas/content.schema"
+import type { TConfigs } from "~/utils/schemas/configs/configs.schema"
+import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.schema"
 
 const route = useRoute()
 
@@ -27,20 +22,15 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
   lazy: true,
   onResponse: ({ response }) => {
     const data = response._data
+    if (!data) return
 
-    const { personal, ...core } = data?.content as { personal: TPersonalContent; core: TCoreSections }
+    const content = data.content as { personal: TPersonalContent; core: TCoreSections }
+    const configs = data.configs as TConfigs
 
-    const parsedCore = CoreSectionsSchema.nullable().safeParse(core ?? null)
-    const parsedPersonal = PersonalContentSchema.nullable().safeParse(personal ?? null)
-    const parsedConfigs = ConfigsSchema.nullable().safeParse(data?.configs ?? null)
+    setContent({ personal: content.personal, core: content.core })
+    setConfigs(configs)
 
-    if (parsedCore.success && parsedPersonal.success && parsedCore.data && parsedPersonal.data) {
-      setContent({ personal: parsedPersonal.data, core: parsedCore.data })
-    }
-    if (parsedConfigs.success && parsedConfigs.data) {
-      setConfigs(parsedConfigs.data)
-    }
-    setTitle(data?.title ?? "")
+    setTitle(data.title)
   }
 })
 
@@ -58,6 +48,7 @@ const scale = ref(1)
 <template>
   <ClientOnly>
     <div class="w-full flex flex-col gap-4 max-h-[calc(100dvh-88px)] overflow-hidden">
+      <ZoomIndicator :scale="scale" />
       <ResumeHeader :saving="saving" :scale="scale" @saving="saving = $event" @update:scale="scale = $event" />
       <div class="overflow-hidden">
         <SplitterGroup direction="horizontal" class="flex gap-1 h-full">
@@ -67,8 +58,7 @@ const scale = ref(1)
           <SplitterResizeHandle class="w-3 rounded-2xl bg-default/70 flex justify-center items-center">
             <UIcon name="i-lucide-grip-vertical" class="text-primary" />
           </SplitterResizeHandle>
-          <SplitterPanel :min-size="20" class="relative">
-            <ZoomIndicator :scale="scale" />
+          <SplitterPanel :min-size="20">
             <ResumePreview :loading="pending" :scale="scale" @update:scale="scale = $event" />
           </SplitterPanel>
           <SplitterResizeHandle class="w-3 rounded-2xl bg-default/70 flex justify-center items-center">

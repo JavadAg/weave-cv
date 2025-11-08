@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { DEFAULT_CONFIGS } from "~/constants/default"
+import { DUMMY_CORE_SECTIONS, DUMMY_PERSONAL_SECTION, DUMMY_TITLE } from "~/constants/dummyData"
 import { PAPER_SIZES } from "~/constants/papers"
 import type { TResume } from "~/types/resume.types"
 
@@ -57,12 +59,14 @@ const handleCreate = async () => {
 
   isCreating.value = true
   try {
-    // For now, all templates create a blank resume
-    // This can be extended later to load actual template data
+    // TODO: Load actual template data
     const newResume = await $fetch<TResume>("/api/resumes", {
       method: "POST",
       body: {
-        title: "New Resume"
+        content: DUMMY_CORE_SECTIONS,
+        personal: DUMMY_PERSONAL_SECTION,
+        title: DUMMY_TITLE,
+        configs: DEFAULT_CONFIGS
       }
     })
 

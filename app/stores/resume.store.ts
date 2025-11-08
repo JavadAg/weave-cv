@@ -2,12 +2,12 @@ import { capitalize } from "vue"
 import {
   DUMMY_AWARD_DATA,
   DUMMY_CERTIFICATE_DATA,
-  DUMMY_CORE_SECTIONS_DATA,
+  DUMMY_CORE_SECTIONS,
   DUMMY_COURSE_DATA,
   DUMMY_EDUCATION_DATA,
   DUMMY_EXPERIENCE_DATA,
   DUMMY_LANGUAGE_DATA,
-  DUMMY_PERSONAL_CONTENT,
+  DUMMY_PERSONAL_SECTION,
   DUMMY_PROJECT_DATA,
   DUMMY_SKILL_DATA,
   DUMMY_SUMMARY_DATA,
@@ -29,9 +29,9 @@ export type ResumeData = {
 }
 
 export const useResumeStore = defineStore("resume", {
-  state: () => ({
-    personal: DUMMY_PERSONAL_CONTENT,
-    core: DUMMY_CORE_SECTIONS_DATA,
+  state: (): ResumeData => ({
+    personal: DUMMY_PERSONAL_SECTION,
+    core: DUMMY_CORE_SECTIONS,
     title: DUMMY_TITLE
   }),
   actions: {

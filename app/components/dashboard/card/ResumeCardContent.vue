@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { DEFAULT_CONFIGS } from "~/constants/default"
-import { DUMMY_PERSONAL_CONTENT } from "~/constants/dummyData"
 import type { TResume } from "~/types/resume.types"
 
 interface Props {
@@ -22,9 +21,9 @@ const formatDate = (dateString: string | null) => {
 
 const configs = computed(() => resume.configs || DEFAULT_CONFIGS)
 
-const personal = computed(() => resume.content?.personal || DUMMY_PERSONAL_CONTENT)
+const personal = computed(() => resume.content?.personal)
 const visibleDetails = computed(() => {
-  const details = personal.value.details || []
+  const details = personal.value?.details || []
   return details.filter((d) => !d.isHidden).slice(0, 3)
 })
 
@@ -43,10 +42,10 @@ const handleEdit = (id: string) => {
       @click="handleEdit(resume.id)"
     >
       <h4 class="text-base font-bold mb-1" :style="{ color: accentColor }">
-        {{ personal.title || "Your Name" }}
+        {{ personal?.title || "Your Name" }}
       </h4>
-      <p v-if="personal.subtitle" class="text-sm text-gray-600 mb-2">
-        {{ personal.subtitle }}
+      <p class="text-sm text-gray-600 mb-2">
+        {{ personal?.subtitle || "Your Job Title" }}
       </p>
       <div v-if="visibleDetails.length > 0" class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-500">
         <span v-for="(detail, idx) in visibleDetails" :key="idx">{{ detail.value }}</span>

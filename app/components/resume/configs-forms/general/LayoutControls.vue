@@ -13,7 +13,9 @@ import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 import SectionsOrderControl from "./SectionsOrderControl.vue"
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { updateConfig } = configsStore
+const { configs } = storeToRefs(configsStore)
 
 const handleUpdate = (key: string, value: unknown) => {
   updateConfig(`general.layout.${key}`, value)

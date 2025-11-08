@@ -38,7 +38,7 @@ const fitWidth = () => {
 watch(width, fitWidth)
 </script>
 <template>
-  <div ref="container" class="relative overflow-y-auto h-full hide-scrollbar">
+  <div ref="container" class="overflow-y-auto h-full hide-scrollbar">
     <ZoomComponent ref="zoom" :scale="scale">
       <RenderPages v-if="!loading" :pages="pages" />
       <div v-else class="h-full flex justify-center items-center">

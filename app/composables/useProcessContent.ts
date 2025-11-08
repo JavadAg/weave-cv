@@ -15,15 +15,15 @@ function getOrCreateCacheContent(resumeTitle: string): ContentCacheEntry {
 
 const contentCache = new Map<string, ContentCacheEntry>()
 
-export function useProcessContent(sections: Ref<TCoreSections>, resumeTitle: Ref<string>) {
+export function useProcessContent(core: Ref<TCoreSections>, title: Ref<string>) {
   function processContent() {
-    const cache = getOrCreateCacheContent(resumeTitle.value)
+    const cache = getOrCreateCacheContent(title.value)
     const previewStore = usePreviewStore()
 
     const processedContents = new Map(previewStore.contentLines)
-    processContents(sections.value, cache, processedContents)
+    processContents(core.value, cache, processedContents)
     previewStore.setContentLines(processedContents)
   }
 
-  watch([sections, resumeTitle], processContent, { deep: true, immediate: true })
+  watch([core, title], processContent, { deep: true, immediate: true })
 }

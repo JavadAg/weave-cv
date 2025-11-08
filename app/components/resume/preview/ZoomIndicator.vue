@@ -53,7 +53,7 @@ onUnmounted(() => {
   >
     <div
       v-if="showZoomIndicator"
-      class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-default/95 backdrop-blur-sm border border-border shadow-lg"
+      class="absolute bottom-4 right-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-default/95 backdrop-blur-sm border border-border shadow-lg"
     >
       <UIcon name="i-lucide-zoom-in" class="size-4 text-primary" />
       <span class="text-sm font-semibold text-foreground">{{ zoomPercentage }}%</span>

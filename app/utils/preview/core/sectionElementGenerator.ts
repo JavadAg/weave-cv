@@ -6,10 +6,6 @@ import { generateAdvancedSectionElements } from "./advancedSectionElements"
 import { generateBasicSectionElements } from "./basicSectionElements"
 import type { TResumeElement } from "./types"
 
-/**
- * Generates core elements (heading, content elements, bottom space) for a resume section.
- * Handles both advanced sections (with detail and description elements) and basic sections.
- */
 export const generateCoreElements = (sectionId: string): TResumeElement[] | undefined => {
   const { setBlock } = usePreviewStore()
 
