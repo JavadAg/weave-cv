@@ -65,13 +65,20 @@ const handleDownload = async () => {
 <template>
   <UButton
     :disabled="props.disabled || downloading"
-    color="secondary"
-    variant="soft"
+    color="neutral"
+    variant="ghost"
     size="lg"
     :icon="downloading ? 'i-lucide-loader-2' : 'i-lucide-download'"
-    :class="['transition-all duration-200 font-semibold rounded-xl', downloading && 'animate-pulse']"
+    :class="[
+      'transition-all duration-200 font-semibold rounded-lg',
+      !props.disabled && !downloading && 'hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:shadow-sm',
+      'min-w-[120px] justify-center',
+      downloading && '[&_svg]:animate-spin',
+      (props.disabled || downloading) && 'opacity-50 cursor-not-allowed'
+    ]"
     @click="handleDownload"
   >
-    <span class="hidden sm:inline">{{ downloading ? "Generating..." : "Download" }}</span>
+    <span class="hidden sm:inline">{{ downloading ? "Generating..." : "Download PDF" }}</span>
+    <span class="sm:hidden">{{ downloading ? "..." : "Download" }}</span>
   </UButton>
 </template>

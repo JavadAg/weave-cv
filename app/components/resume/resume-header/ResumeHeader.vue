@@ -35,9 +35,14 @@ const titleModel = computed({
     <div class="flex-1 min-w-0">
       <UInput v-model="titleModel" placeholder="Resume Title" size="lg" icon="i-heroicons-document-text" />
     </div>
-    <div class="flex items-center gap-2">
-      <SaveChanges :saving="props.saving" :disabled="props.saving" @saving="emit('saving', $event)" />
-      <Download :disabled="props.saving" />
+    <div class="flex items-center gap-3">
+      <div
+        class="flex items-center gap-0.5 rounded-lg bg-gray-50 dark:bg-gray-800/50 p-1 border border-gray-200 dark:border-gray-700/50 shadow-sm backdrop-blur-sm"
+      >
+        <SaveChanges :saving="props.saving" :disabled="props.saving" @saving="emit('saving', $event)" />
+        <div class="h-7 w-px bg-gray-200 dark:bg-gray-700/50 mx-0.5" />
+        <Download :disabled="props.saving" />
+      </div>
     </div>
   </div>
 </template>
