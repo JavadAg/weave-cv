@@ -44,10 +44,10 @@ const handleSave = async () => {
   <UButton
     :loading="props.saving"
     :disabled="props.saving || props.disabled"
-    variant="subtle"
+    variant="soft"
     size="lg"
     icon="i-lucide-save"
-    class="transition-all duration-200 hover:scale-105 hover:shadow-xl font-semibold rounded-xl"
+    class="transition-all duration-200 font-semibold rounded-xl"
     @click="handleSave"
   >
     <span class="hidden sm:inline">{{ props.saving ? "Saving..." : "Save" }}</span>

@@ -1,6 +1,32 @@
 <script setup lang="ts">
 import GoogleSignIn from "~/components/auth/GoogleSignIn.vue"
 
+useHead({
+  title: "Sign In - Weave CV",
+  meta: [
+    {
+      name: "description",
+      content: "Sign in to your Weave CV account to access and manage your resumes."
+    },
+    {
+      property: "og:title",
+      content: "Sign In - Weave CV"
+    },
+    {
+      property: "og:description",
+      content: "Sign in to your Weave CV account to access and manage your resumes."
+    },
+    {
+      property: "og:url",
+      content: "/login"
+    },
+    {
+      name: "robots",
+      content: "noindex, nofollow"
+    }
+  ]
+})
+
 const supabase = useSupabaseClient()
 
 const formState = reactive({

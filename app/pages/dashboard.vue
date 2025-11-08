@@ -5,6 +5,34 @@ import LoadingSkeleton from "~/components/dashboard/LoadingSkeleton.vue"
 import ResumeGrid from "~/components/dashboard/ResumeGrid.vue"
 import type { TResume } from "~/types/resume.types"
 
+useHead({
+  title: "My Resumes - Weave CV",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Manage and edit your resumes. Create new resumes, update existing ones, and organize your professional documents."
+    },
+    {
+      property: "og:title",
+      content: "My Resumes - Weave CV"
+    },
+    {
+      property: "og:description",
+      content:
+        "Manage and edit your resumes. Create new resumes, update existing ones, and organize your professional documents."
+    },
+    {
+      property: "og:url",
+      content: "/dashboard"
+    },
+    {
+      name: "robots",
+      content: "noindex, nofollow"
+    }
+  ]
+})
+
 const { data, pending, error, refresh } = useFetch<TResume[]>("/api/resumes", {
   method: "GET",
   lazy: true

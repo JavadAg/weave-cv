@@ -15,8 +15,39 @@ const route = useRoute()
 const saving = ref(false)
 const id = computed(() => route.params.id as string)
 
-const { setContent, setTitle } = useResumeStore()
+const resumeStore = useResumeStore()
+const { setContent, setTitle } = resumeStore
 const { configs, setConfigs } = useConfigsStore()
+
+const pageTitle = computed(() => {
+  return resumeStore.title ? `Edit ${resumeStore.title} - Weave CV` : "Resume Editor - Weave CV"
+})
+
+useHead({
+  title: pageTitle,
+  meta: [
+    {
+      name: "description",
+      content: "Edit and customize your resume. Update content, adjust styling, and preview your resume in real-time."
+    },
+    {
+      property: "og:title",
+      content: pageTitle
+    },
+    {
+      property: "og:description",
+      content: "Edit and customize your resume. Update content, adjust styling, and preview your resume in real-time."
+    },
+    {
+      property: "og:url",
+      content: `/editor/${id.value}`
+    },
+    {
+      name: "robots",
+      content: "noindex, nofollow"
+    }
+  ]
+})
 
 const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
   method: "GET",

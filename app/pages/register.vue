@@ -1,4 +1,30 @@
 <script setup lang="ts">
+useHead({
+  title: "Create Account - Weave CV",
+  meta: [
+    {
+      name: "description",
+      content: "Create a free account on Weave CV to start building professional resumes. Sign up with email or Google."
+    },
+    {
+      property: "og:title",
+      content: "Create Account - Weave CV"
+    },
+    {
+      property: "og:description",
+      content: "Create a free account on Weave CV to start building professional resumes. Sign up with email or Google."
+    },
+    {
+      property: "og:url",
+      content: "/register"
+    },
+    {
+      name: "robots",
+      content: "noindex, nofollow"
+    }
+  ]
+})
+
 const supabase = useSupabaseClient()
 
 const formState = reactive({

@@ -34,5 +34,30 @@ export default defineNuxtConfig({
     public: {
       googleFontsKey: process.env.GOOGLE_FONT_APIKEY || ""
     }
+  },
+  app: {
+    head: {
+      charset: "utf8",
+      viewport: "width=device-width, initial-scale=1",
+      title: "Weave CV - Create Professional Resumes",
+      meta: [
+        {
+          name: "description",
+          content: "Create professional resumes with ease. Build, edit, and download your resume in minutes."
+        },
+        {
+          property: "og:type",
+          content: "website"
+        },
+        {
+          property: "og:site_name",
+          content: "Weave CV"
+        },
+        {
+          name: "twitter:card",
+          content: "summary_large_image"
+        }
+      ]
+    }
   }
 })

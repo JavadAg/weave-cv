@@ -66,13 +66,10 @@ const handleDownload = async () => {
   <UButton
     :disabled="props.disabled || downloading"
     color="secondary"
-    variant="subtle"
+    variant="soft"
     size="lg"
     :icon="downloading ? 'i-lucide-loader-2' : 'i-lucide-download'"
-    :class="[
-      'transition-all duration-200 hover:scale-105 hover:shadow-xl font-semibold rounded-xl',
-      downloading && 'animate-pulse'
-    ]"
+    :class="['transition-all duration-200 font-semibold rounded-xl', downloading && 'animate-pulse']"
     @click="handleDownload"
   >
     <span class="hidden sm:inline">{{ downloading ? "Generating..." : "Download" }}</span>
