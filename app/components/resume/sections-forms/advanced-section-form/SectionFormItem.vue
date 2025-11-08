@@ -48,6 +48,6 @@ const handleToggleVisibility = () => {
       <span class="font-bold">{{ content.title }}</span>
     </button>
     <Visibility :is-hidden="content.isHidden" :on-toggle="() => handleToggleVisibility()" />
-    <Delete :on-delete="() => emits('delete')" />
+    <Delete :on-delete="() => emits('delete')" tooltip="Delete content" />
   </div>
 </template>

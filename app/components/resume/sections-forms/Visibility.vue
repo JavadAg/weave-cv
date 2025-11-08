@@ -7,15 +7,24 @@ const props = defineProps<{
   size?: ButtonProps["size"]
   isHidden: boolean
   onToggle: () => void
+  tooltip?: string
 }>()
+
+const tooltipText = computed(() => {
+  if (props.tooltip) return props.tooltip
+  return props.isHidden ? "Show" : "Hide"
+})
 </script>
 
 <template>
-  <UButton
-    :class="props.class"
-    :variant="props.variant ?? 'ghost'"
-    :size="props.size ?? 'sm'"
-    :icon="props.isHidden ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-    @click="props.onToggle"
-  />
+  <UTooltip :text="tooltipText">
+    <UButton
+      :class="props.class"
+      :variant="props.variant ?? 'ghost'"
+      :size="props.size ?? 'sm'"
+      :icon="props.isHidden ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+      :aria-label="tooltipText"
+      @click="props.onToggle"
+    />
+  </UTooltip>
 </template>

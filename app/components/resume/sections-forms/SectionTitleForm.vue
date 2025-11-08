@@ -28,11 +28,11 @@ const handleDelete = () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-2 border-b border-muted pb-2 mb-3">
-    <div class="flex items-center gap-2">
-      <div v-if="props.isTitleEditable" class="flex items-center gap-1">
+  <div class="flex items-center justify-between gap-3 border-b border-muted pb-2 mb-3">
+    <div class="flex items-center gap-2 min-w-0 flex-1">
+      <div v-if="props.isTitleEditable" class="flex items-center gap-2 min-w-0 flex-1">
         <InlineEditor
-          class="text-sm font-medium"
+          class="text-sm font-medium min-w-0 flex-1"
           :is-visible="props.isTitleVisible"
           :value="props.sectionTitle"
           :section-id="props.sectionId"
@@ -41,17 +41,19 @@ const handleDelete = () => {
         />
         <Visibility
           :is-hidden="!props.isTitleVisible"
+          :tooltip="props.isTitleVisible ? 'Hide title' : 'Show title'"
           :on-toggle="() => updateContent(`${props.sectionId}.isTitleVisible`, !props.isTitleVisible)"
         />
       </div>
       <span v-else class="text-sm font-medium">{{ props.sectionTitle }}</span>
     </div>
-    <div v-if="props.isSectionHideable" class="flex items-center gap-1">
+    <div v-if="props.isSectionHideable" class="flex items-center gap-2 shrink-0">
       <Visibility
         :is-hidden="!props.isSectionVisible"
+        :tooltip="props.isSectionVisible ? 'Hide section' : 'Show section'"
         :on-toggle="() => updateContent(`${props.sectionId}.isSectionVisible`, !props.isSectionVisible)"
       />
-      <Delete :on-delete="() => handleDelete()" />
+      <Delete :on-delete="() => handleDelete()" tooltip="Delete section" />
     </div>
   </div>
 </template>
