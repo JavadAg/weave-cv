@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import BenefitsSection from "~/components/landing/BenefitsSection.vue"
+import CTASection from "~/components/landing/CTASection.vue"
+import FeaturesSection from "~/components/landing/FeaturesSection.vue"
+import HeroSection from "~/components/landing/HeroSection.vue"
+import LandingFooter from "~/components/landing/LandingFooter.vue"
+import { LANDING_BENEFITS, LANDING_FEATURES } from "~/constants/landing"
+
 useHead({
   title: "Weave CV - Create Professional Resumes",
   meta: [
@@ -28,10 +35,27 @@ useHead({
     }
   ]
 })
+
+const user = useSupabaseUser()
+const router = useRouter()
+
+watch(
+  user,
+  (newUser) => {
+    if (newUser) {
+      router.push("/dashboard")
+    }
+  },
+  { immediate: true }
+)
 </script>
+
 <template>
-  <div>
-    <h1>Index</h1>
-    <ULink href="/dashboard">Dashboard</ULink>
+  <div class="grid w-full">
+    <HeroSection />
+    <FeaturesSection :features="LANDING_FEATURES" />
+    <BenefitsSection :benefits="LANDING_BENEFITS" />
+    <CTASection />
+    <LandingFooter />
   </div>
 </template>

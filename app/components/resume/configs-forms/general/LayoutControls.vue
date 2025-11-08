@@ -2,7 +2,6 @@
 import { capitalize } from "vue"
 import NumberInput from "~/components/ui/NumberInput.vue"
 import SelectItem from "~/components/ui/SelectItem.vue"
-import ToggleInput from "~/components/ui/ToggleInput.vue"
 import type { TPaperSize } from "~/constants/papers"
 import { PAPER_SIZES } from "~/constants/papers"
 import { createOptionsFromEnum } from "~/utils/preview/helpers"
@@ -34,10 +33,10 @@ const columnsOptions = createOptionsFromEnum(
 const personalPositionOptions = createOptionsFromEnum(PersonalPosition.options, capitalize)
 const listTypeOptions = createOptionsFromEnum(ListType.options, capitalize)
 
-const languageOptions = [
+/* const languageOptions = [
   { label: "English", value: "en" },
   { label: "Farsi", value: "fa" }
-]
+] */
 
 const handleColumnWidthUpdate = (side: "left" | "right", value: number) => {
   const newValue = Math.max(0, Math.min(100, value))
@@ -65,7 +64,7 @@ const indentConstraints = extractNumberConstraintsFromPath(ContentLayoutSchema, 
 
 <template>
   <ConfigsContainer title="Layout" icon="i-lucide-grid" :collapsible="true" :default-expanded="true">
-    <SelectItem
+    <!-- <SelectItem
       :model-value="configs.general.layout.language"
       label="Language"
       :options="languageOptions"
@@ -75,7 +74,7 @@ const indentConstraints = extractNumberConstraintsFromPath(ContentLayoutSchema, 
       v-model="configs.general.layout.rtl"
       label="Right-to-left (RTL)"
       @update:model-value="(value) => handleUpdate('rtl', value)"
-    />
+    /> -->
     <SelectItem
       v-model="configs.general.layout.dateFormat"
       label="Date format"

@@ -147,7 +147,7 @@ const signUpWithGoogle = async () => {
           <div
             class="relative flex justify-center after:z-[-1] items-center after:content-[''] after:absolute after:top-1/2 after:inset-0 after:border-t after:border-muted"
           >
-            <span class="px-2 relative flex justify-center text-sm bg-default text-muted">Or continue with</span>
+            <span class="px-2 relative flex justify-center text-sm text-muted">Or continue with</span>
           </div>
           <UButton color="neutral" variant="outline" size="lg" block @click="signUpWithGoogle">
             <span
@@ -158,7 +158,6 @@ const signUpWithGoogle = async () => {
           </UButton>
         </UForm>
       </UCard>
-
       <p class="text-center mt-8 text-sm text-muted">
         Already have an account?
         <ULink class="font-medium text-primary" to="/login"> Sign in here </ULink>
