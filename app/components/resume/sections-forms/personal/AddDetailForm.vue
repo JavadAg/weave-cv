@@ -8,9 +8,8 @@ interface DetailConfig {
   urlTemplate?: string
 }
 
-const { personal, updateContent } = useResumeStore()
+const { personal, updatePersonal } = useResumeStore()
 
-// Form state
 const isAddingDetail = ref(false)
 const form = reactive({
   type: "core" as keyof typeof DETAILS_CATALOG,
@@ -18,7 +17,6 @@ const form = reactive({
   value: ""
 })
 
-// Computed properties
 const categoryOptions = computed(() =>
   Object.keys(DETAILS_CATALOG).map((key) => ({
     label: capitalize(key),
@@ -39,7 +37,6 @@ const currentConfig = computed<DetailConfig>(() => {
   return catalog[form.key as keyof typeof catalog]
 })
 
-// Watchers
 watch(
   () => form.type,
   (newType) => {
@@ -50,7 +47,6 @@ watch(
   { immediate: true }
 )
 
-// Methods
 const addDetail = () => {
   if (!form.value.trim() || !form.key || !currentConfig.value) return
 
@@ -67,7 +63,7 @@ const addDetail = () => {
 
   const currentDetails = personal.details
 
-  updateContent("personal.data.details", [...currentDetails, newDetail])
+  updatePersonal("details", [...currentDetails, newDetail])
   closeForm()
 }
 

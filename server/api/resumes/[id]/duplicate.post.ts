@@ -1,0 +1,84 @@
+import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server"
+import type { TablesInsert } from "~/types/database.types"
+import type { TResume } from "~/types/resume.types"
+
+export default defineEventHandler(async (event) => {
+  const user = await serverSupabaseUser(event)
+
+  if (!user) {
+    throw createError({ statusCode: 401, statusMessage: "Unauthorized" })
+  }
+
+  const id = getRouterParam(event, "id")
+
+  if (!id) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "ID is required"
+    })
+  }
+
+  const client = await serverSupabaseClient(event)
+
+  try {
+    const { data: originalResume, error: fetchError } = await client
+      .from("resumes")
+      .select("*")
+      .eq("id", id)
+      .eq("owner_id", user.id)
+      .single()
+      .overrideTypes<TResume>()
+
+    if (fetchError) {
+      if (fetchError.code === "PGRST116") {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Resume not found"
+        })
+      }
+      throw createError({
+        statusCode: 500,
+        statusMessage: fetchError.message || "Failed to fetch resume"
+      })
+    }
+
+    if (!originalResume) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Resume not found"
+      })
+    }
+
+    const insertData: TablesInsert<"resumes"> = {
+      owner_id: user.id,
+      title: originalResume.title,
+      content: originalResume.content,
+      configs: originalResume.configs,
+      schemaVersion: originalResume.schemaVersion
+    }
+
+    const { data: duplicatedResume, error: insertError } = await client
+      .from("resumes")
+      .insert(insertData)
+      .select()
+      .single()
+
+    if (insertError) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: insertError.message || "Failed to duplicate resume"
+      })
+    }
+
+    return duplicatedResume
+  } catch (error: unknown) {
+    if (error && typeof error === "object" && "statusCode" in error) {
+      throw error
+    }
+    const err = error as { statusCode?: number; statusMessage?: string }
+    throw createError({
+      statusCode: err.statusCode || 500,
+      statusMessage: err.statusMessage || "Internal server error"
+    })
+  }
+})

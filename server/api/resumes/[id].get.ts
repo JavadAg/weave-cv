@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from "#supabase/server"
+import type { TResume } from "~/types/resume.types"
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
@@ -30,16 +31,33 @@ export default defineEventHandler(async (event) => {
       .eq("owner_id", user.id)
       .eq("id", id)
       .single()
+      .overrideTypes<TResume>()
 
     if (error) {
+      if (error.code === "PGRST116") {
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Resume not found"
+        })
+      }
       throw createError({
         statusCode: 500,
-        statusMessage: "Failed to fetch resume"
+        statusMessage: error.message || "Failed to fetch resume"
+      })
+    }
+
+    if (!resume) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Resume not found"
       })
     }
 
     return resume
   } catch (error: unknown) {
+    if (error && typeof error === "object" && "statusCode" in error) {
+      throw error
+    }
     const err = error as { statusCode?: number; statusMessage?: string }
     throw createError({
       statusCode: err.statusCode || 500,

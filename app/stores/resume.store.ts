@@ -42,52 +42,33 @@ export const useResumeStore = defineStore("resume", {
       this.personal = personal
       this.core = core
     },
+    updatePersonal(key: keyof TPersonalContent, value: unknown) {
+      this.$patch((state) => {
+        if (key === "details") {
+          state.personal.details = value as TPersonalContent["details"]
+        } else {
+          state.personal[key] = value as TPersonalContent[typeof key]
+        }
+      })
+    },
 
     updateContent(path: string, value: unknown) {
       this.$patch((state) => {
-        const keys = path.split(".")
-        if (keys.length === 0) return
+        const pathParts = path.split(".")
+        if (pathParts.length === 0) return
 
-        // Determine if we're updating personal or core content
-        let target: any
-        let startIndex = 0
+        // TODO: Fix this type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let target: any = state.core
+        const startIndex = 0
 
-        if (keys[0] === "personal") {
-          target = state.personal
-          startIndex = 1
-        } else {
-          target = state.core
-        }
-
-        // Handle personal content differently since it has a flat structure
-        if (keys[0] === "personal") {
-          // For personal content, handle direct properties and array items
-          if (keys.length === 2) {
-            // Direct property access like "personal.title"
-            const finalKey = keys[1]!
-            target[finalKey] = value
-            return
-          } else if (keys.length > 2) {
-            // Array item access like "personal.details.0.value"
-            const arrayKey = keys[1]! // "details"
-            const itemIndex = Number.parseInt(keys[2]!) // "0"
-            const finalKey = keys[3]! // "value"
-
-            if (Array.isArray(target[arrayKey]) && target[arrayKey][itemIndex]) {
-              target[arrayKey][itemIndex][finalKey] = value
-            }
-            return
-          }
-        }
-
-        // Handle core content (existing logic)
-        for (let i = startIndex; i < keys.length - 1; i++) {
-          const key = keys[i]!
-          const nextKey = keys[i + 1]
+        for (let i = startIndex; i < pathParts.length - 1; i++) {
+          const key = pathParts[i]!
+          const nextKey = pathParts[i + 1]
 
           if (Array.isArray(target[key])) {
             const array = target[key]
-            const itemIndex = array.findIndex((item: any) => item.id === nextKey)
+            const itemIndex = array.findIndex((item) => item.id === nextKey)
             if (itemIndex === -1) {
               target = target[key]
             } else {
@@ -99,7 +80,7 @@ export const useResumeStore = defineStore("resume", {
           }
         }
 
-        const finalKey = keys.at(-1)!
+        const finalKey = pathParts.at(-1)!
         target[finalKey] = value
       })
     },
@@ -107,54 +88,25 @@ export const useResumeStore = defineStore("resume", {
     addSection(type: TCoreSectionType, title?: string) {
       const sectionKey = `${type}-${crypto.randomUUID()}`
 
-      let defaultData: TBasicContent[] | TAdvancedContent[] = []
-
-      switch (type) {
-        case "summary": {
-          defaultData = DUMMY_SUMMARY_DATA
-          break
-        }
-        case "experiences": {
-          defaultData = DUMMY_EXPERIENCE_DATA
-          break
-        }
-        case "educations": {
-          defaultData = DUMMY_EDUCATION_DATA
-          break
-        }
-        case "projects": {
-          defaultData = DUMMY_PROJECT_DATA
-          break
-        }
-        case "skills": {
-          defaultData = DUMMY_SKILL_DATA
-          break
-        }
-        case "languages": {
-          defaultData = DUMMY_LANGUAGE_DATA
-          break
-        }
-        case "certificates": {
-          defaultData = DUMMY_CERTIFICATE_DATA
-          break
-        }
-        case "courses": {
-          defaultData = DUMMY_COURSE_DATA
-          break
-        }
-        case "awards": {
-          defaultData = DUMMY_AWARD_DATA
-          break
-        }
+      const sectionDataMap: Record<TCoreSectionType, TBasicContent[] | TAdvancedContent[]> = {
+        summary: DUMMY_SUMMARY_DATA,
+        experiences: DUMMY_EXPERIENCE_DATA,
+        educations: DUMMY_EDUCATION_DATA,
+        projects: DUMMY_PROJECT_DATA,
+        skills: DUMMY_SKILL_DATA,
+        languages: DUMMY_LANGUAGE_DATA,
+        certificates: DUMMY_CERTIFICATE_DATA,
+        courses: DUMMY_COURSE_DATA,
+        awards: DUMMY_AWARD_DATA
       }
 
-      const newSection: TCoreSection = {
+      const newSection = {
         title: title || capitalize(type),
         isTitleVisible: true,
         isSectionVisible: true,
         type,
-        contents: defaultData
-      }
+        contents: sectionDataMap[type]
+      } as TCoreSection
 
       this.$patch((state) => {
         state.core[sectionKey] = newSection

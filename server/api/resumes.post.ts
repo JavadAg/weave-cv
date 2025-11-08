@@ -1,8 +1,9 @@
 import { serverSupabaseClient } from "#supabase/server"
+import { CURRENT_SCHEMA_VERSION } from "~/constants/version"
+import type { TablesInsert } from "~/types/database.types"
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
-  const body = await readBody(event)
 
   try {
     const {
@@ -17,27 +18,29 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const { data: newResume, error } = await client
-      .from("resumes")
-      .insert({
-        owner_id: user.id,
-        title: body.title,
-        content_json: body.content_json,
-        css_custom: body.css_custom,
-        theme: body.theme
-      })
-      .select()
-      .single()
+    const body = await readBody(event).catch(() => ({}))
+    const title = body?.title || "Untitled Resume"
+
+    const insertData: TablesInsert<"resumes"> = {
+      owner_id: user.id,
+      title,
+      schemaVersion: CURRENT_SCHEMA_VERSION
+    }
+
+    const { data, error } = await client.from("resumes").insert(insertData).select().single()
 
     if (error) {
       throw createError({
         statusCode: 500,
-        statusMessage: "Failed to create resume"
+        statusMessage: error.message || "Failed to create resume"
       })
     }
 
-    return newResume
+    return data
   } catch (error: unknown) {
+    if (error && typeof error === "object" && "statusCode" in error) {
+      throw error
+    }
     const err = error as { statusCode?: number; statusMessage?: string }
     throw createError({
       statusCode: err.statusCode || 500,

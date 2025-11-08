@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router"
 import ResumeConfigs from "~/components/resume/configs-forms/ResumeConfigsForms.vue"
+import ZoomIndicator from "~/components/resume/preview/ZoomIndicator.vue"
 import ResumeHeader from "~/components/resume/resume-header/ResumeHeader.vue"
 import ResumeSectionsForms from "~/components/resume/sections-forms/ResumeSectionsForms.vue"
 import type { Tables } from "~/types/database.types"
 import { loadLocalFont } from "~/utils/preview/core/fontUtils"
+import { ConfigsSchema } from "~/utils/schemas/configs/configs.schema"
+import {
+  CoreSectionsSchema,
+  PersonalContentSchema,
+  type TCoreSections,
+  type TPersonalContent
+} from "~/utils/schemas/content.schema"
 
 const route = useRoute()
 
@@ -18,7 +26,7 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
   method: "GET",
   lazy: true,
   onResponse: ({ response }) => {
-    /* const data = response._data
+    const data = response._data
 
     const { personal, ...core } = data?.content as { personal: TPersonalContent; core: TCoreSections }
 
@@ -32,7 +40,7 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
     if (parsedConfigs.success && parsedConfigs.data) {
       setConfigs(parsedConfigs.data)
     }
-    setTitle(data?.title ?? "") */
+    setTitle(data?.title ?? "")
   }
 })
 
@@ -59,7 +67,8 @@ const scale = ref(1)
           <SplitterResizeHandle class="w-3 rounded-2xl bg-default/70 flex justify-center items-center">
             <UIcon name="i-lucide-grip-vertical" class="text-primary" />
           </SplitterResizeHandle>
-          <SplitterPanel :min-size="20">
+          <SplitterPanel :min-size="20" class="relative">
+            <ZoomIndicator :scale="scale" />
             <ResumePreview :loading="pending" :scale="scale" @update:scale="scale = $event" />
           </SplitterPanel>
           <SplitterResizeHandle class="w-3 rounded-2xl bg-default/70 flex justify-center items-center">

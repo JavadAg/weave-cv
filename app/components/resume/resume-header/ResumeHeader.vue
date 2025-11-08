@@ -33,22 +33,5 @@ const { title } = useResumeStore()
       <SaveChanges :saving="props.saving" :disabled="props.saving" @saving="emit('saving', $event)" />
       <Download :disabled="props.saving" />
     </div>
-
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 scale-95"
-      enter-to-class="opacity-100 scale-100"
-      leave-active-class="transition-all duration-200 ease-in"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="opacity-0 scale-95"
-    >
-      <div
-        v-if="props.saving"
-        class="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/90 text-primary-foreground shadow-lg backdrop-blur-sm"
-      >
-        <UIcon name="i-lucide-loader-2" class="size-4 animate-spin" />
-        <span class="text-sm font-medium">Saving changes...</span>
-      </div>
-    </Transition>
   </div>
 </template>

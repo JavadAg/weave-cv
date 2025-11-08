@@ -3,7 +3,6 @@ import ZoomComponent from "~/components/ZoomComponent.vue"
 import { generateSectionsOrder } from "~/utils/preview/core/layoutGenerator"
 import { sizeToPx } from "~/utils/preview/helpers"
 import RenderPages from "./pages/RenderPages.vue"
-import ZoomIndicator from "./ZoomIndicator.vue"
 
 interface Props {
   loading: boolean
@@ -40,7 +39,6 @@ watch(width, fitWidth)
 </script>
 <template>
   <div ref="container" class="relative overflow-y-auto h-full hide-scrollbar">
-    <ZoomIndicator :scale="scale" />
     <ZoomComponent ref="zoom" :scale="scale">
       <RenderPages v-if="!loading" :pages="pages" />
       <div v-else class="h-full flex justify-center items-center">

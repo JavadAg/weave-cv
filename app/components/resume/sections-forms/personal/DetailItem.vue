@@ -9,11 +9,11 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const { personal, updateContent } = useResumeStore()
+const { personal, updatePersonal } = useResumeStore()
 
 const updateDetails = (updater: (details: TPersonalContent["details"]) => TPersonalContent["details"]) => {
   const updatedDetails = updater([...personal.details])
-  updateContent("personal.details", updatedDetails)
+  updatePersonal("details", updatedDetails)
 }
 
 const handleValueUpdate = (value: string) => {
@@ -55,7 +55,6 @@ const handleRemove = () => {
   <div class="space-y-2 p-2 border border-muted/40 rounded-md">
     <div class="flex items-center gap-2">
       <UInput
-        :leading-icon="detail.icon ? `i-lucide-${detail.icon}` : undefined"
         :model-value="detail.value"
         :ui="{ leadingIcon: 'size-4' }"
         class="flex-1"

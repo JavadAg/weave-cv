@@ -9,16 +9,16 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { updateContent } = useResumeStore()
+const { updatePersonal } = useResumeStore()
 
 const titleModel = computed({
   get: () => props.title,
-  set: (v: string) => updateContent("personal.title", v)
+  set: (v: string) => updatePersonal("title", v)
 })
 
 const subtitleModel = computed({
   get: () => props.subtitle,
-  set: (v: string) => updateContent("personal.subtitle", v)
+  set: (v: string) => updatePersonal("subtitle", v)
 })
 </script>
 

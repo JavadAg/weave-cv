@@ -25,12 +25,15 @@ export default defineEventHandler(async (event) => {
     if (error) {
       throw createError({
         statusCode: 500,
-        statusMessage: "Failed to fetch resumes"
+        statusMessage: error.message || "Failed to fetch resumes"
       })
     }
 
     return resumes
   } catch (error: unknown) {
+    if (error && typeof error === "object" && "statusCode" in error) {
+      throw error
+    }
     const err = error as { statusCode?: number; statusMessage?: string }
     throw createError({
       statusCode: err.statusCode || 500,
