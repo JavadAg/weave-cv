@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, onUpdated, ref, watch } from "vue"
+import { SOLID_ICONS } from "~/constants/solidIcons"
 import DetailWrapper from "./DetailWrapper.vue"
+import StyledIcon from "./StyledIcon.vue"
 
 interface Props {
   align: "left" | "center" | "right"
@@ -14,6 +16,8 @@ const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 
 const separator = computed(() => configs.value.personal.details.separator)
+const iconConfig = computed(() => configs.value.personal.details.icon)
+const textColor = computed(() => configs.value.general.colors.primary.textColor)
 
 const containerRef = ref<HTMLElement>()
 
@@ -117,16 +121,32 @@ onUnmounted(() => {
     ref="containerRef"
     :style="{ justifyContent: props.align, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }"
   >
-    <template v-for="(detailItem, index) in detailItems" :key="`wrapper${index}`">
+    <template v-for="(item, index) in detailItems" :key="`wrapper${index}`">
       <DetailWrapper
-        :url="detailItem.url"
+        :url="item.url"
         :style="{
           display: 'flex',
+          alignItems: 'center',
+          gap: iconConfig.visible ? '0.5em' : '0',
           height: 'fit-content',
           paddingBottom: '0.5em'
         }"
       >
-        {{ detailItem.value }}
+        <StyledIcon
+          v-if="iconConfig.visible && iconConfig.align === 'left'"
+          :icon="SOLID_ICONS[item.type]"
+          :size="iconConfig.size"
+          :style="iconConfig.type"
+          :color="textColor"
+        />
+        <span>{{ item.value }}</span>
+        <StyledIcon
+          v-if="iconConfig.visible && iconConfig.align === 'right'"
+          :icon="SOLID_ICONS[item.type]"
+          :size="iconConfig.size"
+          :style="iconConfig.type"
+          :color="textColor"
+        />
       </DetailWrapper>
       <span
         v-if="index !== detailItems.length - 1"

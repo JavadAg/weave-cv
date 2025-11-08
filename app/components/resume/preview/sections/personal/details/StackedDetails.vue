@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue"
+import { SOLID_ICONS } from "~/constants/solidIcons"
 import DetailWrapper from "./DetailWrapper.vue"
+import StyledIcon from "./StyledIcon.vue"
 
 interface Props {
   align: "left" | "center" | "right"
@@ -10,12 +12,14 @@ const props = defineProps<Props>()
 const resumeStore = useResumeStore()
 const { personal } = storeToRefs(resumeStore)
 
-const detailItems = computed(() => {
-  return personal.value.details.map((item) => {
-    if (!item.value || item.isHidden) return null
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
 
-    return item
-  })
+const iconConfig = computed(() => configs.value.personal.details.icon)
+const textColor = computed(() => configs.value.general.colors.primary.textColor)
+
+const detailItems = computed(() => {
+  return personal.value.details.filter((item) => item.value && !item.isHidden)
 })
 </script>
 
@@ -27,11 +31,13 @@ const detailItems = computed(() => {
     }"
   >
     <DetailWrapper
-      v-for="(detailItem, index) in detailItems"
+      v-for="(item, index) in detailItems"
       :key="index"
-      :url="detailItem?.url"
+      :url="item?.url"
       :style="{
         display: 'flex',
+        alignItems: 'center',
+        gap: iconConfig.visible ? '0.5em' : '0',
         paddingBottom: '0.5em',
         whiteSpace: 'nowrap'
       }"
@@ -39,13 +45,29 @@ const detailItems = computed(() => {
       <span
         :style="{
           display: 'flex',
+          alignItems: 'center',
+          gap: iconConfig.visible ? '0.5em' : '0',
           textAlign: props.align,
           justifyContent: props.align === 'center' ? 'center' : props.align === 'right' ? 'flex-end' : 'flex-start',
           overflowWrap: 'anywhere',
           width: '100%'
         }"
       >
-        {{ detailItem?.value }}
+        <StyledIcon
+          v-if="iconConfig.visible && iconConfig.align === 'left'"
+          :icon="SOLID_ICONS[item.type]"
+          :size="iconConfig.size"
+          :style="iconConfig.type"
+          :color="textColor"
+        />
+        <span>{{ item?.value }}</span>
+        <StyledIcon
+          v-if="iconConfig.visible && iconConfig.align === 'right'"
+          :icon="SOLID_ICONS[item.type]"
+          :size="iconConfig.size"
+          :style="iconConfig.type"
+          :color="textColor"
+        />
       </span>
     </DetailWrapper>
   </div>

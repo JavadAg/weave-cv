@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { computed } from "vue"
+import { SOLID_ICONS } from "~/constants/solidIcons"
 import DetailWrapper from "./DetailWrapper.vue"
+import StyledIcon from "./StyledIcon.vue"
 
 const resumeStore = useResumeStore()
 const { personal } = storeToRefs(resumeStore)
 
-const detailItems = computed(() => {
-  return personal.value.details.map((item) => {
-    if (!item.value || item.isHidden) return null
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
 
-    return item
-  })
+const personalConfigs = computed(() => configs.value.personal)
+const iconConfig = computed(() => configs.value.personal.details.icon)
+const textColor = computed(() => configs.value.general.colors.primary.textColor)
+
+const detailItems = computed(() => {
+  return personal.value.details.filter((item) => item.value && !item.isHidden)
 })
 </script>
 
@@ -23,21 +28,30 @@ const detailItems = computed(() => {
     }"
   >
     <div
-      v-for="(detailItem, index) in detailItems"
+      v-for="(item, index) in detailItems"
       :key="index"
       :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center' }"
     >
       <DetailWrapper
-        :url="detailItem?.url"
+        :url="item?.url"
         :style="{
           display: 'flex',
-          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: personalConfigs.align,
+          gap: iconConfig.visible ? '0.5em' : '0',
           width: '100%',
           paddingBottom: '0.5em',
           whiteSpace: 'nowrap'
         }"
       >
-        {{ detailItem?.value }}
+        <StyledIcon
+          v-if="iconConfig.visible"
+          :icon="SOLID_ICONS[item.type]"
+          :size="iconConfig.size"
+          :style="iconConfig.type"
+          :color="textColor"
+        />
+        <span>{{ item.value }}</span>
       </DetailWrapper>
     </div>
   </div>

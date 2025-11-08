@@ -5,80 +5,120 @@ export const DETAILS_CATALOG = {
   core: {
     email: {
       label: "Email",
-      icon: "svg"
+      icon: "mail",
+      urlTemplate: "mailto:{value}"
     },
     phone: {
-      label: "Phone"
+      label: "Phone",
+      icon: "phone",
+      urlTemplate: "tel:{value}"
     },
     location: {
-      label: "Location"
+      label: "Location",
+      icon: "map-pin"
     },
     nationality: {
-      label: "Nationality"
+      label: "Nationality",
+      icon: "globe"
     },
     date_of_birth: {
-      label: "Date of Birth"
+      label: "Date of Birth",
+      icon: "calendar"
     }
   },
   professional: {
     linkedin: {
-      label: "LinkedIn"
+      label: "LinkedIn",
+      icon: "linkedin",
+      urlTemplate: "https://linkedin.com/in/{value}"
     },
     github: {
-      label: "GitHub"
+      label: "GitHub",
+      icon: "github",
+      urlTemplate: "https://github.com/{value}"
     },
     gitlab: {
-      label: "GitLab"
+      label: "GitLab",
+      icon: "git-branch",
+      urlTemplate: "https://gitlab.com/{value}"
     },
     website: {
-      label: "Website"
+      label: "Website",
+      icon: "globe",
+      urlTemplate: "https://{value}"
     }
   },
   social: {
     twitter: {
-      label: "X / Twitter"
+      label: "X / Twitter",
+      icon: "twitter",
+      urlTemplate: "https://twitter.com/{value}"
     },
     instagram: {
-      label: "Instagram"
+      label: "Instagram",
+      icon: "camera",
+      urlTemplate: "https://instagram.com/{value}"
     },
     facebook: {
-      label: "Facebook"
+      label: "Facebook",
+      icon: "users",
+      urlTemplate: "https://facebook.com/{value}"
     },
     reddit: {
-      label: "Reddit"
+      label: "Reddit",
+      icon: "circle-user",
+      urlTemplate: "https://reddit.com/user/{value}"
     }
   },
   creative: {
     dribbble: {
-      label: "Dribbble"
+      label: "Dribbble",
+      icon: "palette",
+      urlTemplate: "https://dribbble.com/{value}"
     },
     behance: {
-      label: "Behance"
+      label: "Behance",
+      icon: "palette",
+      urlTemplate: "https://behance.net/{value}"
     },
     figma: {
-      label: "Figma"
+      label: "Figma",
+      icon: "palette",
+      urlTemplate: "https://figma.com/@{value}"
     }
   },
   media: {
     youtube: {
-      label: "YouTube"
+      label: "YouTube",
+      icon: "play-circle",
+      urlTemplate: "https://youtube.com/{value}"
     },
     spotify: {
-      label: "Spotify"
+      label: "Spotify",
+      icon: "music",
+      urlTemplate: "https://open.spotify.com/user/{value}"
     },
     twitch: {
-      label: "Twitch"
+      label: "Twitch",
+      icon: "video",
+      urlTemplate: "https://twitch.tv/{value}"
     }
   },
   finance: {
     paypal: {
-      label: "PayPal"
+      label: "PayPal",
+      icon: "credit-card",
+      urlTemplate: "https://paypal.me/{value}"
     },
     bitcoin: {
-      label: "Bitcoin"
+      label: "Bitcoin",
+      icon: "circle-dollar-sign",
+      urlTemplate: "bitcoin:{value}"
     },
     ethereum: {
-      label: "Ethereum"
+      label: "Ethereum",
+      icon: "circle-dollar-sign",
+      urlTemplate: "ethereum:{value}"
     }
   }
 } as const

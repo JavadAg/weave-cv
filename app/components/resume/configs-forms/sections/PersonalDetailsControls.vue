@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import NumberInput from "~/components/ui/NumberInput.vue"
 import SelectItem from "~/components/ui/SelectItem.vue"
-import { alignOptions, separatorOptions, variantOptions, variantSimpleOptions } from "~/utils/options/sharedOptions"
-import type { TAlign, TSeparator, TVariant, TVariantSimple } from "~/utils/schemas/shared.schema"
+import ToggleInput from "~/components/ui/ToggleInput.vue"
+import {
+  alignOptions,
+  iconAlignOptions,
+  iconStyleOptions,
+  separatorOptions,
+  variantOptions,
+  variantSimpleOptions
+} from "~/utils/options/sharedOptions"
+import type { TAlign, TIconStyle, TSeparator, TSide, TVariant, TVariantSimple } from "~/utils/schemas/shared.schema"
 import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 
@@ -66,7 +74,7 @@ const handleUpdate = (key: string, value: unknown) => {
         @update:model-value="(value) => handleUpdate('details.separator', value as TSeparator)"
       />
     </ConfigWrapper>
-    <!-- <ConfigWrapper title="Icons">
+    <ConfigWrapper title="Icons">
       <ToggleInput
         v-model="configs.personal.details.icon.visible"
         label="Show Icons"
@@ -76,12 +84,14 @@ const handleUpdate = (key: string, value: unknown) => {
         v-model="configs.personal.details.icon.align"
         label="Icon Alignment"
         :options="iconAlignOptions"
+        :disabled="!configs.personal.details.icon.visible"
         @update:model-value="(value) => handleUpdate('details.icon.align', value as TSide)"
       />
       <SelectItem
         v-model="configs.personal.details.icon.type"
         label="Icon Style"
         :options="iconStyleOptions"
+        :disabled="!configs.personal.details.icon.visible"
         @update:model-value="(value) => handleUpdate('details.icon.type', value as TIconStyle)"
       />
       <NumberInput
@@ -89,8 +99,9 @@ const handleUpdate = (key: string, value: unknown) => {
         label="Icon Size"
         :min="8"
         :max="64"
+        :disabled="!configs.personal.details.icon.visible"
         @update:model-value="(value) => handleUpdate('details.icon.size', value)"
       />
-    </ConfigWrapper> -->
+    </ConfigWrapper>
   </ConfigsContainer>
 </template>
