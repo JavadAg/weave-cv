@@ -2,8 +2,11 @@ import type { LaunchOptions } from "puppeteer-core"
 import type { TFontFamily } from "~/constants/fonts"
 import { PAPER_SIZES, type TPaperSize } from "~/constants/papers"
 import { buildFontCss } from "~/utils/preview/core/fontUtils"
+import { requireAuth } from "../utils/auth"
 
 export default defineEventHandler(async (event) => {
+  await requireAuth(event)
+
   let browser:
     | Awaited<ReturnType<typeof import("puppeteer").launch>>
     | Awaited<ReturnType<typeof import("puppeteer-core").launch>>

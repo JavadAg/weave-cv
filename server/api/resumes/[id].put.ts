@@ -1,22 +1,21 @@
-import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server"
+import { serverSupabaseClient } from "#supabase/server"
+import { CURRENT_SCHEMA_VERSION } from "~/constants/version"
 import type { Json, TablesUpdate } from "~/types/database.types"
+import type { TConfigs } from "~/utils/schemas/configs/configs.schema"
+import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.schema"
+import { requireAuth } from "../../utils/auth"
 
 type UpdateResumeBody = {
-  title?: string
-  content?: {
-    personal?: unknown
-    core?: unknown
+  title: string
+  content: {
+    personal: TPersonalContent
+    core: TCoreSections
   }
-  configs?: unknown
-  schemaVersion?: number
+  configs: TConfigs
 }
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-
-  if (!user) {
-    throw createError({ statusCode: 401, statusMessage: "Unauthorized" })
-  }
+  const user = await requireAuth(event)
 
   const id = getRouterParam(event, "id")
 
@@ -32,21 +31,11 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
   const updateData: TablesUpdate<"resumes"> = {
-    updated_at: new Date().toISOString()
-  }
-
-  if (body.title) {
-    updateData.title = body.title
-  }
-
-  if (body.content) {
-    updateData.content = body.content as Json
-  }
-  if (body.configs) {
-    updateData.configs = body.configs as Json
-  }
-  if (body.schemaVersion) {
-    updateData.schemaVersion = body.schemaVersion
+    updated_at: new Date().toISOString(),
+    content: body.content as Json,
+    configs: body.configs as Json,
+    title: body.title,
+    schemaVersion: CURRENT_SCHEMA_VERSION
   }
 
   const { data: resume, error } = await client

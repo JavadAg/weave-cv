@@ -1,29 +1,31 @@
 import { serverSupabaseClient } from "#supabase/server"
 import { CURRENT_SCHEMA_VERSION } from "~/constants/version"
 import type { TablesInsert } from "~/types/database.types"
+import type { TConfigs } from "~/utils/schemas/configs/configs.schema"
+import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.schema"
+import { requireAuth } from "../utils/auth"
+
+type CreateResumeBody = {
+  title: string
+  content: {
+    personal: TPersonalContent
+    core: TCoreSections
+  }
+  configs: TConfigs
+}
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
+  const user = await requireAuth(event)
 
   try {
-    const {
-      data: { user },
-      error: userError
-    } = await client.auth.getUser()
-
-    if (userError || !user) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: "Unauthorized"
-      })
-    }
-
-    const body = await readBody(event).catch(() => ({}))
-    const title = body?.title || "Untitled Resume"
+    const body = await readBody<CreateResumeBody>(event)
 
     const insertData: TablesInsert<"resumes"> = {
       owner_id: user.id,
-      title,
+      title: body.title,
+      content: body.content,
+      configs: body.configs,
       schemaVersion: CURRENT_SCHEMA_VERSION
     }
 

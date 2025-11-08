@@ -45,6 +45,7 @@ const handleDeleteContent = (id: string) => {
   <SectionFormWrapper
     :section-id="props.sectionId"
     :title="props.section.title"
+    :section-type="props.sectionType"
     :is-section-visible="props.section.isSectionVisible"
     :is-title-visible="props.section.isTitleVisible"
   >

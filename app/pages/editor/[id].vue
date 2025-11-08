@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router"
 import ResumeConfigs from "~/components/resume/configs-forms/ResumeConfigsForms.vue"
+import ResumePreview from "~/components/resume/preview/ResumePreview.vue"
 import ZoomIndicator from "~/components/resume/preview/ZoomIndicator.vue"
 import ResumeHeader from "~/components/resume/resume-header/ResumeHeader.vue"
 import ResumeSectionsForms from "~/components/resume/sections-forms/ResumeSectionsForms.vue"
@@ -25,22 +26,29 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
     if (!data) return
 
     const content = data.content as { personal: TPersonalContent; core: TCoreSections }
-    const configs = data.configs as TConfigs
+    const resumeConfigs = data.configs as TConfigs
 
-    setContent({ personal: content.personal, core: content.core })
-    setConfigs(configs)
+    setContent({
+      personal: content.personal,
+      core: content.core
+    })
+
+    setConfigs(resumeConfigs)
 
     setTitle(data.title)
   }
 })
 
-// load font family on mount
-onMounted(() => {
-  const fontFamily = configs.general.typography.fontFamily
-  if (fontFamily) {
-    loadLocalFont(fontFamily)
-  }
-})
+// load font family when configs are available
+watch(
+  () => configs.general.typography.fontFamily,
+  (fontFamily) => {
+    if (fontFamily) {
+      loadLocalFont(fontFamily)
+    }
+  },
+  { immediate: true }
+)
 
 const scale = ref(1)
 </script>

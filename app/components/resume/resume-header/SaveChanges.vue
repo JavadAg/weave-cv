@@ -12,7 +12,10 @@ const emit = defineEmits<{
   (e: "saving", value: boolean): void
 }>()
 
-const { core, title, personal } = useResumeStore()
+const resumeStore = useResumeStore()
+const { core, title, personal } = storeToRefs(resumeStore)
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
 
 const route = useRoute()
 const id = computed(() => route.params.id as string)
@@ -24,8 +27,11 @@ const handleSave = async () => {
       method: "PUT",
       body: {
         title,
-        core,
-        personal
+        content: {
+          personal,
+          core
+        },
+        configs
       }
     })
   } finally {

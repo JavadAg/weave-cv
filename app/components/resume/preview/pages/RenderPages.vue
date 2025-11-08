@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { findPersonalElement, isTwoColumnSection, shouldRenderSection } from "~/utils/preview/core/pageRenderUtils"
-import type { TResumeElement, TResumeElements } from "~/utils/preview/core/types"
+import type { TResumeElements } from "~/utils/preview/core/types"
 import RenderContent from "./RenderContent.vue"
 import RenderPage from "./RenderPage.vue"
 import TwoColumnSection from "./TwoColumnSection.vue"
@@ -27,7 +27,7 @@ const personalHeader = computed(() =>
       <RenderContent :is-first-page="pageIndex === 0">
         <template v-for="(section, sectionIndex) in page" :key="sectionIndex">
           <template v-if="shouldRenderSection(section, isTopPersonal, pageIndex === 0)">
-            <component :is="(section as TResumeElement).component" v-if="'id' in section && 'component' in section" />
+            <component :is="section.component" v-if="'id' in section && 'component' in section" />
             <TwoColumnSection
               v-else-if="isTwoColumnSection(section)"
               :left-col="section.leftCol"

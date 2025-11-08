@@ -1,5 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{ section: { title: string }; headingColor: string }>()
+import type { CSSProperties } from "vue"
+
+const props = defineProps<{
+  section: { title: string }
+  headingColor: string
+  iconHtml?: string | null
+  iconSize?: number
+}>()
 
 const backgroundColor = computed(() => {
   const hex = props.headingColor.replace("#", "")
@@ -8,6 +15,14 @@ const backgroundColor = computed(() => {
   const b = Number.parseInt(hex.slice(4, 6), 16)
   return `rgba(${r}, ${g}, ${b}, 0.15)`
 })
+
+const iconStyle = computed<CSSProperties>(() => ({
+  display: "inline-flex",
+  alignItems: "center",
+  marginRight: props.iconHtml ? "0.4em" : "0",
+  flexShrink: 0,
+  color: "currentColor"
+}))
 </script>
 
 <template>
@@ -23,6 +38,7 @@ const backgroundColor = computed(() => {
       borderRadius: '1.5em'
     }"
   >
+    <span v-if="iconHtml" :style="iconStyle" v-html="iconHtml" />
     {{ props.section.title }}
   </div>
 </template>

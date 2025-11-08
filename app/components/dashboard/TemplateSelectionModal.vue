@@ -63,9 +63,11 @@ const handleCreate = async () => {
     const newResume = await $fetch<TResume>("/api/resumes", {
       method: "POST",
       body: {
-        content: DUMMY_CORE_SECTIONS,
-        personal: DUMMY_PERSONAL_SECTION,
         title: DUMMY_TITLE,
+        content: {
+          personal: DUMMY_PERSONAL_SECTION,
+          core: DUMMY_CORE_SECTIONS
+        },
         configs: DEFAULT_CONFIGS
       }
     })

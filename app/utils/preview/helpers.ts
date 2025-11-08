@@ -2,6 +2,7 @@ import { icons } from "@iconify-json/lucide"
 import { getIconData, iconToHTML, iconToSVG, replaceIDs } from "@iconify/utils"
 import DOMPurify from "dompurify"
 import { MM_TO_PX, PAPER_SIZES, type TPaperSize } from "~/constants/papers"
+import { SECTION_DISPLAY_CONFIG } from "~/constants/sectionConfigs"
 import type { TBasicContent } from "../schemas/content.schema"
 
 export const createOptionsFromEnum = (enumValues: readonly string[], labelFormatter?: (value: string) => string) => {
@@ -60,6 +61,7 @@ export const hasValidDescription = (contents: TBasicContent[]) => {
 export function getIcon(icon: string, size: number) {
   try {
     const iconData = getIconData(icons, icon)
+
     if (!iconData) {
       console.warn(`Icon "${icon}" is missing`)
       return ""
@@ -75,6 +77,24 @@ export function getIcon(icon: string, size: number) {
     console.warn(`Error rendering icon "${icon}":`, error)
     return ""
   }
+}
+
+export function getSectionIconName(sectionType: string) {
+  const config = SECTION_DISPLAY_CONFIG[sectionType as keyof typeof SECTION_DISPLAY_CONFIG]
+  if (!config?.icon) return null
+
+  const match = config.icon.match(/i-lucide-(.+)/)
+  return match && match[1] ? match[1] : null
+}
+
+export function getSectionIconNameWithCustom(sectionType: string, customIcons?: Record<string, string | undefined>) {
+  if (customIcons && customIcons[sectionType]) {
+    const customIcon = customIcons[sectionType]
+
+    return customIcon || null
+  }
+
+  return getSectionIconName(sectionType)
 }
 
 export const sanitizeRichHtml = (html: string) =>

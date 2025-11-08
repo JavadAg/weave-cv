@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue"
+import { getIcon, getSectionIconNameWithCustom } from "~/utils/preview/helpers"
 import { ColumnColorsKey } from "../../pages/columnColorsContext"
 import HeadingBorder from "./HeadingBorder.vue"
 import HeadingPill from "./HeadingPill.vue"
@@ -62,9 +63,27 @@ const heading = computed(() => {
     "vertical-border": HeadingVerticalBorder
   }[headingVariant.value]
 })
+
+const iconHtml = computed(() => {
+  const iconConfig = headingConfigs.value.icon
+  if (!iconConfig?.visible || !section.value?.type) return null
+
+  const iconName = getSectionIconNameWithCustom(section.value.type, iconConfig.custom)
+  if (!iconName) return null
+
+  return getIcon(iconName, iconConfig.size)
+})
+
+const iconSize = computed(() => headingConfigs.value.icon?.size || 16)
 </script>
 <template>
   <div v-if="section?.isTitleVisible && section" ref="elementRef" :style="containerStyle">
-    <component :is="heading" :section="section" :heading-color="headingColor" />
+    <component
+      :is="heading"
+      :section="section"
+      :heading-color="headingColor"
+      :icon-html="iconHtml"
+      :icon-size="iconSize"
+    />
   </div>
 </template>

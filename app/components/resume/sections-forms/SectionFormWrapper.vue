@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import SectionTitle from "./SectionTitleForm.vue"
+import type { TCoreSectionType } from "~/utils/schemas/content.schema"
+import SectionTitleForm from "./SectionTitleForm.vue"
 
 const props = withDefaults(
   defineProps<{
     title: string
     sectionId: string
-    isTitleEditable?: boolean
+    sectionType?: TCoreSectionType
     isSectionHideable?: boolean
     isSectionVisible?: boolean
     isTitleVisible?: boolean
+    isTitleEditable?: boolean
   }>(),
   {
     isTitleEditable: true,
-    isSectionHideable: true
+    isSectionHideable: true,
+    sectionType: undefined
   }
 )
 </script>
@@ -31,10 +34,11 @@ const props = withDefaults(
       {{ props.title }}
     </UButton>
     <template #content>
-      <SectionTitle
+      <SectionTitleForm
         v-if="props.isTitleEditable || props.isSectionHideable"
         :section-id="props.sectionId"
         :section-title="props.title"
+        :section-type="props.sectionType"
         :is-title-editable="props.isTitleEditable"
         :is-section-hideable="props.isSectionHideable"
         :is-section-visible="props.isSectionVisible"

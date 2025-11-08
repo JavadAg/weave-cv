@@ -8,26 +8,23 @@ import PersonalSectionForm from "./personal/PersonalSectionForm.vue"
 const resumeStore = useResumeStore()
 const configsStore = useConfigsStore()
 const { core, personal } = storeToRefs(resumeStore)
-const { configs } = configsStore
+const { configs } = storeToRefs(configsStore)
 
 const isTwoColumnLayout = computed(() => {
-  return configs.general.layout.columns === "2"
+  return configs.value.general.layout.columns === "2"
 })
 
-// Get ordered sections based on config
 const orderedSections = computed(() => {
   const visibleSections = Object.entries(core.value).filter(([_, section]) => section.isSectionVisible)
 
   if (isTwoColumnLayout.value) {
-    const leftOrder = configs.general.layout.order.twoCol.left || []
-    const rightOrder = configs.general.layout.order.twoCol.right || []
+    const leftOrder = configs.value.general.layout.order.twoCol.left || []
+    const rightOrder = configs.value.general.layout.order.twoCol.right || []
     const allOrderedTypes = [...leftOrder, ...rightOrder]
 
-    // Order sections based on config, then add any that aren't in the config
     const ordered: Array<[string, TCoreSection]> = []
     const processedKeys = new Set<string>()
 
-    // Add sections in order from config
     for (const sectionType of allOrderedTypes) {
       const sectionsOfType = visibleSections.filter(([_, section]) => section.type === sectionType)
       for (const sectionEntry of sectionsOfType) {
@@ -38,7 +35,6 @@ const orderedSections = computed(() => {
       }
     }
 
-    // Add any remaining sections that weren't in the config
     for (const sectionEntry of visibleSections) {
       if (!processedKeys.has(sectionEntry[0])) {
         ordered.push(sectionEntry)
@@ -47,7 +43,7 @@ const orderedSections = computed(() => {
 
     return ordered
   } else {
-    const sectionOrder = configs.general.layout.order.oneCol || []
+    const sectionOrder = configs.value.general.layout.order.oneCol || []
 
     if (sectionOrder.length === 0) {
       return visibleSections
@@ -56,7 +52,6 @@ const orderedSections = computed(() => {
     const ordered: Array<[string, TCoreSection]> = []
     const processedKeys = new Set<string>()
 
-    // Add sections in order from config
     for (const sectionType of sectionOrder) {
       const sectionsOfType = visibleSections.filter(([_, section]) => section.type === sectionType)
       for (const sectionEntry of sectionsOfType) {
@@ -67,7 +62,6 @@ const orderedSections = computed(() => {
       }
     }
 
-    // Add any remaining sections that weren't in the config
     for (const sectionEntry of visibleSections) {
       if (!processedKeys.has(sectionEntry[0])) {
         ordered.push(sectionEntry)

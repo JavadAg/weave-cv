@@ -12,8 +12,7 @@ function isTwoColumnSection(section: unknown): section is TwoColumnSection {
     return false
   }
 
-  const candidate = section as Record<string, unknown>
-  return "left" in candidate && "right" in candidate && Array.isArray(candidate.left) && Array.isArray(candidate.right)
+  return "left" in section && "right" in section && Array.isArray(section.left) && Array.isArray(section.right)
 }
 
 function generateSingleColumnSectionElements(sectionId: string): TResumeElements[] {

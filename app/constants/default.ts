@@ -62,7 +62,12 @@ export const DEFAULT_CONFIGS: TConfigs = {
       fontSizeMultiplier: 1.2,
       fontWeight: "bold",
       fontCase: "inherit",
-      variant: "vertical-border"
+      variant: "vertical-border",
+      icon: {
+        visible: true,
+        size: 16,
+        custom: {}
+      }
     },
     links: {
       underline: true,

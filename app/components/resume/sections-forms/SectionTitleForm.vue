@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { TCoreSectionType } from "~/utils/schemas/content.schema"
 import Delete from "./Delete.vue"
 import InlineEditor from "./InlineEditor.vue"
 import Visibility from "./Visibility.vue"
@@ -6,6 +7,7 @@ import Visibility from "./Visibility.vue"
 interface Props {
   sectionId: string
   sectionTitle: string
+  sectionType?: TCoreSectionType
   isTitleEditable: boolean
   isSectionHideable: boolean
   isSectionVisible: boolean
@@ -33,6 +35,8 @@ const handleDelete = () => {
           class="text-sm font-medium"
           :is-visible="props.isTitleVisible"
           :value="props.sectionTitle"
+          :section-id="props.sectionId"
+          :section-type="sectionType"
           :on-update="(value) => handleUpdate(`${props.sectionId}.title`, value)"
         />
         <Visibility

@@ -1,13 +1,52 @@
 <script setup lang="ts">
-const props = defineProps<{
-  isVisible: boolean
-  value: string
-  onUpdate: (value: string) => void
-  class?: string
-}>()
+import IconPicker from "~/components/ui/IconPicker.vue"
+import { getSectionIconName } from "~/utils/preview/helpers"
+
+const props = withDefaults(
+  defineProps<{
+    isVisible: boolean
+    value: string
+    onUpdate: (value: string) => void
+    class?: string
+    sectionId?: string
+    sectionType?: string
+  }>(),
+  {
+    class: undefined,
+    sectionId: undefined,
+    sectionType: undefined
+  }
+)
+
+const { configs, updateConfig } = useConfigsStore()
 
 const isEditing = ref(false)
 const localValue = ref(props.value)
+
+const iconConfig = computed(() => configs.general.headings.icon)
+
+const currentIcon = computed(() => {
+  if (!props.sectionType) return ""
+
+  const customIcon = iconConfig.value?.custom?.[props.sectionType]
+  const defaultIcon = getSectionIconName(props.sectionType)
+
+  return customIcon || defaultIcon || ""
+})
+
+const handleIconUpdate = (iconName: string) => {
+  if (!props.sectionType) return
+
+  const defaultIcon = getSectionIconName(props.sectionType)
+  const currentCustom = iconConfig.value?.custom || {}
+
+  const updated =
+    iconName === defaultIcon
+      ? Object.fromEntries(Object.entries(currentCustom).filter(([key]) => key !== props.sectionType))
+      : { ...currentCustom, [props.sectionType]: iconName }
+
+  updateConfig("general.headings.icon.custom", updated)
+}
 
 const handleUpdate = (value: string) => {
   if (props.value === value) {
@@ -28,15 +67,19 @@ const handleEdit = () => {
 </script>
 
 <template>
-  <div :class="['flex items-center gap-2 duration-200', props.isVisible ? 'opacity-100' : 'opacity-50']">
-    <UInput v-if="isEditing" v-model="localValue" size="sm" />
-    <div v-else :class="props.class" v-html="localValue"></div>
-    <UButton
-      v-if="props.isVisible"
-      variant="ghost"
-      size="sm"
-      :icon="isEditing ? 'i-lucide-check' : 'i-lucide-pencil'"
-      @click="handleEdit"
-    />
+  <div class="flex flex-col gap-2">
+    <div :class="['flex items-center gap-2 duration-200', props.isVisible ? 'opacity-100' : 'opacity-50']">
+      <IconPicker :model-value="currentIcon" label="Icon" @update:model-value="handleIconUpdate" />
+      <UInput v-if="isEditing" v-model="localValue" size="sm" />
+
+      <div v-else :class="props.class" v-html="localValue"></div>
+      <UButton
+        v-if="props.isVisible"
+        variant="ghost"
+        size="sm"
+        :icon="isEditing ? 'i-lucide-check' : 'i-lucide-pencil'"
+        @click="handleEdit"
+      />
+    </div>
   </div>
 </template>

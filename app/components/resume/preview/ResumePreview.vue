@@ -19,19 +19,21 @@ const zoom = ref<InstanceType<typeof ZoomComponent>>()
 const container = ref<HTMLElement>()
 
 const { width } = useElementSize(container)
-const { configs } = useConfigsStore()
+
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
 
 const resumeStore = useResumeStore()
 const { core, title } = storeToRefs(resumeStore)
 
-const sectionsOrder = computed(() => generateSectionsOrder(configs.general.layout))
+const sectionsOrder = computed(() => generateSectionsOrder(configs.value.general.layout))
 
 useProcessContent(core, title)
 
 const pages = useGeneratePages(sectionsOrder)
 
 const fitWidth = () => {
-  const newScale = width.value / sizeToPx(configs.general.layout.size, "w")
+  const newScale = width.value / sizeToPx(configs.value.general.layout.size, "w")
   emit("update:scale", newScale)
 }
 

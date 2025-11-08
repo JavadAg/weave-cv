@@ -60,7 +60,12 @@ export const HeadingsSchema = z.object({
   fontSizeMultiplier: z.number().min(1).max(2),
   fontWeight: FontWeight,
   fontCase: z.enum(["inherit", "uppercase", "lowercase"]),
-  variant: z.enum(["plain", "underline", "underline-full", "pill", "border", "vertical-border"])
+  variant: z.enum(["plain", "underline", "underline-full", "pill", "border", "vertical-border"]),
+  icon: z.object({
+    visible: z.boolean(),
+    size: z.number().min(8).max(32),
+    custom: z.record(z.string(), z.string().optional()).optional()
+  })
 })
 
 export const LinksSchema = z.object({

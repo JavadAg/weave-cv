@@ -1,13 +1,10 @@
-import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server"
+import { serverSupabaseClient } from "#supabase/server"
 import type { TablesInsert } from "~/types/database.types"
 import type { TResume } from "~/types/resume.types"
+import { requireAuth } from "../../../utils/auth"
 
 export default defineEventHandler(async (event) => {
-  const user = await serverSupabaseUser(event)
-
-  if (!user) {
-    throw createError({ statusCode: 401, statusMessage: "Unauthorized" })
-  }
+  const user = await requireAuth(event)
 
   const id = getRouterParam(event, "id")
 
