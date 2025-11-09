@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { FetchError } from "ofetch"
 import { DUMMY_CORE_SECTIONS, DUMMY_PERSONAL_SECTION, DUMMY_TITLE } from "~/constants/dummyData"
 import { PAPER_SIZES } from "~/constants/papers"
 import { TEMPLATES, type Template } from "~/constants/templates"
@@ -46,6 +47,7 @@ const handleCreate = async () => {
     })
 
     emits("created", newResume)
+
     modelValue.value = false
     selectedTemplate.value = null
   } catch (error) {
@@ -53,7 +55,7 @@ const handleCreate = async () => {
 
     toast.add({
       title: "Error",
-      description: error instanceof Error ? error.message : "An unexpected error occurred",
+      description: error instanceof FetchError ? error.statusMessage : "An unexpected error occurred",
       color: "error"
     })
   } finally {

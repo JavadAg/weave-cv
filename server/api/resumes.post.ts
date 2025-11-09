@@ -4,6 +4,7 @@ import type { TablesInsert } from "~/types/database.types"
 import type { TConfigs } from "~/utils/schemas/configs/configs.schema"
 import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.schema"
 import { requireAuth } from "../utils/auth"
+import { checkResumeLimit } from "../utils/resumes"
 
 type CreateResumeBody = {
   title: string
@@ -19,6 +20,8 @@ export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
 
   try {
+    await checkResumeLimit(client, user.id, "creating")
+
     const body = await readBody<CreateResumeBody>(event)
 
     const insertData: TablesInsert<"resumes"> = {

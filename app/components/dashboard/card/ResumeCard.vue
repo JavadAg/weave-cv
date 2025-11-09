@@ -5,6 +5,7 @@ import ResumeCardContent from "./ResumeCardContent.vue"
 
 interface Props {
   resume: TResume
+  disableDuplicate?: boolean
 }
 
 const props = defineProps<Props>()
@@ -44,9 +45,10 @@ const handleDuplicateClick = async () => {
     refreshData()
   } catch (error) {
     console.error("Failed to duplicate resume:", error)
+
     toast.add({
       title: "Error",
-      description: error instanceof Error ? error.message : "Failed to duplicate resume",
+      description: "Failed to duplicate resume",
       color: "error"
     })
   } finally {
@@ -68,7 +70,7 @@ const handleDuplicateClick = async () => {
               {
                 label: isDuplicating ? 'Duplicating...' : 'Duplicate',
                 icon: 'i-lucide-copy',
-                disabled: isDuplicating,
+                disabled: isDuplicating || disableDuplicate,
                 onSelect: () => handleDuplicateClick()
               },
               {

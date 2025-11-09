@@ -2,6 +2,12 @@
 import type { TResume } from "~/types/resume.types"
 import TemplateSelectionModal from "./TemplateSelectionModal.vue"
 
+interface Props {
+  disabled?: boolean
+}
+
+defineProps<Props>()
+
 const emit = defineEmits<{
   created: [resume: TResume]
 }>()
@@ -19,7 +25,7 @@ const handleResumeCreated = (resume: TResume) => {
 
 <template>
   <div>
-    <UButton color="primary" size="lg" icon="i-lucide-plus" @click="handleModalOpen">
+    <UButton color="primary" size="lg" icon="i-lucide-plus" :disabled="disabled" @click="handleModalOpen">
       <slot>Create New Resume</slot>
     </UButton>
     <TemplateSelectionModal v-model="isModalOpen" @created="handleResumeCreated" />

@@ -3,6 +3,7 @@ import CreateResumeButton from "~/components/dashboard/CreateResumeButton.vue"
 import EmptyState from "~/components/dashboard/EmptyState.vue"
 import LoadingSkeleton from "~/components/dashboard/LoadingSkeleton.vue"
 import ResumeGrid from "~/components/dashboard/ResumeGrid.vue"
+import { MAX_RESUMES_PER_USER } from "~/constants/limits"
 import type { TResume } from "~/types/resume.types"
 
 useHead({
@@ -38,6 +39,9 @@ const { data, pending, error, refresh } = useFetch<TResume[]>("/api/resumes", {
   lazy: true
 })
 
+const resumeCount = computed(() => data.value?.length ?? 0)
+const hasReachedLimit = computed(() => resumeCount.value >= MAX_RESUMES_PER_USER)
+
 const handleRefresh = async () => {
   await refresh()
 }
@@ -54,8 +58,16 @@ const handleResumeCreated = async () => {
         <h1 class="text-3xl font-bold text-default">My Resumes</h1>
         <p class="text-muted mt-2">Manage and edit your resumes</p>
       </div>
-      <CreateResumeButton @created="handleResumeCreated" />
+      <CreateResumeButton :disabled="hasReachedLimit" @created="handleResumeCreated" />
     </div>
+    <UAlert
+      v-if="hasReachedLimit"
+      color="warning"
+      variant="solid"
+      title="Resume Limit Reached"
+      :description="`You have reached the maximum limit of ${MAX_RESUMES_PER_USER} resumes. Please delete an existing resume to create a new one.`"
+      class="mb-6"
+    />
     <UAlert
       v-if="error"
       color="error"
@@ -65,6 +77,11 @@ const handleResumeCreated = async () => {
     />
     <LoadingSkeleton v-if="pending" />
     <EmptyState v-else-if="data?.length === 0" />
-    <ResumeGrid v-else-if="data && data.length > 0" :resumes="data" @refresh="handleRefresh" />
+    <ResumeGrid
+      v-else-if="data && data.length > 0"
+      :resumes="data"
+      :resume-count="resumeCount"
+      @refresh="handleRefresh"
+    />
   </div>
 </template>

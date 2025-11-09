@@ -2,6 +2,7 @@ import { serverSupabaseClient } from "#supabase/server"
 import type { TablesInsert } from "~/types/database.types"
 import type { TResume } from "~/types/resume.types"
 import { requireAuth } from "../../../utils/auth"
+import { checkResumeLimit } from "../../../utils/resumes"
 
 export default defineEventHandler(async (event) => {
   const user = await requireAuth(event)
@@ -18,6 +19,8 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
 
   try {
+    await checkResumeLimit(client, user.id, "duplicating")
+
     const { data: originalResume, error: fetchError } = await client
       .from("resumes")
       .select("*")

@@ -7,7 +7,7 @@ const isLandingPage = computed(() => route.path === "/")
 </script>
 <template>
   <div
-    class="w-full relative grid min-h-dvh mx-auto grid-rows-[auto_1fr] after:content-[''] after:absolute after:top-0 after:z-[-2] after:size-full after:bg-[radial-gradient(#ccc_1px,#e9e9e9_1px)] after:[background-size:16px_16px] dark:after:bg-[radial-gradient(#3b3b3b_1px,#222226_1px)] dark:after:[background-size:20px_20px]"
+    class="w-full relative grid min-h-dvh mx-auto grid-rows-[auto_1fr] after:content-[''] after:absolute after:top-0 after:z-[-2] after:size-full after:bg-[radial-gradient(#ddd_1px,#efefef_1px)] after:[background-size:16px_16px] dark:after:bg-[radial-gradient(#3b3b3b_1px,#222226_1px)] dark:after:[background-size:20px_20px]"
   >
     <header class="h-16 bg-default/80 border-b border-default/30">
       <div
