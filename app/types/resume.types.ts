@@ -3,11 +3,11 @@ import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.sc
 
 export type TResume = {
   id: string
-  configs?: TConfigs | null
-  content?: {
-    personal?: TPersonalContent | null
-    core?: TCoreSections | null
-  } | null
+  configs: TConfigs
+  content: {
+    personal: TPersonalContent
+    core: TCoreSections
+  }
   schemaVersion: number
   title: string
   created_at: string

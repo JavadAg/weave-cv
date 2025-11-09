@@ -29,6 +29,7 @@ const titleModel = computed({
     <div class="flex-1 min-w-0">
       <UInput
         v-model="titleModel"
+        :minlength="3"
         :maxlength="30"
         placeholder="Resume Title"
         size="lg"

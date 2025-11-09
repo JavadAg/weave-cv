@@ -44,7 +44,7 @@ const handleSave = async () => {
       console.error(error.value)
       toast.add({
         title: "Error",
-        description: error.value?.message || "An error occurred while saving changes",
+        description: error.value?.statusMessage || "An error occurred while saving changes",
         color: "error"
       })
     }
