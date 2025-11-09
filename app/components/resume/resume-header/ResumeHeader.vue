@@ -3,14 +3,7 @@ import Download from "./Download.vue"
 import Export from "./Export.vue"
 import SaveChanges from "./SaveChanges.vue"
 
-interface Props {
-  saving: boolean
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  (e: "saving", value: boolean): void
-}>()
+const saving = ref(false)
 
 const resumeStore = useResumeStore()
 const { title } = storeToRefs(resumeStore)
@@ -34,13 +27,23 @@ const titleModel = computed({
       <span class="hidden xl:inline">Dashboard</span>
     </UButton>
     <div class="flex-1 min-w-0">
-      <UInput v-model="titleModel" placeholder="Resume Title" size="lg" icon="i-heroicons-document-text" />
+      <UInput
+        v-model="titleModel"
+        :maxlength="30"
+        placeholder="Resume Title"
+        size="lg"
+        icon="i-heroicons-document-text"
+      >
+        <template #trailing>
+          <span class="text-xs text-muted">{{ titleModel.length }}/30</span>
+        </template>
+      </UInput>
     </div>
     <div class="flex items-center gap-3">
       <div class="flex items-center rounded-lg bg-elevated/50 p-1 gap-2 border border-muted shadow-sm backdrop-blur-sm">
-        <SaveChanges :saving="props.saving" :disabled="props.saving" @saving="emit('saving', $event)" />
-        <Download :disabled="props.saving" />
-        <Export :disabled="props.saving" />
+        <SaveChanges :saving="saving" :disabled="saving" @saving="saving = $event" />
+        <Download :disabled="saving" />
+        <Export :disabled="saving" />
       </div>
     </div>
   </div>

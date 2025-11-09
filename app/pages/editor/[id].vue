@@ -12,7 +12,6 @@ import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.sc
 
 const route = useRoute()
 
-const saving = ref(false)
 const id = computed(() => route.params.id as string)
 
 const resumeStore = useResumeStore()
@@ -88,7 +87,7 @@ const scale = ref(1)
   <ClientOnly>
     <div class="w-full flex flex-col gap-4 max-h-[calc(100dvh-88px)] overflow-hidden">
       <ZoomIndicator :scale="scale" />
-      <ResumeHeader :saving="saving" :scale="scale" @saving="saving = $event" @update:scale="scale = $event" />
+      <ResumeHeader />
       <div class="overflow-hidden">
         <SplitterGroup direction="horizontal" class="flex gap-1 h-full">
           <SplitterPanel :min-size="20" :default-size="25" :max-size="35">

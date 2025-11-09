@@ -112,7 +112,11 @@ watch(modelValue, (isOpen) => {
               ]"
               @click="handleTemplateSelect(template)"
             >
+              <div v-if="template.screenshot">
+                <img :src="template.screenshot" alt="Template Screenshot" class="w-full h-full object-cover" />
+              </div>
               <div
+                v-else
                 class="size-full rounded-md mb-3 flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5"
               >
                 <div class="text-center">
@@ -133,7 +137,6 @@ watch(modelValue, (isOpen) => {
               </div>
             </button>
           </div>
-
           <div v-if="!selectedTemplate" class="mt-4 p-3 rounded-lg bg-muted/50 border border-default/20">
             <p class="text-sm text-muted text-center">Please select a template to continue</p>
           </div>

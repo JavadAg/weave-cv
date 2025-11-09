@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Tables } from "~/types/database.types"
+
 interface Props {
   saving: boolean
   disabled?: boolean
@@ -7,6 +9,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   disabled: false
 })
+
+const toast = useToast()
 
 const emit = defineEmits<{
   (e: "saving", value: boolean): void
@@ -22,18 +26,36 @@ const id = computed(() => route.params.id as string)
 
 const handleSave = async () => {
   emit("saving", true)
+
   try {
-    await $fetch(`/api/resumes/${id.value}`, {
+    const { status, error } = await useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
       method: "PUT",
       body: {
-        title,
+        title: title.value,
         content: {
-          personal,
-          core
+          personal: personal.value,
+          core: core.value
         },
-        configs
+        configs: configs.value
       }
     })
+
+    if (status.value === "error") {
+      console.error(error.value)
+      toast.add({
+        title: "Error",
+        description: error.value?.message || "An error occurred while saving changes",
+        color: "error"
+      })
+    }
+
+    if (status.value === "success") {
+      toast.add({
+        title: "Success",
+        description: "Changes saved successfully",
+        color: "success"
+      })
+    }
   } finally {
     emit("saving", false)
   }

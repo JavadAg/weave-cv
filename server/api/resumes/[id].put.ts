@@ -28,13 +28,31 @@ export default defineEventHandler(async (event) => {
 
   const body = await readBody<UpdateResumeBody>(event)
 
+  if (!body.title || typeof body.title !== "string") {
+    console.log("Title is required and must be a string", body.title)
+
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Title is required and must be a string"
+    })
+  }
+
+  const trimmedTitle = body.title.trim()
+
+  if (!trimmedTitle) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Title cannot be empty"
+    })
+  }
+
   const client = await serverSupabaseClient(event)
 
   const updateData: TablesUpdate<"resumes"> = {
     updated_at: new Date().toISOString(),
     content: body.content as Json,
     configs: body.configs as Json,
-    title: body.title,
+    title: trimmedTitle,
     schemaVersion: CURRENT_SCHEMA_VERSION
   }
 
@@ -53,6 +71,7 @@ export default defineEventHandler(async (event) => {
         statusMessage: "Resume not found"
       })
     }
+
     throw createError({
       statusCode: 500,
       statusMessage: error.message || "Failed to update resume"
