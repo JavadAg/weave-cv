@@ -1,44 +1,8 @@
 <script setup lang="ts">
-import { DEFAULT_CONFIGS } from "~/constants/default"
 import { DUMMY_CORE_SECTIONS, DUMMY_PERSONAL_SECTION, DUMMY_TITLE } from "~/constants/dummyData"
 import { PAPER_SIZES } from "~/constants/papers"
+import { TEMPLATES, type Template } from "~/constants/templates"
 import type { TResume } from "~/types/resume.types"
-
-interface Template {
-  id: string
-  name: string
-  description: string
-  preview: string
-  isBlank?: boolean
-}
-
-const templates: Template[] = [
-  {
-    id: "blank",
-    name: "Blank Resume",
-    description: "Start with a clean slate and build your resume from scratch",
-    preview: "blank",
-    isBlank: true
-  },
-  {
-    id: "template-1",
-    name: "Modern Professional",
-    description: "A clean and modern design perfect for tech and creative roles",
-    preview: "template-1"
-  },
-  {
-    id: "template-2",
-    name: "Classic Executive",
-    description: "Traditional layout ideal for corporate and executive positions",
-    preview: "template-2"
-  },
-  {
-    id: "template-3",
-    name: "Creative Portfolio",
-    description: "Eye-catching design for creative professionals and designers",
-    preview: "template-3"
-  }
-]
 
 const modelValue = defineModel<boolean>({ default: false })
 const selectedTemplate = ref<Template | null>(null)
@@ -59,7 +23,6 @@ const handleCreate = async () => {
 
   isCreating.value = true
   try {
-    // TODO: Load actual template data
     const newResume = await $fetch<TResume>("/api/resumes", {
       method: "POST",
       body: {
@@ -68,7 +31,7 @@ const handleCreate = async () => {
           personal: DUMMY_PERSONAL_SECTION,
           core: DUMMY_CORE_SECTIONS
         },
-        configs: DEFAULT_CONFIGS
+        configs: selectedTemplate.value.configs
       }
     })
 
@@ -111,7 +74,7 @@ watch(modelValue, (isOpen) => {
 </script>
 
 <template>
-  <UModal v-model:open="modelValue" :prevent-close="isCreating" class="max-w-7xl w-full mx-auto">
+  <UModal v-model:open="modelValue" :prevent-close="isCreating" class="max-w-7xl">
     <template #content>
       <UCard>
         <template #header>
@@ -127,15 +90,17 @@ watch(modelValue, (isOpen) => {
             </div>
           </div>
         </template>
-
         <div class="py-2">
-          <div class="flex flex-wrap items-start justify-start gap-4">
+          <div class="flex flex-wrap items-start max-h-[700px] overflow-scroll justify-start gap-4">
             <button
-              v-for="template in templates"
+              v-for="template in TEMPLATES"
               :key="template.id"
               type="button"
               :disabled="isCreating"
-              :style="{ width: `${PAPER_SIZES['A4'].w * 0.3}mm`, height: `${PAPER_SIZES['A4'].h * 0.3}mm` }"
+              :style="{
+                aspectRatio: `${PAPER_SIZES['A4'].w / PAPER_SIZES['A4'].h}`,
+                width: `${PAPER_SIZES['A4'].w * 0.5}mm`
+              }"
               :class="[
                 'group relative flex flex-col items-center justify-between rounded-lg border-2 p-4 text-left transition-all duration-200 hover:shadow-lg',
                 selectedTemplate?.id === template.id
@@ -146,20 +111,11 @@ watch(modelValue, (isOpen) => {
               @click="handleTemplateSelect(template)"
             >
               <div
-                :class="[
-                  'size-full rounded-md mb-3 flex items-center justify-center overflow-hidden',
-                  template.isBlank
-                    ? 'bg-muted border-2 border-dashed border-default/30'
-                    : 'bg-gradient-to-br from-primary/20 to-primary/5'
-                ]"
+                class="size-full rounded-md mb-3 flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5"
               >
-                <div v-if="template.isBlank" class="text-center">
-                  <UIcon name="i-lucide-file-plus" class="w-8 h-8 text-muted mx-auto mb-2" />
-                  <p class="text-xs text-muted font-medium">Blank Template</p>
-                </div>
-                <div v-else class="text-center">
+                <div class="text-center">
                   <UIcon name="i-lucide-layout-template" class="w-8 h-8 text-primary/60 mx-auto mb-2" />
-                  <p class="text-xs text-primary/60 font-medium">Coming Soon</p>
+                  <p class="text-xs text-primary/60 font-medium">{{ template.name }}</p>
                 </div>
               </div>
               <div class="space-y-1">
@@ -180,7 +136,6 @@ watch(modelValue, (isOpen) => {
             <p class="text-sm text-muted text-center">Please select a template to continue</p>
           </div>
         </div>
-
         <template #footer>
           <div class="flex justify-end gap-3">
             <UButton color="neutral" variant="ghost" :disabled="isCreating" @click="handleCancel"> Cancel </UButton>
