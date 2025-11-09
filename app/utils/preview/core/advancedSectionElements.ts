@@ -1,7 +1,7 @@
 import { h } from "vue"
 import AdvancedLineBlock from "~/components/resume/preview/advanced/description/AdvancedLineBlock.vue"
 import AdvancedDetailBlock from "~/components/resume/preview/advanced/detail/AdvancedDetailBlock.vue"
-import type { AdvancedSectionTypeSchema, TAdvancedContent, TCoreSection } from "~/utils/schemas/content.schema"
+import type { AdvancedSectionTypeSchema, TCoreSection } from "~/utils/schemas/content.schema"
 import type { TResumeElement } from "./types"
 
 type AdvancedSectionType = (typeof AdvancedSectionTypeSchema.options)[number]
@@ -22,10 +22,9 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
   for (const content of visibleContents) {
     const contentId = content.id
 
-    const detailElement = blocks.get(contentId) ?? {
+    const detailBlock = blocks.get(contentId) ?? {
       id: contentId,
       component: h(AdvancedDetailBlock, {
-        content: content as TAdvancedContent,
         sectionId,
         contentId,
         sectionType
@@ -33,7 +32,7 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
       height: 0
     }
 
-    setBlock(detailElement.id, detailElement)
+    setBlock(detailBlock.id, detailBlock)
 
     const lineBlocks = getContentLine(contentId).map((_, index) => {
       const lineId = `${content.id}-${index}`
@@ -54,7 +53,7 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
       return lineBlock
     })
 
-    elements.push(detailElement, ...lineBlocks)
+    elements.push(detailBlock, ...lineBlocks)
   }
 
   return elements

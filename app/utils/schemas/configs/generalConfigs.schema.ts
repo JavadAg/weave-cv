@@ -21,7 +21,7 @@ export const ContentLayoutSchema = z.object({
     fontStyle: FontStyle
   }),
   listType: ListType,
-  indent: z.number().min(0).max(30),
+  indent: z.number().min(0).max(16),
   contentFirstWidth: z.object({
     left: z.number().min(25).max(75),
     right: z.number().min(25).max(75)
