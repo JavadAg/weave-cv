@@ -27,6 +27,12 @@ useHead({
   ]
 })
 
+const user = useSupabaseUser()
+
+if (user.value) {
+  navigateTo("/dashboard")
+}
+
 const supabase = useSupabaseClient()
 
 const formState = reactive({
@@ -120,7 +126,6 @@ const signInWithPassword = async () => {
           <GoogleSignIn />
         </UForm>
       </UCard>
-
       <p class="text-center mt-8 text-sm text-muted">
         Don't have an account?
         <ULink class="font-medium text-primary" to="/register"> Sign up for free </ULink>

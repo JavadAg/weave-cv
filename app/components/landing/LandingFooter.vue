@@ -1,12 +1,19 @@
+<script setup lang="ts">
+import logo from "~/assets/images/logo.webp"
+const currentYear = new Date().getFullYear()
+</script>
+
 <template>
-  <footer class="py-12 px-4 border-t border-default/30 bg-default/50">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="text-muted text-sm">© {{ new Date().getFullYear() }} Weave CV. All rights reserved.</div>
-        <div class="flex gap-6 text-sm">
-          <ULink to="/login" class="text-muted hover:text-primary transition-colors"> Sign In </ULink>
-          <ULink to="/register" class="text-muted hover:text-primary transition-colors"> Sign Up </ULink>
+  <footer class="bg-default text-inverted">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center justify-center text-center">
+        <div class="flex items-center gap-2 mb-4">
+          <img :src="logo" alt="Weave CV" class="w-36" />
         </div>
+        <p class="text-default/70 mb-6 max-w-md">Create professional resumes that get you hired.</p>
+      </div>
+      <div class="border-t border-default/30 pt-8 text-center text-muted">
+        <p>&copy; {{ currentYear }} Weave CV. All rights reserved.</p>
       </div>
     </div>
   </footer>

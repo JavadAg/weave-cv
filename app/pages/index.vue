@@ -4,7 +4,6 @@ import CTASection from "~/components/landing/CTASection.vue"
 import FeaturesSection from "~/components/landing/FeaturesSection.vue"
 import HeroSection from "~/components/landing/HeroSection.vue"
 import LandingFooter from "~/components/landing/LandingFooter.vue"
-import { LANDING_BENEFITS, LANDING_FEATURES } from "~/constants/landing"
 
 useHead({
   title: "Weave CV - Create Professional Resumes",
@@ -40,8 +39,8 @@ useHead({
 <template>
   <div class="grid w-full">
     <HeroSection />
-    <FeaturesSection :features="LANDING_FEATURES" />
-    <BenefitsSection :benefits="LANDING_BENEFITS" />
+    <FeaturesSection />
+    <BenefitsSection />
     <CTASection />
     <LandingFooter />
   </div>

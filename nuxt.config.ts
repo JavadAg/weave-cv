@@ -11,7 +11,8 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "reka-ui/nuxt",
     "@pinia/nuxt",
-    "nuxt-tiptap-editor"
+    "nuxt-tiptap-editor",
+    "@nuxt/image"
   ],
   css: ["~/assets/css/tailwind.css"],
   vite: { plugins: [tailwindcss()] },
@@ -19,7 +20,7 @@ export default defineNuxtConfig({
     types: "~/types/database.types.ts",
     redirectOptions: {
       exclude: ["/", "/register"],
-      include: ["/dashboard", "/editor/:id"],
+      include: ["/dashboard", "/editor(/*)?", "/login"],
       login: "/login",
       callback: "/confirm"
     }
@@ -27,11 +28,6 @@ export default defineNuxtConfig({
   routeRules: {
     "/editor/**": {
       ssr: false
-    }
-  },
-  runtimeConfig: {
-    public: {
-      googleFontsKey: process.env.GOOGLE_FONT_APIKEY || ""
     }
   },
   app: {
