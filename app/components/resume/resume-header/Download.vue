@@ -67,15 +67,13 @@ const handleDownload = async () => {
     :disabled="props.disabled || downloading"
     color="neutral"
     variant="ghost"
+    :loading="downloading"
     size="lg"
     :icon="downloading ? 'i-lucide-loader-2' : 'i-lucide-download'"
-    :class="[
-      'transition-all duration-200 font-semibold rounded-lg',
-      !props.disabled && !downloading && 'hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:shadow-sm',
-      'min-w-[120px] justify-center',
-      downloading && '[&_svg]:animate-spin',
-      (props.disabled || downloading) && 'opacity-50 cursor-not-allowed'
-    ]"
+    :ui="{
+      leadingIcon: 'group-data-[state=loading]:animate-spin'
+    }"
+    :class="[!props.disabled && !downloading && 'hover:bg-elevated/50 hover:shadow-sm']"
     @click="handleDownload"
   >
     <span class="hidden sm:inline">{{ downloading ? "Generating..." : "Download PDF" }}</span>

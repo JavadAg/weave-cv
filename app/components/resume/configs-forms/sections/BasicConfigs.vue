@@ -8,14 +8,16 @@ import type { TSeparator, TVariant } from "~/utils/schemas/shared.schema"
 import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const { updateConfig } = configsStore
 
 const handleUpdate = (sectionType: string, key: string, value: unknown) => {
   updateConfig(`${sectionType}.${key}`, value)
 }
 
 const getConfigValue = (sectionType: string, key: string) => {
-  const sectionConfig = configs[sectionType as keyof typeof configs]
+  const sectionConfig = configs.value[sectionType as keyof typeof configs.value]
   if (sectionConfig && typeof sectionConfig === "object" && key in sectionConfig) {
     return (sectionConfig as Record<string, unknown>)[key]
   }

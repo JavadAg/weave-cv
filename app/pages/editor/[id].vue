@@ -17,7 +17,9 @@ const id = computed(() => route.params.id as string)
 
 const resumeStore = useResumeStore()
 const { setContent, setTitle } = resumeStore
-const { configs, setConfigs } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const { setConfigs } = configsStore
 
 const pageTitle = computed(() => {
   return resumeStore.title ? `Edit ${resumeStore.title} - Weave CV` : "Resume Editor - Weave CV"
@@ -72,11 +74,9 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
 
 // load font family when configs are available
 watch(
-  () => configs.general.typography.fontFamily,
+  () => configs.value.general.typography.fontFamily,
   (fontFamily) => {
-    if (fontFamily) {
-      loadLocalFont(fontFamily)
-    }
+    loadLocalFont(fontFamily)
   },
   { immediate: true }
 )
@@ -92,7 +92,7 @@ const scale = ref(1)
       <div class="overflow-hidden">
         <SplitterGroup direction="horizontal" class="flex gap-1 h-full">
           <SplitterPanel :min-size="20" :default-size="25" :max-size="35">
-            <ResumeSectionsForms />
+            <ResumeSectionsForms :loading="pending" />
           </SplitterPanel>
           <SplitterResizeHandle class="w-3 rounded-2xl bg-default/70 flex justify-center items-center">
             <UIcon name="i-lucide-grip-vertical" class="text-primary" />

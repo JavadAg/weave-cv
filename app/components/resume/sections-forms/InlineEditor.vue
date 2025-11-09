@@ -18,12 +18,14 @@ const props = withDefaults(
   }
 )
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const { updateConfig } = configsStore
 
 const isEditing = ref(false)
 const localValue = ref(props.value)
 
-const iconConfig = computed(() => configs.general.headings.icon)
+const iconConfig = computed(() => configs.value.general.headings.icon)
 
 const currentIcon = computed(() => {
   if (!props.sectionType) return ""

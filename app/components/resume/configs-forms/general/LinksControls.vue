@@ -8,7 +8,9 @@ import { LinkIconType } from "~/utils/schemas/shared.schema"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const { updateConfig } = configsStore
 
 const iconTypeOptions = createOptionsFromEnum(LinkIconType.options, (value) => capitalize(value))
 

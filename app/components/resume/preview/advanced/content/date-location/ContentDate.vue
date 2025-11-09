@@ -13,10 +13,11 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { configs } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
 
-const layout = computed(() => configs.general.layout)
-const colors = computed(() => configs.general.colors)
+const layout = computed(() => configs.value.general.layout)
+const colors = computed(() => configs.value.general.colors)
 
 const columnColors = inject(ColumnColorsKey)
 

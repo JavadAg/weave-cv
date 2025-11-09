@@ -7,29 +7,35 @@ import ContentTitleSubtitle from "../content/ContentTitleSubtitle.vue"
 import DateLocationContent from "../content/DateLocationContent.vue"
 
 interface Props {
-  content: TAdvancedContent
+  sectionId: string
   contentId: string
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
 }
 
-const { content, contentId, sectionType } = defineProps<Props>()
+const props = defineProps<Props>()
+
+const resumeStore = useResumeStore()
+const { core } = storeToRefs(resumeStore)
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+
+const content = computed(
+  () => core.value[props.sectionId]!.contents.find((content) => content.id === props.contentId)! as TAdvancedContent
+)
 
 const { updateHeight } = usePreviewStore()
 
 const { elementRef } = useSelfResizeObserver((height) => {
-  updateHeight(contentId, height)
+  updateHeight(props.contentId, height)
 })
 
-const configsStore = useConfigsStore()
-const { configs } = storeToRefs(configsStore)
-
-const sectionConfigs = computed(() => configs.value[sectionType])
+const sectionConfigs = computed(() => configs.value[props.sectionType])
 
 const titleSubTitle = computed(() => {
   if (sectionConfigs.value.subTitleFirst) {
-    return [content.subtitle, content.title]
+    return [content.value.subtitle, content.value.title]
   }
-  return [content.title, content.subtitle]
+  return [content.value.title, content.value.subtitle]
 })
 
 const layout = computed(() => configs.value.general.layout)
@@ -52,7 +58,7 @@ const contentLayoutWidth = computed(() =>
     ? layout.value.contentLayout.contentFirstWidth
     : layout.value.contentLayout.dateFirstWidth
 )
-const hasDateOrLocation = computed(() => content.startDate || content.endDate || content.location)
+const hasDateOrLocation = computed(() => content.value.startDate || content.value.endDate || content.value.location)
 
 const dateLocationStyles = computed(() => ({
   display: hasDateOrLocation.value ? "block" : "none",

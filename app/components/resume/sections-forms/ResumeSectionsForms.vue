@@ -4,6 +4,13 @@ import type { TCoreSection } from "~/utils/schemas/content.schema"
 import AddSectionButton from "./AddSectionButton.vue"
 import SectionForm from "./advanced-section-form/SectionForm.vue"
 import PersonalSectionForm from "./personal/PersonalSectionForm.vue"
+import ResumeSectionsFormsSkeleton from "./ResumeSectionsFormsSkeleton.vue"
+
+interface Props {
+  loading: boolean
+}
+
+defineProps<Props>()
 
 const resumeStore = useResumeStore()
 const configsStore = useConfigsStore()
@@ -77,7 +84,9 @@ const renderSection = (sectionId: string, section: TCoreSection) =>
 </script>
 
 <template>
+  <ResumeSectionsFormsSkeleton v-if="loading" />
   <div
+    v-else
     class="flex flex-col gap-3 h-full hide-scrollbar bg-default overflow-y-auto rounded-xl border border-default/30 p-4"
   >
     <PersonalSectionForm :section="personal" />

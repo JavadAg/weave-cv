@@ -17,9 +17,10 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const { updateConfig } = configsStore
 
-// Check if fontSizeMultiplier exists in schema, otherwise use fontSize
 const fontSizeFieldName = props.schema
   ? extractNumberConstraintsFromPath(props.schema, "fontSizeMultiplier")
     ? "fontSizeMultiplier"
@@ -37,7 +38,7 @@ function onUpdate(suffix: string, value: unknown) {
 }
 
 function getNested(path: string): unknown {
-  let node: unknown = configs
+  let node: unknown = configs.value
   const parts = path.split(".")
   for (const key of parts) {
     if (node && typeof node === "object" && key in (node as Record<string, unknown>)) {
@@ -75,8 +76,8 @@ function getString(field: string): string {
       :model-value="getNumber(fontSizeFieldName)"
       :label="fontSizeFieldName === 'fontSizeMultiplier' ? 'Font Size Multiplier' : 'Font Size'"
       label-variant="stacked"
-      :min="fontSizeConstraints?.min ?? undefined"
-      :max="fontSizeConstraints?.max ?? undefined"
+      :min="fontSizeConstraints?.min"
+      :max="fontSizeConstraints?.max"
       :step="fontSizeFieldName === 'fontSizeMultiplier' ? 0.1 : 1"
       @update:model-value="(value) => onUpdate(fontSizeFieldName, value)"
     />

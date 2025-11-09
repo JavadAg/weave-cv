@@ -10,7 +10,9 @@ import SectionTypography from "../sections/SectionTypography.vue"
 import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const { updateConfig } = configsStore
 
 const handleUpdate = async (key: string, value: unknown) => {
   if (key === "fontFamily") {
@@ -27,7 +29,7 @@ const lineHeightConstraints = extractNumberConstraintsFromPath(TypographySchema,
 const letterSpacingConstraints = extractNumberConstraintsFromPath(TypographySchema, "letterSpacing")
 
 onMounted(async () => {
-  await preloadLocalFont(configs.general.typography.fontFamily)
+  await preloadLocalFont(configs.value.general.typography.fontFamily)
 })
 </script>
 

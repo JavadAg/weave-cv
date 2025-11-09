@@ -48,12 +48,7 @@ const handleSave = async () => {
     variant="solid"
     size="lg"
     icon="i-lucide-save"
-    :class="[
-      'transition-all duration-200 font-semibold rounded-lg',
-      'hover:shadow-md hover:brightness-105 active:brightness-95',
-      'min-w-[120px] justify-center',
-      props.saving || props.disabled ? 'opacity-70 cursor-not-allowed' : ''
-    ]"
+    :class="[props.saving || props.disabled ? 'opacity-70 cursor-not-allowed' : '']"
     @click="handleSave"
   >
     <span class="hidden sm:inline">{{ props.saving ? "Saving..." : "Save Changes" }}</span>
