@@ -29,8 +29,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody<UpdateResumeBody>(event)
 
   if (!body.title || typeof body.title !== "string") {
-    console.log("Title is required and must be a string", body.title)
-
     throw createError({
       statusCode: 400,
       statusMessage: "Title is required and must be a string"
