@@ -3,6 +3,7 @@ import ZoomComponent from "~/components/ZoomComponent.vue"
 import { generateSectionsOrder } from "~/utils/preview/core/layoutGenerator"
 import { sizeToPx } from "~/utils/preview/helpers"
 import RenderPages from "./pages/RenderPages.vue"
+import ResumePreviewSkeleton from "./ResumePreviewSkeleton.vue"
 
 interface Props {
   loading: boolean
@@ -43,9 +44,8 @@ watch(width, fitWidth)
   <div ref="container" class="overflow-y-auto h-full hide-scrollbar">
     <ZoomComponent ref="zoom" :scale="scale">
       <RenderPages v-if="!loading" :pages="pages" />
-      <div v-else class="h-full flex justify-center items-center">
-        <UIcon name="i-lucide-eye" class="size-12 text-emerald-500 animate-pulse" />
-        <p class="text-muted font-medium">Loading preview...</p>
+      <div v-else class="flex justify-center items-start">
+        <ResumePreviewSkeleton />
       </div>
     </ZoomComponent>
   </div>
