@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DUMMY_ADVANCED_SECTION_ITEM, DUMMY_BASIC_SECTION_ITEM } from "~/constants/dummyData"
+import { ADVANCED_SECTION_ITEM, BASIC_SECTION_ITEM } from "~/constants/singleContent"
 import type {
   BasicSectionTypeSchema,
   TAdvancedContent,
@@ -27,8 +27,8 @@ const handleAddContent = () => {
   const newContent: TAdvancedContent | TBasicContent = {
     id: `${props.section.type}-${Date.now()}`,
     ...(isAdvancedSection.value
-      ? DUMMY_ADVANCED_SECTION_ITEM[props.section.type as (typeof AdvancedSectionTypeSchema.options)[number]]
-      : DUMMY_BASIC_SECTION_ITEM[props.section.type as (typeof BasicSectionTypeSchema.options)[number]])
+      ? ADVANCED_SECTION_ITEM[props.section.type as (typeof AdvancedSectionTypeSchema.options)[number]]
+      : BASIC_SECTION_ITEM[props.section.type as (typeof BasicSectionTypeSchema.options)[number]])
   }
 
   updateContent(`${props.sectionId}.contents`, [...props.section.contents, newContent])

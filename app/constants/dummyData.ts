@@ -2,104 +2,6 @@ import type { TAdvancedContent, TBasicContent, TCoreSections, TPersonalContent }
 
 export const DUMMY_TITLE = "Untitled Resume"
 
-export const DUMMY_SUMMARY_ITEM: Omit<TBasicContent, "id"> = {
-  isHidden: false,
-  title: "Professional Summary",
-  description:
-    "Dedicated software engineer with expertise in full-stack development and cloud architecture. Proven track record of delivering scalable solutions and leading technical teams in fast-paced environments."
-}
-
-export const DUMMY_EXPERIENCE_ITEM: Omit<TAdvancedContent, "id"> = {
-  isHidden: false,
-  url: "https://innovatecorp.com",
-  subtitle: "InnovateCorp Solutions",
-  title: "Senior Software Engineer",
-  startDate: "2022-03-01",
-  endDate: "2024-08-01",
-  present: false,
-  location: "Austin, TX",
-  description:
-    "<ul><li><p>Led development of microservices architecture serving 100K+ daily users.</p></li><li><p>Mentored junior developers and established code review best practices.</p></li><li><p>Implemented CI/CD pipelines reducing deployment time by 60%.</p></li></ul>"
-}
-
-export const DUMMY_EDUCATION_ITEM: Omit<TAdvancedContent, "id"> = {
-  isHidden: false,
-  subtitle: "Stanford University",
-  title: "Master of Science in Software Engineering",
-  startDate: "2017-09-01",
-  endDate: "2019-05-01",
-  location: "Stanford, CA",
-  description:
-    "<ul><li><p>Specialized in distributed systems and machine learning applications</p></li><li><p>Graduated Magna Cum Laude with GPA 3.8/4.0</p></li></ul>"
-}
-
-export const DUMMY_COURSE_ITEM: Omit<TAdvancedContent, "id"> = {
-  isHidden: false,
-  title: "Advanced React Patterns",
-  subtitle: "Frontend Masters",
-  startDate: "2023-06-01",
-  endDate: "2023-08-01",
-  present: false,
-  location: "Online",
-  description:
-    "<ul><li><p>Mastered advanced React concepts including hooks, context, and performance optimization</p></li><li><p>Built complex applications using modern React ecosystem tools</p></li></ul>"
-}
-
-export const DUMMY_AWARD_ITEM: Omit<TAdvancedContent, "id"> = {
-  isHidden: false,
-  title: "Excellence in Innovation",
-  subtitle: "Tech Industry Awards",
-  startDate: "2023-11-01",
-  endDate: "2023-11-01",
-  present: false,
-  location: "San Francisco, CA",
-  description: "Recognized for outstanding contribution to open-source projects and community building"
-}
-
-export const DUMMY_PROJECT_ITEM: Omit<TAdvancedContent, "id"> = {
-  title: "CloudSync Platform",
-  subtitle: "Enterprise Data Synchronization",
-  isHidden: false,
-  startDate: "2023-01-01",
-  endDate: "2023-12-01",
-  url: "https://cloudsync.enterprise.com",
-  description:
-    "<ul><li><p>Architected real-time data synchronization platform for enterprise clients.</p></li><li><p>Implemented advanced conflict resolution algorithms with 99.9% accuracy.</p></li><li><p>Scaled to handle 1M+ concurrent connections using Kubernetes.</p></li></ul>"
-}
-
-export const DUMMY_SKILL_ITEM: Omit<TBasicContent, "id"> = {
-  isHidden: false,
-  title: "Backend Technologies",
-  description: "Node.js, Python, Go, PostgreSQL, Redis"
-}
-
-export const DUMMY_LANGUAGE_ITEM: Omit<TBasicContent, "id"> = {
-  isHidden: false,
-  title: "French",
-  description: "Conversational"
-}
-
-export const DUMMY_CERTIFICATE_ITEM: Omit<TBasicContent, "id"> = {
-  isHidden: false,
-  title: "AWS Solutions Architect",
-  description: "Professional certification in cloud architecture and deployment"
-}
-
-export const DUMMY_BASIC_SECTION_ITEM = {
-  skills: DUMMY_SKILL_ITEM,
-  summary: DUMMY_SUMMARY_ITEM,
-  languages: DUMMY_LANGUAGE_ITEM,
-  certificates: DUMMY_CERTIFICATE_ITEM
-}
-
-export const DUMMY_ADVANCED_SECTION_ITEM = {
-  educations: DUMMY_EDUCATION_ITEM,
-  experiences: DUMMY_EXPERIENCE_ITEM,
-  projects: DUMMY_PROJECT_ITEM,
-  awards: DUMMY_AWARD_ITEM,
-  courses: DUMMY_COURSE_ITEM
-}
-
 export const DUMMY_PERSONAL_SECTION: TPersonalContent = {
   title: "Sarah Johnson",
   subtitle: "Senior Software Engineer",
@@ -137,7 +39,21 @@ export const DUMMY_SUMMARY_DATA: TBasicContent[] = [
     isHidden: false,
     title: "Professional Summary",
     description:
-      "<p>Dedicated software engineer with expertise in full-stack development and cloud architecture. Proven track record of delivering scalable solutions and leading technical teams in fast-paced environments.</p>"
+      "<p>Dedicated software engineer with expertise in full-stack development and cloud architecture. Proven track record of delivering scalable solutions and leading technical teams in fast-paced environments. Passionate about creating innovative solutions that solve real-world problems.</p>"
+  },
+  {
+    id: "summary-2",
+    isHidden: false,
+    title: "Key Achievements",
+    description:
+      "<p>Led development teams of 5-10 engineers, reduced deployment time by 60%, and scaled applications to handle 1M+ concurrent users. Published 3 open-source libraries with 10K+ GitHub stars combined.</p>"
+  },
+  {
+    id: "summary-3",
+    isHidden: true,
+    title: "Personal Statement",
+    description:
+      "<p>Committed to continuous learning and sharing knowledge through technical blogs, conference talks, and mentorship programs.</p>"
   }
 ]
 
@@ -145,39 +61,26 @@ export const DUMMY_EXPERIENCE_DATA: TAdvancedContent[] = [
   {
     id: "experience-1",
     isHidden: false,
-    url: "",
-    subtitle: "InnovateCorp Solutions",
-    title: "Senior Software Engineer",
+    subtitle: "Amazon",
+    title: "Software Engineer",
     startDate: "2022-03-01",
-    endDate: "2024-08-01",
-    present: false,
-    location: "Austin, TX",
+    endDate: "2024-03-01",
+    present: true,
+    location: "Seattle, WA",
     description:
-      "<ul><li><p><b>Led</b> development of microservices architecture serving 100K+ daily users.</p></li><li><p>Mentored junior developers and established code review best practices.</p></li><li><p>Implemented CI/CD pipelines reducing deployment time by 60%.</p></li></ul>"
+      "<ul><li><p>Led development of microservices architecture serving 100K+ daily users.</p></li><li><p>Mentored junior developers and established code review best practices.</p></li><li><p>Implemented CI/CD pipelines reducing deployment time by 60%.</p></li><li><p>Architected scalable solutions using AWS, Docker, and Kubernetes.</p></li></ul>"
   },
   {
     id: "experience-2",
     isHidden: false,
-    url: "https://techventures.com",
-    subtitle: "TechVentures Inc",
-    title: "Full-Stack Developer",
+    subtitle: "Google",
+    title: "Senior Software Engineer",
     startDate: "2020-07-01",
     endDate: "2022-02-01",
-    location: "Seattle, WA",
+    present: false,
+    location: "San Francisco, CA",
     description:
-      "<ul><li><p>Developed RESTful APIs using Node.js and Express framework.</p></li><li><p>Built responsive frontend applications with React and TypeScript.</p></li><li><p>Collaborated with UX designers to implement pixel-perfect interfaces.</p></li></ul>"
-  },
-  {
-    id: "experience-3",
-    isHidden: false,
-    url: "https://startupaccelerator.io",
-    subtitle: "Startup Accelerator",
-    title: "Junior Developer",
-    startDate: "2019-06-01",
-    endDate: "2020-06-01",
-    location: "Denver, CO",
-    description:
-      "<ul><li><p>Contributed to early-stage product development using modern web technologies.</p></li><li><p>Participated in agile development processes and sprint planning.</p></li><li><p>Gained experience with cloud platforms and DevOps practices.</p></li></ul>"
+      "<ul><li><p>Developed RESTful APIs using Node.js and Express framework.</p></li><li><p>Built responsive frontend applications with React and TypeScript.</p></li><li><p>Collaborated with UX designers to implement pixel-perfect interfaces.</p></li><li><p>Optimized database queries improving response time by 40%.</p></li></ul>"
   }
 ]
 
@@ -186,23 +89,13 @@ export const DUMMY_EDUCATION_DATA: TAdvancedContent[] = [
     id: "education-1",
     isHidden: false,
     subtitle: "Stanford University",
-    title: "Master of Science in Software Engineering",
+    title: "Master of Science in Computer Science",
     startDate: "2017-09-01",
     endDate: "2019-05-01",
+    present: false,
     location: "Stanford, CA",
     description:
-      "<ul><li><p>Specialized in distributed systems and machine learning applications</p></li><li><p>Graduated Magna Cum Laude with GPA 3.8/4.0</p></li></ul>"
-  },
-  {
-    id: "education-2",
-    isHidden: false,
-    subtitle: "University of California",
-    title: "Bachelor of Science in Computer Science",
-    startDate: "2013-09-01",
-    endDate: "2017-06-01",
-    location: "Berkeley, CA",
-    description:
-      "<ul><li><p>Focus on algorithms, data structures, and software engineering principles</p></li><li><p>Completed senior capstone project on distributed computing</p></li></ul>"
+      "<ul><li><p>Specialized in distributed systems and machine learning applications</p></li><li><p>Graduated Magna Cum Laude with GPA 3.8/4.0</p></li><li><p>Relevant coursework: Advanced Algorithms, Cloud Computing, Distributed Systems</p></li></ul>"
   }
 ]
 
@@ -210,14 +103,18 @@ export const DUMMY_CERTIFICATE_DATA: TBasicContent[] = [
   {
     id: "certificate-1",
     isHidden: false,
-    title: "AWS Solutions Architect",
-    description: "Professional certification in cloud architecture and deployment"
+    title: "Certificate Title",
+    description:
+      "Professional certification in cloud architecture and deployment. Validated expertise in designing and deploying scalable systems on AWS.",
+    url: "https://aws.amazon.com/certification/"
   },
   {
     id: "certificate-2",
     isHidden: false,
-    title: "Google Cloud Professional Developer",
-    description: "Advanced certification in Google Cloud Platform development"
+    title: "Certificate Title",
+    description:
+      "Advanced certification in Google Cloud Platform development. Demonstrates ability to build and deploy applications on GCP.",
+    url: "https://cloud.google.com/certification"
   }
 ]
 
@@ -231,20 +128,9 @@ export const DUMMY_COURSE_DATA: TAdvancedContent[] = [
     endDate: "2023-08-01",
     present: false,
     location: "Online",
+    url: "https://frontendmasters.com",
     description:
-      "<ul><li><p>Mastered advanced React concepts including hooks, context, and performance optimization</p></li><li><p>Built complex applications using modern React ecosystem tools</p></li></ul>"
-  },
-  {
-    id: "course-2",
-    isHidden: false,
-    title: "System Design Fundamentals",
-    subtitle: "Educative.io",
-    startDate: "2023-03-01",
-    endDate: "2023-05-01",
-    present: false,
-    location: "Online",
-    description:
-      "<ul><li><p>Learned scalable system architecture patterns and best practices</p></li><li><p>Designed distributed systems handling millions of requests</p></li></ul>"
+      "<ul><li><p>Mastered advanced React concepts including hooks, context, and performance optimization</p></li><li><p>Built complex applications using modern React ecosystem tools</p></li><li><p>Learned state management patterns with Redux and Zustand</p></li></ul>"
   }
 ]
 
@@ -258,18 +144,9 @@ export const DUMMY_AWARD_DATA: TAdvancedContent[] = [
     endDate: "2023-11-01",
     present: false,
     location: "San Francisco, CA",
-    description: "Recognized for outstanding contribution to open-source projects and community building"
-  },
-  {
-    id: "award-2",
-    isHidden: false,
-    title: "Best Technical Presentation",
-    subtitle: "Developer Conference 2023",
-    startDate: "2023-09-01",
-    endDate: "2023-09-01",
-    present: false,
-    location: "Chicago, IL",
-    description: "Awarded for innovative approach to microservices architecture and implementation"
+    url: "https://techindustryawards.com",
+    description:
+      "Recognized for outstanding contribution to open-source projects and community building. Awarded for leading innovative solutions in distributed systems."
   }
 ]
 
@@ -281,27 +158,27 @@ export const DUMMY_PROJECT_DATA: TAdvancedContent[] = [
     isHidden: false,
     startDate: "2023-01-01",
     endDate: "2023-12-01",
+    present: false,
+    location: "Remote",
     url: "https://cloudsync.enterprise.com",
     description:
-      "<ul><li><p>Architected real-time data synchronization platform for enterprise clients.</p></li><li><p>Implemented advanced conflict resolution algorithms with 99.9% accuracy.</p></li><li><p>Scaled to handle 1M+ concurrent connections using Kubernetes.</p></li></ul>"
-  },
-  {
-    id: "project-2",
-    title: "DevTools Suite",
-    subtitle: "Developer Productivity Platform",
-    isHidden: false,
-    startDate: "2022-06-01",
-    endDate: "2023-02-01",
-    url: "https://devtools.suite.com",
-    description:
-      "<ul><li><p>Created comprehensive toolkit for streamlining development workflows.</p></li><li><p>Integrated with popular IDEs and version control systems.</p></li><li><p>Reduced development setup time by 70% for new team members.</p></li></ul>"
+      "<ul><li><p>Architected real-time data synchronization platform for enterprise clients.</p></li><li><p>Implemented advanced conflict resolution algorithms with 99.9% accuracy.</p></li><li><p>Scaled to handle 1M+ concurrent connections using Kubernetes.</p></li><li><p>Built with Node.js, PostgreSQL, Redis, and deployed on AWS.</p></li></ul>"
   }
 ]
 
 export const DUMMY_LANGUAGE_DATA: TBasicContent[] = [
-  { id: "language-1", isHidden: false, title: "English", description: "Native" },
-  { id: "language-2", isHidden: false, title: "French", description: "Conversational" },
-  { id: "language-3", isHidden: false, title: "Spanish", description: "Basic" }
+  {
+    id: "language-1",
+    isHidden: false,
+    title: "English",
+    description: "Native proficiency. Fluent in both written and spoken communication."
+  },
+  {
+    id: "language-2",
+    isHidden: false,
+    title: "French",
+    description: "Conversational. Can communicate effectively in professional and social settings."
+  }
 ]
 
 export const DUMMY_SKILL_DATA: TBasicContent[] = [
@@ -310,28 +187,21 @@ export const DUMMY_SKILL_DATA: TBasicContent[] = [
     title: "Backend Technologies",
     isHidden: false,
     description:
-      "<ul><li><p>Node.js</p></li><li><p>Python</p></li><li><p>Go</p></li><li><p>PostgreSQL</p></li><li><p>Redis</p></li></ul>"
+      "<ul><li><p>Node.js</p></li><li><p>Python</p></li><li><p>Go</p></li><li><p>Java</p></li><li><p>PostgreSQL</p></li><li><p>Redis</p></li><li><p>GraphQL</p></li><li><p>REST APIs</p></li></ul>"
   },
   {
     id: "skill-2",
     title: "Frontend Frameworks",
     isHidden: false,
     description:
-      "<ul><li><p>React</p></li><li><p>Vue.js</p></li><li><p>Angular</p></li><li><p>TypeScript</p></li><li><p>Next.js</p></li></ul>"
+      "<ul><li><p>React</p></li><li><p>Vue.js</p></li><li><p>Angular</p></li><li><p>TypeScript</p></li><li><p>Next.js</p></li><li><p>Nuxt.js</p></li><li><p>Tailwind CSS</p></li><li><p>SCSS/SASS</p></li></ul>"
   },
   {
     id: "skill-3",
     title: "Cloud & DevOps",
     isHidden: false,
     description:
-      "<ul><li><p>AWS</p></li><li><p>Docker</p></li><li><p>Kubernetes</p></li><li><p>Terraform</p></li><li><p>Jenkins</p></li></ul>"
-  },
-  {
-    id: "skill-4",
-    title: "Data & Analytics",
-    isHidden: false,
-    description:
-      "<ul><li><p>SQL</p></li><li><p>MongoDB</p></li><li><p>Elasticsearch</p></li><li><p>Apache Kafka</p></li></ul>"
+      "<ul><li><p>AWS (EC2, S3, Lambda, RDS)</p></li><li><p>Google Cloud Platform</p></li><li><p>Docker</p></li><li><p>Kubernetes</p></li><li><p>Terraform</p></li><li><p>Jenkins</p></li><li><p>GitHub Actions</p></li><li><p>CI/CD Pipelines</p></li></ul>"
   }
 ]
 
