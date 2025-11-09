@@ -11,8 +11,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "reka-ui/nuxt",
     "@pinia/nuxt",
-    "nuxt-tiptap-editor",
-    "nuxt-color-picker"
+    "nuxt-tiptap-editor"
   ],
   css: ["~/assets/css/tailwind.css"],
   vite: { plugins: [tailwindcss()] },

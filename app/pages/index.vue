@@ -35,19 +35,6 @@ useHead({
     }
   ]
 })
-
-const user = useSupabaseUser()
-const router = useRouter()
-
-watch(
-  user,
-  (newUser) => {
-    if (newUser) {
-      router.push("/dashboard")
-    }
-  },
-  { immediate: true }
-)
 </script>
 
 <template>

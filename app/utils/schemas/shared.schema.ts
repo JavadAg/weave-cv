@@ -40,6 +40,11 @@ export const VariantSimple = Variant.exclude(["grid"])
 export const LinkStyle = z.enum(["underline", "pill", "iconLeft", "iconRight", "none"])
 export const IconStyle = z.enum(["simple", "filledRounded", "filledSquare", "outlineRounded", "outlineSquare"])
 
+export const HexColorSchema = z
+  .string()
+  .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Invalid hex color format. Must be #RRGGBB or #RGB")
+  .max(7, "Hex color must be 7 characters (including #)")
+
 export type TFontStyle = z.infer<typeof FontStyle>
 export type TFontCase = z.infer<typeof FontCase>
 export type TFontWeight = z.infer<typeof FontWeight>
@@ -55,3 +60,4 @@ export type TIconStyle = z.infer<typeof IconStyle>
 export type TListType = z.infer<typeof ListType>
 export type TAdvancedSectionVariant = z.infer<typeof AdvancedSectionVariant>
 export type TLinkIconType = z.infer<typeof LinkIconType>
+export type THexColor = z.infer<typeof HexColorSchema>

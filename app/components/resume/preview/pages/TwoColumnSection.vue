@@ -12,7 +12,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex h-full">
     <RenderColumn side="left">
       <component :is="item.component" v-for="(item, itemIndex) in leftCol" :key="itemIndex" />
     </RenderColumn>

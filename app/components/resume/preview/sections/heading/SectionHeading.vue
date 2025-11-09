@@ -21,17 +21,18 @@ const { elementRef } = useSelfResizeObserver((height) => {
 })
 
 const resumeStore = useResumeStore()
-const { configs } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
 const { core } = storeToRefs(resumeStore)
 
 const section = computed(() => {
   return core.value[props.sectionId]
 })
 
-const headingConfigs = computed(() => configs.general.headings)
-const colorsConfigs = computed(() => configs.general.colors)
-const layoutConfigs = computed(() => configs.general.layout)
-const typographyConfigs = computed(() => configs.general.typography)
+const headingConfigs = computed(() => configs.value.general.headings)
+const colorsConfigs = computed(() => configs.value.general.colors)
+const layoutConfigs = computed(() => configs.value.general.layout)
+const typographyConfigs = computed(() => configs.value.general.typography)
 
 const columnColors = inject(ColumnColorsKey)
 

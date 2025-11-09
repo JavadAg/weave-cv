@@ -4,7 +4,9 @@ import { ApplyableColorItems } from "~/utils/schemas/configs/generalConfigs.sche
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 import ConfigsContainer from "../wrapper/ConfigsContainer.vue"
 
-const { configs, updateConfig } = useConfigsStore()
+const configsStore = useConfigsStore()
+const { updateConfig } = configsStore
+const { configs } = storeToRefs(configsStore)
 
 const handleUpdate = (key: string, value: unknown) => {
   updateConfig(`general.colors.${key}`, value)
@@ -17,7 +19,7 @@ const applyableColorItemsOptions = ApplyableColorItems.options.map((item) => ({
 
 const applyModel = computed({
   get: () =>
-    configs.general.colors.apply.map((item) => ({
+    configs.value.general.colors.apply.map((item) => ({
       label: (item.charAt(0).toUpperCase() + item.slice(1)) as string,
       value: item
     })),
@@ -44,19 +46,19 @@ const applyModel = computed({
 
     <ConfigWrapper title="Primary" variant="grid">
       <ColorPicker
-        v-model="configs.general.colors.primary.textColor"
+        :model-value="configs.general.colors.primary.textColor"
         label="Text Color"
         :color="configs.general.colors.primary.textColor"
         @update:model-value="(value) => handleUpdate('primary.textColor', value)"
       />
       <ColorPicker
-        v-model="configs.general.colors.primary.bgColor"
+        :model-value="configs.general.colors.primary.bgColor"
         label="Background Color"
         :color="configs.general.colors.primary.bgColor"
         @update:model-value="(value) => handleUpdate('primary.bgColor', value)"
       />
       <ColorPicker
-        v-model="configs.general.colors.primary.accentColor"
+        :model-value="configs.general.colors.primary.accentColor"
         label="Accent Color"
         :color="configs.general.colors.primary.accentColor"
         @update:model-value="(value) => handleUpdate('primary.accentColor', value)"
@@ -65,19 +67,19 @@ const applyModel = computed({
 
     <ConfigWrapper title="Secondary" variant="grid">
       <ColorPicker
-        v-model="configs.general.colors.secondary.textColor"
+        :model-value="configs.general.colors.secondary.textColor"
         label="Text Color"
         :color="configs.general.colors.secondary.textColor"
         @update:model-value="(value) => handleUpdate('secondary.textColor', value)"
       />
       <ColorPicker
-        v-model="configs.general.colors.secondary.bgColor"
+        :model-value="configs.general.colors.secondary.bgColor"
         label="Background Color"
         :color="configs.general.colors.secondary.bgColor"
         @update:model-value="(value) => handleUpdate('secondary.bgColor', value)"
       />
       <ColorPicker
-        v-model="configs.general.colors.secondary.accentColor"
+        :model-value="configs.general.colors.secondary.accentColor"
         label="Accent Color"
         :color="configs.general.colors.secondary.accentColor"
         @update:model-value="(value) => handleUpdate('secondary.accentColor', value)"
