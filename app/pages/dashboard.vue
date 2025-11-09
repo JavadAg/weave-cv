@@ -36,19 +36,12 @@ useHead({
 
 const { data, pending, error, refresh } = useFetch<TResume[]>("/api/resumes", {
   method: "GET",
-  lazy: true
+  lazy: true,
+  key: "dashboard-resumes"
 })
 
 const resumeCount = computed(() => data.value?.length ?? 0)
 const hasReachedLimit = computed(() => resumeCount.value >= MAX_RESUMES_PER_USER)
-
-const handleRefresh = async () => {
-  await refresh()
-}
-
-const handleResumeCreated = async () => {
-  await refresh()
-}
 </script>
 
 <template>
@@ -58,7 +51,7 @@ const handleResumeCreated = async () => {
         <h1 class="text-3xl font-bold text-default">My Resumes</h1>
         <p class="text-muted mt-2">Manage and edit your resumes</p>
       </div>
-      <CreateResumeButton :disabled="hasReachedLimit" @created="handleResumeCreated" />
+      <CreateResumeButton :disabled="hasReachedLimit" @created="() => refresh()" />
     </div>
     <UAlert
       v-if="hasReachedLimit"
@@ -81,7 +74,7 @@ const handleResumeCreated = async () => {
       v-else-if="data && data.length > 0"
       :resumes="data"
       :resume-count="resumeCount"
-      @refresh="handleRefresh"
+      @refresh="() => refresh()"
     />
   </div>
 </template>
