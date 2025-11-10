@@ -26,9 +26,7 @@ const orderedSections = computed(() => {
     return []
   }
 
-  const visibleSections = Object.entries(core.value).filter(
-    ([_, section]) => (section as TCoreSection).isSectionVisible
-  ) as Array<[string, TCoreSection]>
+  const sections = Object.entries(core.value)
 
   if (isTwoColumnLayout.value) {
     const leftOrder = configs.value.general.layout.order.twoCol.left || []
@@ -39,14 +37,14 @@ const orderedSections = computed(() => {
     const processedKeys = new Set<string>()
 
     for (const sectionId of allOrderedIds) {
-      const sectionEntry = visibleSections.find(([key]) => key === sectionId)
+      const sectionEntry = sections.find(([key]) => key === sectionId)
       if (sectionEntry && !processedKeys.has(sectionEntry[0])) {
         ordered.push(sectionEntry)
         processedKeys.add(sectionEntry[0])
       }
     }
 
-    for (const sectionEntry of visibleSections) {
+    for (const sectionEntry of sections) {
       if (!processedKeys.has(sectionEntry[0])) {
         ordered.push(sectionEntry)
       }
@@ -57,21 +55,21 @@ const orderedSections = computed(() => {
     const sectionOrder = configs.value.general.layout.order.oneCol || []
 
     if (sectionOrder.length === 0) {
-      return visibleSections
+      return sections
     }
 
     const ordered: Array<[string, TCoreSection]> = []
     const processedKeys = new Set<string>()
 
     for (const sectionId of sectionOrder) {
-      const sectionEntry = visibleSections.find(([key]) => key === sectionId)
+      const sectionEntry = sections.find(([key]) => key === sectionId)
       if (sectionEntry && !processedKeys.has(sectionEntry[0])) {
         ordered.push(sectionEntry)
         processedKeys.add(sectionEntry[0])
       }
     }
 
-    for (const sectionEntry of visibleSections) {
+    for (const sectionEntry of sections) {
       if (!processedKeys.has(sectionEntry[0])) {
         ordered.push(sectionEntry)
       }

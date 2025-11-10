@@ -62,14 +62,7 @@ const handleDeleteContent = (id: string) => {
           @delete="handleDeleteContent(content.id)"
         />
       </div>
-      <UButton
-        v-if="!isSummarySection"
-        variant="subtle"
-        class="flex justify-center items-center"
-        @click="handleAddContent"
-      >
-        + Add Content
-      </UButton>
+      <UButton v-if="!isSummarySection" variant="subtle" @click="handleAddContent"> + Add Content </UButton>
     </div>
   </SectionFormWrapper>
 </template>

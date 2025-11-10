@@ -6,7 +6,7 @@ export const SUMMARY_ITEM: Omit<TBasicContent, "id"> = {
   isHidden: false,
   title: "Professional Summary",
   description:
-    "Dedicated software engineer with expertise in full-stack development and cloud architecture. Proven track record of delivering scalable solutions and leading technical teams in fast-paced environments."
+    "<p>Dedicated software engineer with expertise in full-stack development and cloud architecture. Proven track record of delivering scalable solutions and leading technical teams in fast-paced environments.</p>"
 }
 
 export const EXPERIENCE_ITEM: Omit<TAdvancedContent, "id"> = {
@@ -53,7 +53,7 @@ export const AWARD_ITEM: Omit<TAdvancedContent, "id"> = {
   endDate: "2023-11-01",
   present: false,
   location: "San Francisco, CA",
-  description: "Recognized for outstanding contribution to open-source projects and community building"
+  description: "<p>Recognized for outstanding contribution to open-source projects and community building</p>"
 }
 
 export const PROJECT_ITEM: Omit<TAdvancedContent, "id"> = {
@@ -70,19 +70,19 @@ export const PROJECT_ITEM: Omit<TAdvancedContent, "id"> = {
 export const SKILL_ITEM: Omit<TBasicContent, "id"> = {
   isHidden: false,
   title: "Backend Technologies",
-  description: "Node.js, Python, Go, PostgreSQL, Redis"
+  description: "<p>Node.js, Python, Go, PostgreSQL, Redis</p>"
 }
 
 export const LANGUAGE_ITEM: Omit<TBasicContent, "id"> = {
   isHidden: false,
   title: "French",
-  description: "Conversational"
+  description: "<p>Conversational</p>"
 }
 
 export const CERTIFICATE_ITEM: Omit<TBasicContent, "id"> = {
   isHidden: false,
   title: "AWS Solutions Architect",
-  description: "Professional certification in cloud architecture and deployment"
+  description: "<p>Professional certification in cloud architecture and deployment</p>"
 }
 
 export const BASIC_SECTION_ITEM = {

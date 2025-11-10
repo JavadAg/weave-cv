@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { TResume } from "~/types/resume.types"
+import type { TCoreSection, TCoreSections } from "~/utils/schemas/content.schema"
 
 interface Props {
   personal: TResume["content"]["personal"]
-  core: TResume["content"]["core"]
+  core: TResume["content"]["core"] | null
   configs: TResume["configs"]
   resumeId: string
   resumeTitle?: string
@@ -23,11 +24,15 @@ const visibleDetails = computed(() => {
 })
 
 const summaryContent = computed(() => {
-  const sections = Object.values(props.core || {})
-  const summary = sections.find((s) => s.type === "summary" && s.isSectionVisible)
+  if (!props.core) return null
+  const core = props.core as TCoreSections
+  const sections: TCoreSection[] = Object.values(core)
+  const summary = sections.find(
+    (s): s is TCoreSection & { type: "summary" } => s.type === "summary" && s.isSectionVisible
+  )
   if (summary?.contents && summary.contents.length > 0) {
     const firstContent = summary.contents.find((c) => !c.isHidden)
-    if (firstContent?.description) {
+    if (firstContent && "description" in firstContent && firstContent.description) {
       const htmlTagRegex = /<[^>]*>/g
       const text = firstContent.description.replaceAll(htmlTagRegex, "").trim()
       return text.length > 120 ? text.slice(0, 120) + "..." : text
@@ -37,11 +42,18 @@ const summaryContent = computed(() => {
 })
 
 const firstExperience = computed(() => {
-  const sections = Object.values(props.core || {})
-  const experience = sections.find((s) => (s.type === "experiences" || s.type === "educations") && s.isSectionVisible)
+  if (!props.core) return null
+  const core = props.core as TCoreSections
+  const sections: TCoreSection[] = Object.values(core)
+  const experience = sections.find(
+    (s): s is TCoreSection & { type: "experiences" | "educations" } =>
+      (s.type === "experiences" || s.type === "educations") && s.isSectionVisible
+  )
   if (experience?.contents && experience.contents.length > 0) {
     const firstContent = experience.contents.find((c) => !c.isHidden)
-    return firstContent?.title || null
+    if (firstContent && "title" in firstContent && firstContent.title) {
+      return firstContent.title
+    }
   }
   return null
 })

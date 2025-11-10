@@ -40,20 +40,6 @@ export const DUMMY_SUMMARY_DATA: TBasicContent[] = [
     title: "Professional Summary",
     description:
       "<p>Dedicated software engineer with expertise in full-stack development and cloud architecture. Proven track record of delivering scalable solutions and leading technical teams in fast-paced environments. Passionate about creating innovative solutions that solve real-world problems.</p>"
-  },
-  {
-    id: "summary-2",
-    isHidden: false,
-    title: "Key Achievements",
-    description:
-      "<p>Led development teams of 5-10 engineers, reduced deployment time by 60%, and scaled applications to handle 1M+ concurrent users. Published 3 open-source libraries with 10K+ GitHub stars combined.</p>"
-  },
-  {
-    id: "summary-3",
-    isHidden: true,
-    title: "Personal Statement",
-    description:
-      "<p>Committed to continuous learning and sharing knowledge through technical blogs, conference talks, and mentorship programs.</p>"
   }
 ]
 
@@ -105,7 +91,7 @@ export const DUMMY_CERTIFICATE_DATA: TBasicContent[] = [
     isHidden: false,
     title: "Certificate Title",
     description:
-      "Professional certification in cloud architecture and deployment. Validated expertise in designing and deploying scalable systems on AWS.",
+      "<p>Professional certification in cloud architecture and deployment. Validated expertise in designing and deploying scalable systems on AWS.</p>",
     url: "https://aws.amazon.com/certification/"
   },
   {
@@ -113,7 +99,7 @@ export const DUMMY_CERTIFICATE_DATA: TBasicContent[] = [
     isHidden: false,
     title: "Certificate Title",
     description:
-      "Advanced certification in Google Cloud Platform development. Demonstrates ability to build and deploy applications on GCP.",
+      "<p>Advanced certification in Google Cloud Platform development. Demonstrates ability to build and deploy applications on GCP.</p>",
     url: "https://cloud.google.com/certification"
   }
 ]
@@ -146,7 +132,7 @@ export const DUMMY_AWARD_DATA: TAdvancedContent[] = [
     location: "San Francisco, CA",
     url: "https://techindustryawards.com",
     description:
-      "Recognized for outstanding contribution to open-source projects and community building. Awarded for leading innovative solutions in distributed systems."
+      "<p>Recognized for outstanding contribution to open-source projects and community building. Awarded for leading innovative solutions in distributed systems.</p>"
   }
 ]
 
@@ -171,13 +157,13 @@ export const DUMMY_LANGUAGE_DATA: TBasicContent[] = [
     id: "language-1",
     isHidden: false,
     title: "English",
-    description: "Native proficiency. Fluent in both written and spoken communication."
+    description: "<p>Native proficiency. Fluent in both written and spoken communication.</p>"
   },
   {
     id: "language-2",
     isHidden: false,
     title: "French",
-    description: "Conversational. Can communicate effectively in professional and social settings."
+    description: "<p>Conversational. Can communicate effectively in professional and social settings.</p>"
   }
 ]
 
