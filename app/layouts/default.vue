@@ -16,7 +16,7 @@ const isLandingPage = computed(() => route.path === "/")
         ]"
       >
         <NuxtLink to="/" class="flex h-full w-fit">
-          <NuxtImg src="/images/logo.webp" alt="Logo" width="120" height="40" loading="eager" format="webp" />
+          <NuxtImg src="/images/logo.webp" alt="Logo" loading="eager" format="webp" />
         </NuxtLink>
         <Theme />
       </div>
