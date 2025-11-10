@@ -63,6 +63,61 @@ const toggleOrderedList = () => {
 const setTextAlign = (alignment: "left" | "center" | "right" | "justify") => {
   props.editor?.chain().focus().setTextAlign(alignment).run()
 }
+
+const resetStyles = () => {
+  const e = unref(props.editor)
+  if (!e) return
+
+  const { from, to } = e.state.selection
+  const hasSelection = from !== to
+
+  if (hasSelection) {
+    const selectedText = e.state.doc.textBetween(from, to, " ")
+
+    e.chain()
+      .focus()
+      .deleteSelection()
+      .insertContent(selectedText)
+      .setParagraph()
+      .unsetAllMarks()
+      .setTextAlign("left")
+      .run()
+  } else {
+    e.chain().focus().setParagraph().unsetAllMarks().setTextAlign("left").run()
+  }
+
+  nextTick(() => {
+    const { view } = e
+    const editorElement = (view.dom.querySelector(".ProseMirror") as HTMLElement) || (view.dom as HTMLElement)
+
+    if (!editorElement) return
+
+    const allElements = editorElement.querySelectorAll("*")
+
+    for (const el of allElements) {
+      const htmlEl = el as HTMLElement
+
+      if (htmlEl.hasAttribute("style")) {
+        htmlEl.removeAttribute("style")
+      }
+
+      htmlEl.style.fontSize = ""
+      htmlEl.style.fontFamily = ""
+      htmlEl.style.fontWeight = ""
+      htmlEl.style.fontStyle = ""
+      htmlEl.style.color = ""
+      htmlEl.style.lineHeight = ""
+      htmlEl.style.letterSpacing = ""
+    }
+
+    e.chain()
+      .command(({ tr }) => {
+        tr.setMeta("addToHistory", false)
+        return true
+      })
+      .run()
+  })
+}
 </script>
 
 <template>
@@ -147,5 +202,9 @@ const setTextAlign = (alignment: "left" | "center" | "right" | "justify") => {
       :disabled="!editor.can().chain().focus().setTextAlign('justify').run()"
       @click="setTextAlign('justify')"
     />
+
+    <div class="w-px h-6 bg-border" />
+
+    <ToolbarButton icon="i-lucide-rotate-ccw" tooltip="Reset Styles" @click="resetStyles" />
   </div>
 </template>
