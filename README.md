@@ -1,75 +1,64 @@
-# Nuxt Minimal Starter
+# Weave CV
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A modern resume builder application built with Nuxt 3, Vue 3, and Supabase.
 
-## Setup
+## Features
 
-Make sure to install dependencies:
+- 🎨 10 Professional Templates
+- 📄 PDF Export
+- 🎨 Customizable Design (colors, fonts, layouts)
+- ☁️ Cloud Storage
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (or npm/yarn)
+- Supabase account
+
+### Installation
+
+1. Clone and install dependencies:
 
 ```bash
-# npm
-npm install
-
-# pnpm
+git clone https://github.com/javadag/weave-cv.git
+cd weave-cv
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+2. Create `.env` file:
 
-Start the development server on `http://localhost:3000`:
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_PROJECT_REF=
+```
+
+3. Start development server:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## Scripts
 
-Build the application for production:
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview production build
+- `pnpm update-types` - Update Supabase database types
 
-```bash
-# npm
-npm run build
+## Tech Stack
 
-# pnpm
-pnpm build
+- Nuxt 4, Vue 3, TypeScript
+- Supabase (Database & Auth)
+- Tailwind CSS, Nuxt UI
+- TipTap, Pinia, Puppeteer, Zod
 
-# yarn
-yarn build
+## Contributing
 
-# bun
-bun run build
-```
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-Locally preview production build:
+## License
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+MIT License - see [LICENSE](LICENSE) for details.
