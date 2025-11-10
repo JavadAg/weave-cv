@@ -12,8 +12,29 @@ export default defineNuxtConfig({
     "reka-ui/nuxt",
     "@pinia/nuxt",
     "nuxt-tiptap-editor",
-    "@nuxt/image"
+    "@nuxt/image",
+    "@vueuse/motion/nuxt"
   ],
+  runtimeConfig: {
+    public: {
+      motion: {
+        directives: {
+          "pop-bottom": {
+            initial: {
+              scale: 0,
+              opacity: 0,
+              y: 100
+            },
+            visible: {
+              scale: 1,
+              opacity: 1,
+              y: 0
+            }
+          }
+        }
+      }
+    }
+  },
   css: ["~/assets/css/tailwind.css"],
   vite: { plugins: [tailwindcss()] },
   supabase: {

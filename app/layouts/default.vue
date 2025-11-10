@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import logo from "~/assets/images/logo.webp"
 import Theme from "~/components/layout/Theme.vue"
 
 const route = useRoute()
@@ -17,7 +16,7 @@ const isLandingPage = computed(() => route.path === "/")
         ]"
       >
         <NuxtLink to="/" class="flex h-full w-fit">
-          <img :src="logo" alt="Logo" />
+          <NuxtImg src="/images/logo.webp" alt="Logo" width="120" height="40" loading="eager" format="webp" />
         </NuxtLink>
         <Theme />
       </div>
