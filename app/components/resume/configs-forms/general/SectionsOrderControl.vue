@@ -6,22 +6,24 @@ import { useResumeStore } from "~/stores/resume.store"
 import type { TCoreSection } from "~/utils/schemas/content.schema"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 
-const { configs, updateOrder } = useConfigsStore()
-const { core } = useResumeStore()
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+const resumeStore = useResumeStore()
+const { core } = storeToRefs(resumeStore)
 
 const isTwoColumnLayout = computed(() => {
-  return configs.general.layout.columns === "2"
+  return configs.value.general.layout.columns === "2"
 })
 
 const sections = computed(() => {
-  const sectionOrder = configs.general.layout.order.oneCol || []
+  const sectionOrder = configs.value.general.layout.order.oneCol || []
 
-  if (!core) {
+  if (!core.value) {
     return []
   }
 
   if (sectionOrder.length === 0) {
-    return Object.entries(core).filter(([_, section]) => (section as TCoreSection).isSectionVisible) as [
+    return Object.entries(core.value).filter(([_, section]) => (section as TCoreSection).isSectionVisible) as [
       string,
       TCoreSection
     ][]
@@ -29,9 +31,8 @@ const sections = computed(() => {
 
   return sectionOrder
     .map((sectionId: string) => {
-      // Find the section by ID that is visible
-      const section = core[sectionId] as TCoreSection | undefined
-      if (section && section.isSectionVisible) {
+      const section = core.value?.[sectionId]
+      if (section?.isSectionVisible) {
         return [sectionId, section] as [string, TCoreSection]
       }
       return null
@@ -40,14 +41,13 @@ const sections = computed(() => {
 })
 
 const leftColumnSections = computed(() => {
-  const leftSectionOrder = configs.general.layout.order.twoCol.left || []
-  if (!isTwoColumnLayout.value || !core) return []
+  const leftSectionOrder = configs.value.general.layout.order.twoCol.left || []
+  if (!isTwoColumnLayout.value || !core.value) return []
 
   return leftSectionOrder
     .map((sectionId: string) => {
-      // Find the section by ID that is visible
-      const section = core[sectionId] as TCoreSection | undefined
-      if (section && section.isSectionVisible) {
+      const section = core.value?.[sectionId]
+      if (section?.isSectionVisible) {
         return [sectionId, section] as [string, TCoreSection]
       }
       return null
@@ -56,14 +56,13 @@ const leftColumnSections = computed(() => {
 })
 
 const rightColumnSections = computed(() => {
-  const rightSectionOrder = configs.general.layout.order.twoCol.right || []
-  if (!isTwoColumnLayout.value || !core) return []
+  const rightSectionOrder = configs.value.general.layout.order.twoCol.right || []
+  if (!isTwoColumnLayout.value || !core.value) return []
 
   return rightSectionOrder
     .map((sectionId: string) => {
-      // Find the section by ID that is visible
-      const section = core[sectionId] as TCoreSection | undefined
-      if (section && section.isSectionVisible) {
+      const section = core.value?.[sectionId]
+      if (section?.isSectionVisible) {
         return [sectionId, section] as [string, TCoreSection]
       }
       return null
@@ -104,12 +103,12 @@ const updateTwoColumnSections = (_event: SortableEvent) => {
   const rightOrder = rightColumnSectionsRef.value.map(([key]: SectionEntry) => key)
   const leftOrder = leftColumnSectionsRef.value.map(([key]: SectionEntry) => key)
 
-  updateOrder("twoCol", { left: leftOrder, right: rightOrder })
+  configsStore.updateOrder("twoCol", { left: leftOrder, right: rightOrder })
 }
 
 const updateSingleColumnSections = (_event: SortableEvent) => {
   const singleOrder = singleColumnSectionsRef.value.map(([key]: SectionEntry) => key)
-  updateOrder("oneCol", singleOrder)
+  configsStore.updateOrder("oneCol", singleOrder)
 }
 </script>
 

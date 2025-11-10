@@ -92,22 +92,18 @@ export const useResumeStore = defineStore("resume", {
 
       // Update order config with the section ID
       const configsStore = useConfigsStore()
-      const isTwoColumnLayout = configsStore.configs.general.layout.columns === "2"
 
-      if (isTwoColumnLayout) {
-        const currentLeft = [...(configsStore.configs.general.layout.order.twoCol.left || [])]
-        const currentRight = [...(configsStore.configs.general.layout.order.twoCol.right || [])]
+      const currentLeft = [...(configsStore.configs.general.layout.order.twoCol.left || [])]
+      const currentRight = [...(configsStore.configs.general.layout.order.twoCol.right || [])]
 
-        if (!currentLeft.includes(sectionKey) && !currentRight.includes(sectionKey)) {
-          currentLeft.push(sectionKey)
-          configsStore.updateOrder("twoCol", { left: currentLeft, right: currentRight })
-        }
-      } else {
-        const currentOrder = [...(configsStore.configs.general.layout.order.oneCol || [])]
-        if (!currentOrder.includes(sectionKey)) {
-          currentOrder.push(sectionKey)
-          configsStore.updateOrder("oneCol", currentOrder)
-        }
+      if (!currentLeft.includes(sectionKey) && !currentRight.includes(sectionKey)) {
+        currentLeft.push(sectionKey)
+        configsStore.updateOrder("twoCol", { left: currentLeft, right: currentRight })
+      }
+      const currentOrder = [...(configsStore.configs.general.layout.order.oneCol || [])]
+      if (!currentOrder.includes(sectionKey)) {
+        currentOrder.push(sectionKey)
+        configsStore.updateOrder("oneCol", currentOrder)
       }
 
       return { sectionKey }
@@ -123,20 +119,16 @@ export const useResumeStore = defineStore("resume", {
 
       // Update order config by removing the section ID
       const configsStore = useConfigsStore()
-      const isTwoColumnLayout = configsStore.configs.general.layout.columns === "2"
 
-      if (isTwoColumnLayout) {
-        const currentLeft = (configsStore.configs.general.layout.order.twoCol.left || []).filter(
-          (id) => id !== sectionKey
-        )
-        const currentRight = (configsStore.configs.general.layout.order.twoCol.right || []).filter(
-          (id) => id !== sectionKey
-        )
-        configsStore.updateOrder("twoCol", { left: currentLeft, right: currentRight })
-      } else {
-        const currentOrder = (configsStore.configs.general.layout.order.oneCol || []).filter((id) => id !== sectionKey)
-        configsStore.updateOrder("oneCol", currentOrder)
-      }
+      const currentLeft = (configsStore.configs.general.layout.order.twoCol.left || []).filter(
+        (id) => id !== sectionKey
+      )
+      const currentRight = (configsStore.configs.general.layout.order.twoCol.right || []).filter(
+        (id) => id !== sectionKey
+      )
+      configsStore.updateOrder("twoCol", { left: currentLeft, right: currentRight })
+      const currentOrder = (configsStore.configs.general.layout.order.oneCol || []).filter((id) => id !== sectionKey)
+      configsStore.updateOrder("oneCol", currentOrder)
     }
   }
 })
