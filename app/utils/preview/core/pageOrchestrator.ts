@@ -3,10 +3,6 @@ import type { TSectionsOrder } from "./layoutGenerator"
 import { isTwoColumnSection } from "./pageRenderUtils"
 import type { TBlocks } from "./types"
 
-function generateBlocksSingleColumn(sid: string) {
-  return generateSectionBlocks(sid)
-}
-
 function generateBlocksTwoColumn(item: { left: string[]; right: string[] }) {
   const leftBlocks = item.left.flatMap((sid) => generateSectionBlocks(sid))
   const rightBlocks = item.right.flatMap((sid) => generateSectionBlocks(sid))
@@ -26,7 +22,7 @@ export function generateBlocks(sectionsOrder: TSectionsOrder) {
     }
 
     if (typeof item === "string") {
-      const blocks = generateBlocksSingleColumn(item)
+      const blocks = generateSectionBlocks(item)
       page.push(...blocks)
     } else if (isTwoColumnSection(item)) {
       const blocks = generateBlocksTwoColumn(item)
