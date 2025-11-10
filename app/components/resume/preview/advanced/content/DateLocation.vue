@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue"
 import type { TAdvancedSectionVariant } from "~/utils/schemas/shared.schema"
-import ContentDate from "./date-location/ContentDate.vue"
-import ContentLocation from "./date-location/ContentLocation.vue"
+import AdvancedDate from "./date-location/AdvancedDate.vue"
+import AdvancedLocation from "./date-location/AdvancedLocation.vue"
 
 interface Props {
   position: TAdvancedSectionVariant | "columns"
@@ -32,7 +32,7 @@ const containerStyles = computed<CSSProperties>(() => ({
 
 <template>
   <div ref="containerRef" :style="containerStyles">
-    <ContentDate :position="position" :start-date="startDate" :end-date="endDate" :present="present" />
-    <ContentLocation :position="position" :location="location" />
+    <AdvancedDate :position="position" :start-date="startDate" :end-date="endDate" :present="present" />
+    <AdvancedLocation :position="position" :location="location" />
   </div>
 </template>

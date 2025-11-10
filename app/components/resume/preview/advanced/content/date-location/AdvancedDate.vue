@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue"
+import { ColumnColorsKey } from "~/components/resume/preview/pages/columnColorsContext"
 import { getTextAlign } from "~/utils/preview/core/entryUtils"
 import { fmtDate } from "~/utils/preview/html/shared"
-import { ColumnColorsKey } from "../../../pages/columnColorsContext"
 
 interface Props {
   position: string

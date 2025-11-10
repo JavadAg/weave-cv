@@ -1,18 +1,23 @@
-import { computed } from "vue"
+import { computed, unref, type MaybeRef } from "vue"
 
-export function useLinkConfigs(url?: string) {
+export function useLinkConfigs(url?: MaybeRef<string | undefined>) {
   const configsStore = useConfigsStore()
   const { configs } = storeToRefs(configsStore)
 
   const linksConfig = computed(() => configs.value.general.links)
 
-  const isLink = computed(() => !!url && url.trim() !== "")
+  const urlRef = computed(() => unref(url))
+
+  const isLink = computed(() => {
+    const urlValue = urlRef.value
+    return !!urlValue && urlValue.trim() !== ""
+  })
 
   const linkAttributes = computed(() => {
     if (!isLink.value) return {}
 
     return {
-      href: url,
+      href: urlRef.value,
       target: "_blank",
       rel: "noopener noreferrer"
     }

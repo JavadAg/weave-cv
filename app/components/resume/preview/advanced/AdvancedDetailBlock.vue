@@ -3,8 +3,8 @@ import { computed } from "vue"
 import { determineDisplayMode, isContentEmpty } from "~/utils/preview/core/entryUtils"
 import type { AdvancedSectionTypeSchema, TAdvancedContent } from "~/utils/schemas/content.schema"
 import type { TAdvancedSectionVariant } from "~/utils/schemas/shared.schema"
-import ContentTitleSubtitle from "./content/ContentTitleSubtitle.vue"
-import DateLocationContent from "./content/DateLocationContent.vue"
+import DateLocation from "./content/DateLocation.vue"
+import TitleSubtitle from "./content/TitleSubtitle.vue"
 
 interface Props {
   sid: string
@@ -77,7 +77,7 @@ const dateLocationStyles = computed(() => ({
     <div :style="contentStyle">
       <template v-if="displayMode === 'contentFirst'">
         <div :style="{ width: `${contentLayoutWidth.left}%` }">
-          <ContentTitleSubtitle
+          <TitleSubtitle
             :title="titleSubTitle[0]"
             :subtitle="titleSubTitle[1]"
             :url="content.url"
@@ -86,7 +86,7 @@ const dateLocationStyles = computed(() => ({
           />
         </div>
         <div :style="{ width: `${contentLayoutWidth.right}%` }">
-          <DateLocationContent
+          <DateLocation
             :position="displayMode"
             :start-date="content.startDate"
             :end-date="content.endDate"
@@ -97,7 +97,7 @@ const dateLocationStyles = computed(() => ({
       </template>
       <template v-if="displayMode === 'dateFirst'">
         <div :style="{ width: `${contentLayoutWidth.left}%` }">
-          <DateLocationContent
+          <DateLocation
             :position="displayMode"
             :start-date="content.startDate"
             :end-date="content.endDate"
@@ -106,7 +106,7 @@ const dateLocationStyles = computed(() => ({
           />
         </div>
         <div :style="{ width: `${contentLayoutWidth.right}%` }">
-          <ContentTitleSubtitle
+          <TitleSubtitle
             :title="titleSubTitle[0]"
             :subtitle="titleSubTitle[1]"
             :url="content.url"
@@ -117,7 +117,7 @@ const dateLocationStyles = computed(() => ({
       </template>
       <template v-if="displayMode === 'stacked'">
         <div :style="{ display: 'flex', justifyContent: 'space-between' }">
-          <ContentTitleSubtitle
+          <TitleSubtitle
             :title="titleSubTitle[0]"
             :subtitle="titleSubTitle[1]"
             :url="content.url"
@@ -125,7 +125,7 @@ const dateLocationStyles = computed(() => ({
             :section-type="sectionType"
           />
           <div :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'start' }">
-            <DateLocationContent
+            <DateLocation
               :position="displayMode"
               :start-date="content.startDate"
               :end-date="content.endDate"
@@ -136,7 +136,7 @@ const dateLocationStyles = computed(() => ({
         </div>
       </template>
       <template v-if="displayMode === 'columns'">
-        <ContentTitleSubtitle
+        <TitleSubtitle
           :title="titleSubTitle[0]"
           :subtitle="titleSubTitle[1]"
           :url="content.url"
@@ -144,7 +144,7 @@ const dateLocationStyles = computed(() => ({
           :section-type="sectionType"
         />
         <div v-if="content.startDate || content.endDate || content.location" :style="dateLocationStyles">
-          <DateLocationContent
+          <DateLocation
             :position="displayMode"
             :start-date="content.startDate"
             :end-date="content.endDate"

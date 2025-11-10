@@ -70,20 +70,20 @@ const contentLayoutWidth = computed(() =>
     <div :style="contentStyle">
       <template v-if="displayMode === 'contentFirst'">
         <div :style="{ width: `${contentLayoutWidth.left}%` }">
-          <DescriptionContent :html="fragment ?? ''" />
+          <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
         </div>
       </template>
       <template v-if="displayMode === 'dateFirst'">
         <div :style="{ width: `${contentLayoutWidth.left}%` }"></div>
         <div :style="{ width: `${contentLayoutWidth.right}%` }">
-          <DescriptionContent :html="fragment ?? ''" />
+          <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
         </div>
       </template>
       <template v-if="displayMode === 'stacked'">
-        <DescriptionContent :html="fragment ?? ''" />
+        <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
       </template>
       <template v-if="displayMode === 'columns'">
-        <DescriptionContent :html="fragment ?? ''" />
+        <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
       </template>
     </div>
   </div>

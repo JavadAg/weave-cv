@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, toRef } from "vue"
 import { useLinkConfigs } from "~/composables/useLinkConfigs"
 import type { AdvancedSectionTypeSchema } from "~/utils/schemas/content.schema"
 import { ColumnColorsKey } from "../../pages/columnColorsContext"
-import RenderSubtitleWords from "./RenderSubtitleWords.vue"
-import RenderTitleWords from "./RenderTitleWords.vue"
+import Subtitle from "./AdvancedSubtitle.vue"
+import Title from "./AdvancedTitle.vue"
 
 interface Props {
   title?: string
@@ -41,7 +41,7 @@ const containerStyles = computed(() => ({
   color: columnColors?.value.textColor || ""
 }))
 
-const { isLink, linkAttributes, linkStyles } = useLinkConfigs(props.url)
+const { isLink, linkAttributes, linkStyles } = useLinkConfigs(toRef(props, "url"))
 
 const subTitleFirst = computed(() => sectionConfigs.value.subTitleFirst)
 </script>
@@ -54,7 +54,7 @@ const subTitleFirst = computed(() => sectionConfigs.value.subTitleFirst)
       :style="isLink && subTitleFirst ? linkStyles : {}"
       v-bind="isLink && subTitleFirst ? linkAttributes : {}"
     >
-      <RenderTitleWords
+      <Title
         :is-inline-layout="sectionConfigs.titleSubtitleVariant === 'inline'"
         :title-config="titleConfig"
         :title="title"
@@ -73,7 +73,7 @@ const subTitleFirst = computed(() => sectionConfigs.value.subTitleFirst)
       :style="isLink && !subTitleFirst ? linkStyles : {}"
       v-bind="isLink && !subTitleFirst ? linkAttributes : {}"
     >
-      <RenderSubtitleWords
+      <Subtitle
         :subtitle="subtitle"
         :url="url"
         :subtitle-config="subtitleConfig"
