@@ -64,9 +64,7 @@ const { pending } = useFetch<Tables<"resumes">>(`/api/resumes/${id.value}`, {
       personal: content.personal,
       core: content.core
     })
-
     setConfigs(resumeConfigs)
-
     setTitle(data.title)
   }
 })
@@ -97,7 +95,8 @@ const scale = ref(1)
             <UIcon name="i-lucide-grip-vertical" class="text-primary" />
           </SplitterResizeHandle>
           <SplitterPanel :min-size="20">
-            <ResumePreview :loading="pending" :scale="scale" @update:scale="scale = $event" />
+            <ResumePreviewSkeleton v-if="pending" />
+            <ResumePreview v-else :scale="scale" @update:scale="scale = $event" />
           </SplitterPanel>
           <SplitterResizeHandle class="w-3 rounded-2xl bg-default/70 flex justify-center items-center">
             <UIcon name="i-lucide-grip-vertical" class="text-primary size-5" />

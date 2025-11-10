@@ -1,12 +1,12 @@
 import { h } from "vue"
-import AdvancedLineBlock from "~/components/resume/preview/advanced/description/AdvancedLineBlock.vue"
-import AdvancedDetailBlock from "~/components/resume/preview/advanced/detail/AdvancedDetailBlock.vue"
+import AdvancedDetailBlock from "~/components/resume/preview/advanced/AdvancedDetailBlock.vue"
+import AdvancedLineBlock from "~/components/resume/preview/advanced/AdvancedLineBlock.vue"
 import type { AdvancedSectionTypeSchema, TCoreSection } from "~/utils/schemas/content.schema"
-import type { TResumeElement } from "./types"
+import type { TBlock } from "./types"
 
 type AdvancedSectionType = (typeof AdvancedSectionTypeSchema.options)[number]
 
-export function generateAdvancedSectionElements(sectionId: string, section: TCoreSection) {
+export function generateAdvancedBlocks(sid: string, section: TCoreSection) {
   const { getContentLine, blocks, setBlock } = usePreviewStore()
 
   const sectionType = section.type as AdvancedSectionType
@@ -17,15 +17,15 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
     return
   }
 
-  const elements: TResumeElement[] = []
+  const newBlocks: TBlock[] = []
 
   for (const content of visibleContents) {
     const contentId = content.id
 
-    const detailBlock = blocks.get(contentId) ?? {
+    const detailBlock = blocks?.get(contentId) ?? {
       id: contentId,
       component: h(AdvancedDetailBlock, {
-        sectionId,
+        sid,
         contentId,
         sectionType
       }),
@@ -37,10 +37,10 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
     const lineBlocks = getContentLine(contentId).map((_, index) => {
       const lineId = `${content.id}-${index}`
 
-      const lineBlock = blocks.get(lineId) ?? {
+      const lineBlock = blocks?.get(lineId) ?? {
         id: lineId,
         component: h(AdvancedLineBlock, {
-          sectionId,
+          sid,
           lineId,
           index,
           contentId: content.id,
@@ -53,8 +53,8 @@ export function generateAdvancedSectionElements(sectionId: string, section: TCor
       return lineBlock
     })
 
-    elements.push(detailBlock, ...lineBlocks)
+    newBlocks.push(detailBlock, ...lineBlocks)
   }
 
-  return elements
+  return newBlocks
 }

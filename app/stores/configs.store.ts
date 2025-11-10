@@ -1,6 +1,5 @@
 import { DEFAULT_CONFIGS } from "~/constants/default"
 import type { TConfigs } from "~/utils/schemas/configs/configs.schema"
-import type { TSectionType } from "~/utils/schemas/content.schema"
 
 export const useConfigsStore = defineStore("configs", {
   state: () => ({
@@ -10,14 +9,14 @@ export const useConfigsStore = defineStore("configs", {
     setConfigs(value: TConfigs) {
       this.configs = value
     },
-    updateOrder(type: "oneCol" | "twoCol", value: TSectionType[] | { left: TSectionType[]; right: TSectionType[] }) {
+    updateOrder(type: "oneCol" | "twoCol", value: string[] | { left: string[]; right: string[] }) {
       this.$patch((state) => {
         if (type === "oneCol") {
-          state.configs.general.layout.order.oneCol = value as TSectionType[]
+          state.configs.general.layout.order.oneCol = value as string[]
         } else {
           state.configs.general.layout.order.twoCol = value as {
-            left: TSectionType[]
-            right: TSectionType[]
+            left: string[]
+            right: string[]
           }
         }
       })

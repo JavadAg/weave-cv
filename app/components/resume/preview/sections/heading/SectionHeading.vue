@@ -10,7 +10,7 @@ import HeadingUnderlineFull from "./HeadingUnderlineFull.vue"
 import HeadingVerticalBorder from "./HeadingVerticalBorder.vue"
 
 const props = defineProps<{
-  sectionId: string
+  sid: string
   elementId: string
 }>()
 
@@ -26,7 +26,7 @@ const { configs } = storeToRefs(configsStore)
 const { core } = storeToRefs(resumeStore)
 
 const section = computed(() => {
-  return core.value[props.sectionId]
+  return core.value?.[props.sid]
 })
 
 const headingConfigs = computed(() => configs.value.general.headings)

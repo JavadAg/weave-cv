@@ -22,23 +22,27 @@ const isTwoColumnLayout = computed(() => {
 })
 
 const orderedSections = computed(() => {
-  const visibleSections = Object.entries(core.value).filter(([_, section]) => section.isSectionVisible)
+  if (!core.value) {
+    return []
+  }
+
+  const visibleSections = Object.entries(core.value).filter(
+    ([_, section]) => (section as TCoreSection).isSectionVisible
+  ) as Array<[string, TCoreSection]>
 
   if (isTwoColumnLayout.value) {
     const leftOrder = configs.value.general.layout.order.twoCol.left || []
     const rightOrder = configs.value.general.layout.order.twoCol.right || []
-    const allOrderedTypes = [...leftOrder, ...rightOrder]
+    const allOrderedIds = [...leftOrder, ...rightOrder]
 
     const ordered: Array<[string, TCoreSection]> = []
     const processedKeys = new Set<string>()
 
-    for (const sectionType of allOrderedTypes) {
-      const sectionsOfType = visibleSections.filter(([_, section]) => section.type === sectionType)
-      for (const sectionEntry of sectionsOfType) {
-        if (!processedKeys.has(sectionEntry[0])) {
-          ordered.push(sectionEntry)
-          processedKeys.add(sectionEntry[0])
-        }
+    for (const sectionId of allOrderedIds) {
+      const sectionEntry = visibleSections.find(([key]) => key === sectionId)
+      if (sectionEntry && !processedKeys.has(sectionEntry[0])) {
+        ordered.push(sectionEntry)
+        processedKeys.add(sectionEntry[0])
       }
     }
 
@@ -59,13 +63,11 @@ const orderedSections = computed(() => {
     const ordered: Array<[string, TCoreSection]> = []
     const processedKeys = new Set<string>()
 
-    for (const sectionType of sectionOrder) {
-      const sectionsOfType = visibleSections.filter(([_, section]) => section.type === sectionType)
-      for (const sectionEntry of sectionsOfType) {
-        if (!processedKeys.has(sectionEntry[0])) {
-          ordered.push(sectionEntry)
-          processedKeys.add(sectionEntry[0])
-        }
+    for (const sectionId of sectionOrder) {
+      const sectionEntry = visibleSections.find(([key]) => key === sectionId)
+      if (sectionEntry && !processedKeys.has(sectionEntry[0])) {
+        ordered.push(sectionEntry)
+        processedKeys.add(sectionEntry[0])
       }
     }
 
@@ -89,7 +91,7 @@ const renderSection = (sectionId: string, section: TCoreSection) =>
     v-else
     class="flex flex-col gap-3 h-full hide-scrollbar bg-default overflow-y-auto rounded-xl border border-default/30 p-4"
   >
-    <PersonalSectionForm :section="personal" />
+    <PersonalSectionForm v-if="personal" :section="personal" />
     <component :is="() => renderSection(key, section)" v-for="[key, section] in orderedSections" :key="key" />
     <AddSectionButton />
   </div>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { findPersonalElement, isTwoColumnSection, shouldRenderSection } from "~/utils/preview/core/pageRenderUtils"
-import type { TResumeElements } from "~/utils/preview/core/types"
+import type { TBlocks } from "~/utils/preview/core/types"
 import RenderContent from "./RenderContent.vue"
 import RenderPage from "./RenderPage.vue"
 import TwoColumnSection from "./TwoColumnSection.vue"
 
 interface Props {
-  pages: Array<Array<TResumeElements>>
+  pages: Array<Array<TBlocks>>
 }
 
 const props = defineProps<Props>()
@@ -30,8 +30,8 @@ const personalHeader = computed(() =>
             <component :is="section.component" v-if="'id' in section && 'component' in section" />
             <TwoColumnSection
               v-else-if="isTwoColumnSection(section)"
-              :left-col="section.leftCol"
-              :right-col="section.rightCol"
+              :left="section.left"
+              :right="section.right"
               :is-top-personal="isTopPersonal"
             />
           </template>

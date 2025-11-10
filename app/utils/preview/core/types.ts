@@ -1,14 +1,14 @@
 import type { Component } from "vue"
 
-export interface TResumeElement {
+export interface TBlock {
   id: string
   component: Component
   height: number
 }
 
-export type TResumeElements =
-  | TResumeElement
+export type TBlocks =
+  | TBlock
   | {
-      leftCol: TResumeElement[]
-      rightCol: TResumeElement[]
+      left: TBlock[]
+      right: TBlock[]
     }

@@ -6,7 +6,7 @@ export type TResume = {
   configs: TConfigs
   content: {
     personal: TPersonalContent
-    core: TCoreSections
+    core: TCoreSections | Record<string, unknown>
   }
   schemaVersion: number
   title: string

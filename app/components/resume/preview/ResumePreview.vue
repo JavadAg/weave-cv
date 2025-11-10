@@ -3,10 +3,8 @@ import ZoomComponent from "~/components/ZoomComponent.vue"
 import { generateSectionsOrder } from "~/utils/preview/core/layoutGenerator"
 import { sizeToPx } from "~/utils/preview/helpers"
 import RenderPages from "./pages/RenderPages.vue"
-import ResumePreviewSkeleton from "./ResumePreviewSkeleton.vue"
 
 interface Props {
-  loading: boolean
   scale: number
 }
 
@@ -14,7 +12,7 @@ const emit = defineEmits<{
   (e: "update:scale", value: number): void
 }>()
 
-const { loading, scale } = defineProps<Props>()
+const { scale } = defineProps<Props>()
 
 const zoom = ref<InstanceType<typeof ZoomComponent>>()
 const container = ref<HTMLElement>()
@@ -43,10 +41,7 @@ watch(width, fitWidth)
 <template>
   <div ref="container" class="overflow-y-auto h-full hide-scrollbar">
     <ZoomComponent ref="zoom" :scale="scale">
-      <RenderPages v-if="!loading" :pages="pages" />
-      <div v-else class="flex justify-center items-start">
-        <ResumePreviewSkeleton />
-      </div>
+      <RenderPages :pages="pages" />
     </ZoomComponent>
   </div>
 </template>

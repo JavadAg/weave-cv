@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { TConfigs } from "~/utils/schemas/configs/configs.schema"
-import type { TCoreSections, TPersonalContent } from "~/utils/schemas/content.schema"
+import type { TResume } from "~/types/resume.types"
 
 interface Props {
-  personal: TPersonalContent
-  core: TCoreSections
-  configs: TConfigs
+  personal: TResume["content"]["personal"]
+  core: TResume["content"]["core"]
+  configs: TResume["configs"]
   resumeId: string
   resumeTitle?: string
 }

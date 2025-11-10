@@ -3,6 +3,7 @@ import { computed, ref, watch } from "vue"
 import { VueDraggable, type SortableEvent } from "vue-draggable-plus"
 import { useConfigsStore } from "~/stores/configs.store"
 import { useResumeStore } from "~/stores/resume.store"
+import type { TCoreSection } from "~/utils/schemas/content.schema"
 import ConfigWrapper from "../wrapper/ConfigWrapper.vue"
 
 const { configs, updateOrder } = useConfigsStore()
@@ -15,51 +16,62 @@ const isTwoColumnLayout = computed(() => {
 const sections = computed(() => {
   const sectionOrder = configs.general.layout.order.oneCol || []
 
+  if (!core) {
+    return []
+  }
+
   if (sectionOrder.length === 0) {
-    return Object.entries(core).filter(([_, section]) => section.isSectionVisible)
+    return Object.entries(core).filter(([_, section]) => (section as TCoreSection).isSectionVisible) as [
+      string,
+      TCoreSection
+    ][]
   }
 
   return sectionOrder
-    .map((sectionType: string) => {
-      // Find the section with this type that is visible
-      const sectionEntry = Object.entries(core).find(
-        ([_, section]) => section.type === sectionType && section.isSectionVisible
-      )
-      return sectionEntry || null
+    .map((sectionId: string) => {
+      // Find the section by ID that is visible
+      const section = core[sectionId] as TCoreSection | undefined
+      if (section && section.isSectionVisible) {
+        return [sectionId, section] as [string, TCoreSection]
+      }
+      return null
     })
-    .filter(Boolean) as [string, (typeof core)[string]][]
+    .filter(Boolean) as [string, TCoreSection][]
 })
 
 const leftColumnSections = computed(() => {
   const leftSectionOrder = configs.general.layout.order.twoCol.left || []
-  if (!isTwoColumnLayout.value) return []
+  if (!isTwoColumnLayout.value || !core) return []
 
   return leftSectionOrder
-    .map((sectionType: string) => {
-      const sectionEntry = Object.entries(core).find(
-        ([_, section]) => section.type === sectionType && section.isSectionVisible
-      )
-      return sectionEntry || null
+    .map((sectionId: string) => {
+      // Find the section by ID that is visible
+      const section = core[sectionId] as TCoreSection | undefined
+      if (section && section.isSectionVisible) {
+        return [sectionId, section] as [string, TCoreSection]
+      }
+      return null
     })
-    .filter(Boolean) as [string, (typeof core)[string]][]
+    .filter(Boolean) as [string, TCoreSection][]
 })
 
 const rightColumnSections = computed(() => {
   const rightSectionOrder = configs.general.layout.order.twoCol.right || []
-  if (!isTwoColumnLayout.value) return []
+  if (!isTwoColumnLayout.value || !core) return []
 
   return rightSectionOrder
-    .map((sectionType: string) => {
-      // Find the section with this type that is visible
-      const sectionEntry = Object.entries(core).find(
-        ([_, section]) => section.type === sectionType && section.isSectionVisible
-      )
-      return sectionEntry || null
+    .map((sectionId: string) => {
+      // Find the section by ID that is visible
+      const section = core[sectionId] as TCoreSection | undefined
+      if (section && section.isSectionVisible) {
+        return [sectionId, section] as [string, TCoreSection]
+      }
+      return null
     })
-    .filter(Boolean) as [string, (typeof core)[string]][]
+    .filter(Boolean) as [string, TCoreSection][]
 })
 
-type SectionEntry = [string, (typeof core)[string]]
+type SectionEntry = [string, TCoreSection]
 const leftColumnSectionsRef = ref<SectionEntry[]>([])
 const rightColumnSectionsRef = ref<SectionEntry[]>([])
 const singleColumnSectionsRef = ref<SectionEntry[]>([])
@@ -89,14 +101,14 @@ watch(
 )
 
 const updateTwoColumnSections = (_event: SortableEvent) => {
-  const rightOrder = rightColumnSectionsRef.value.map(([_, section]) => section.type)
-  const leftOrder = leftColumnSectionsRef.value.map(([_, section]) => section.type)
+  const rightOrder = rightColumnSectionsRef.value.map(([key]: SectionEntry) => key)
+  const leftOrder = leftColumnSectionsRef.value.map(([key]: SectionEntry) => key)
 
   updateOrder("twoCol", { left: leftOrder, right: rightOrder })
 }
 
 const updateSingleColumnSections = (_event: SortableEvent) => {
-  const singleOrder = singleColumnSectionsRef.value.map(([_, section]) => section.type)
+  const singleOrder = singleColumnSectionsRef.value.map(([key]: SectionEntry) => key)
   updateOrder("oneCol", singleOrder)
 }
 </script>

@@ -1,7 +1,6 @@
 import { z } from "zod"
 import { FONT_OPTIONS } from "~/constants/fonts"
 import { PAPER_SIZES, type TPaperSize } from "~/constants/papers"
-import { SectionTypeSchema } from "../content.schema"
 import { DateFormat, FontCase, FontStyle, FontWeight, LinkIconType, ListType, PersonalPosition } from "../shared.schema"
 
 export type TLayout = z.infer<typeof LayoutSchema>
@@ -49,10 +48,10 @@ export const LayoutSchema = z.object({
   }),
   order: z.object({
     twoCol: z.object({
-      left: z.array(SectionTypeSchema),
-      right: z.array(SectionTypeSchema)
+      left: z.array(z.string()),
+      right: z.array(z.string())
     }),
-    oneCol: z.array(SectionTypeSchema)
+    oneCol: z.array(z.string())
   })
 })
 

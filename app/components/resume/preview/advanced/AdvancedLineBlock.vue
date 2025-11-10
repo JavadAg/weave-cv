@@ -2,34 +2,34 @@
 import { determineDisplayMode, isContentEmpty } from "~/utils/preview/core/entryUtils"
 import type { AdvancedSectionTypeSchema, TAdvancedContent } from "~/utils/schemas/content.schema"
 import type { TAdvancedSectionVariant } from "~/utils/schemas/shared.schema"
-import DescriptionContent from "../content/DescriptionContent.vue"
+import DescriptionContent from "./content/DescriptionContent.vue"
 
 interface Props {
   index: number
-  sectionId: string
+  sid: string
   contentId: string
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
   lineId: string
 }
 
-const { index, sectionId, contentId, sectionType, lineId } = defineProps<Props>()
+const props = defineProps<Props>()
 
 const { updateHeight } = usePreviewStore()
 const { elementRef } = useSelfResizeObserver((height) => {
-  updateHeight(lineId, height)
+  updateHeight(props.lineId, height)
 })
 
 const { getContentLine } = usePreviewStore()
 
-const fragment = computed(() => getContentLine(contentId)[index] ?? "")
+const fragment = computed(() => getContentLine(props.contentId)[props.index] ?? "")
 
-const isLast = computed(() => getContentLine(contentId).length === index + 1)
+const isLast = computed(() => getContentLine(props.contentId).length === props.index + 1)
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 const typography = computed(() => configs.value.general.typography)
 const layout = computed(() => configs.value.general.layout)
-const sectionConfigs = computed(() => configs.value[sectionType])
+const sectionConfigs = computed(() => configs.value[props.sectionType])
 
 const displayMode = computed<TAdvancedSectionVariant | "columns">(() =>
   determineDisplayMode({
@@ -47,10 +47,10 @@ const contentStyle = computed(() => ({
 
 const resumeStore = useResumeStore()
 const { core } = storeToRefs(resumeStore)
-const sectionContents = computed(() => core.value[sectionId]?.contents as TAdvancedContent[])
+const sectionContents = computed(() => core.value?.[props.sid]?.contents as TAdvancedContent[])
 
 const content = computed(() => {
-  return sectionContents.value.find((content) => content.id === contentId)
+  return sectionContents.value.find((content) => content.id === props.contentId)
 })
 
 const contentLayoutWidth = computed(() =>

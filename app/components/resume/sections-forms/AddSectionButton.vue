@@ -5,17 +5,12 @@ import { ADVANCED_SECTION_TYPES, BASIC_SECTION_TYPES } from "~/constants/section
 import type { TCoreSectionType } from "~/utils/schemas/content.schema"
 
 const resumeStore = useResumeStore()
-const configsStore = useConfigsStore()
 const { core } = storeToRefs(resumeStore)
-const { configs, updateOrder } = configsStore
-
-const isTwoColumnLayout = computed(() => {
-  return configs.general.layout.columns === "2"
-})
 
 const availableSectionTypes = computed(() => {
   const allSectionTypes: TCoreSectionType[] = [...ADVANCED_SECTION_TYPES, ...BASIC_SECTION_TYPES]
-  const existingTypes = new Set(Object.values(core.value).map((section) => section.type))
+  const existingTypes = new Set(Object.values(core?.value || {}).map((section) => section.type))
+
   return allSectionTypes.filter((type) => !existingTypes.has(type))
 })
 
@@ -23,23 +18,6 @@ const showAddSectionModal = ref(false)
 
 const handleAddSection = (sectionType: TCoreSectionType) => {
   resumeStore.addSection(sectionType)
-
-  if (isTwoColumnLayout.value) {
-    const currentLeft = [...(configs.general.layout.order.twoCol.left || [])]
-    const currentRight = [...(configs.general.layout.order.twoCol.right || [])]
-
-    if (!currentLeft.includes(sectionType) && !currentRight.includes(sectionType)) {
-      currentLeft.push(sectionType)
-      updateOrder("twoCol", { left: currentLeft, right: currentRight })
-    }
-  } else {
-    const currentOrder = [...(configs.general.layout.order.oneCol || [])]
-    if (!currentOrder.includes(sectionType)) {
-      currentOrder.push(sectionType)
-      updateOrder("oneCol", currentOrder)
-    }
-  }
-
   showAddSectionModal.value = false
 }
 </script>

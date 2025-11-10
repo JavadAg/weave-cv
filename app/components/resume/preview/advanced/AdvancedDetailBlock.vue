@@ -3,11 +3,11 @@ import { computed } from "vue"
 import { determineDisplayMode, isContentEmpty } from "~/utils/preview/core/entryUtils"
 import type { AdvancedSectionTypeSchema, TAdvancedContent } from "~/utils/schemas/content.schema"
 import type { TAdvancedSectionVariant } from "~/utils/schemas/shared.schema"
-import ContentTitleSubtitle from "../content/ContentTitleSubtitle.vue"
-import DateLocationContent from "../content/DateLocationContent.vue"
+import ContentTitleSubtitle from "./content/ContentTitleSubtitle.vue"
+import DateLocationContent from "./content/DateLocationContent.vue"
 
 interface Props {
-  sectionId: string
+  sid: string
   contentId: string
   sectionType: (typeof AdvancedSectionTypeSchema.options)[number]
 }
@@ -20,7 +20,7 @@ const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 
 const content = computed(
-  () => core.value[props.sectionId]!.contents.find((content) => content.id === props.contentId)! as TAdvancedContent
+  () => core.value?.[props.sid]?.contents.find((content) => content.id === props.contentId) as TAdvancedContent
 )
 
 const { updateHeight } = usePreviewStore()

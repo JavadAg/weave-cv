@@ -1,13 +1,13 @@
 import { calculatePageHeight } from "~/utils/preview/core/pageHeight"
-import type { TResumeElement, TResumeElements } from "~/utils/preview/core/types"
+import type { TBlock, TBlocks } from "~/utils/preview/core/types"
 
 interface IProcessPagesProps {
-  blocks: Map<string, TResumeElement>
-  elements: TResumeElements[]
+  blocks: Map<string, TBlock>
+  page: TBlocks[]
 }
 
 interface ColumnState {
-  heading: TResumeElement | undefined
+  heading: TBlock | undefined
   height: number
   done: boolean
   ids: string[]
@@ -16,12 +16,7 @@ interface ColumnState {
 const isHeading = (id: string): boolean => id.endsWith("Heading")
 const isSpace = (id: string): boolean => id.endsWith("Space") || id === "personalSpace"
 
-function processColumnElement(
-  element: TResumeElement | undefined,
-  state: ColumnState,
-  pageHeightLimit: number,
-  column: TResumeElement[]
-): boolean {
+function processColumn(element: TBlock | undefined, state: ColumnState, pageHeightLimit: number, column: TBlock[]) {
   if (!element || state.done) return false
 
   if (isHeading(element.id)) {
@@ -54,10 +49,10 @@ function processColumnElement(
   return false
 }
 
-function processTwoColumnElement(
-  element: { leftCol: TResumeElement[]; rightCol: TResumeElement[] },
-  blocks: Map<string, TResumeElement>,
-  processedPages: Array<Array<TResumeElements>>,
+function processTwoColumn(
+  element: { left: TBlock[]; right: TBlock[] },
+  blocks: Map<string, TBlock>,
+  pages: Array<Array<TBlocks>>,
   config: {
     size: string
     verticalMargin: number
@@ -66,23 +61,23 @@ function processTwoColumnElement(
     currentHeight: number
   }
 ) {
-  const lastPage = processedPages.at(-1) as Array<{ leftCol: TResumeElement[]; rightCol: TResumeElement[] }>
-  if (!lastPage?.at(-1)?.leftCol) {
-    lastPage?.push({ leftCol: [], rightCol: [] })
+  const lastPage = pages.at(-1) as Array<{ left: TBlock[]; right: TBlock[] }>
+  if (!lastPage?.at(-1)?.left) {
+    lastPage?.push({ left: [], right: [] })
   }
 
   const leftState: ColumnState = {
     heading: undefined,
     height: config.currentHeight,
     done: false,
-    ids: element.leftCol.map((e) => e.id)
+    ids: element.left.map((block) => block.id)
   }
 
   const rightState: ColumnState = {
     heading: undefined,
     height: config.currentHeight,
     done: false,
-    ids: element.rightCol.map((e) => e.id)
+    ids: element.right.map((block) => block.id)
   }
 
   let isFirstPage = config.isFirstPage
@@ -95,14 +90,14 @@ function processTwoColumnElement(
       isFirstPage
     })
 
-    const currentPage = processedPages.at(-1)
-    const currentCol = currentPage?.at(-1) as { leftCol: TResumeElement[]; rightCol: TResumeElement[] }
+    const currentPage = pages.at(-1)
+    const currentCol = currentPage?.at(-1) as { left: TBlock[]; right: TBlock[] }
 
     const leftElement = blocks.get(leftState.ids[0] ?? "")
     const rightElement = blocks.get(rightState.ids[0] ?? "")
 
-    processColumnElement(leftElement, leftState, pageHeightLimit, currentCol.leftCol)
-    processColumnElement(rightElement, rightState, pageHeightLimit, currentCol.rightCol)
+    processColumn(leftElement, leftState, pageHeightLimit, currentCol.left)
+    processColumn(rightElement, rightState, pageHeightLimit, currentCol.right)
 
     const needsNewPage =
       (leftState.done && rightState.done) ||
@@ -110,7 +105,7 @@ function processTwoColumnElement(
       (rightState.ids.length === 0 && leftState.done)
 
     if (needsNewPage) {
-      processedPages.push([{ leftCol: [], rightCol: [] }])
+      pages.push([{ left: [], right: [] }])
       leftState.height = 0
       rightState.height = 0
       leftState.done = false
@@ -122,10 +117,10 @@ function processTwoColumnElement(
   return { isFirstPage, currentHeight: Math.max(leftState.height, rightState.height) }
 }
 
-function processSingleColumnElement(
-  element: TResumeElement,
-  processedPages: Array<Array<TResumeElements>>,
-  heading: { current: TResumeElement | undefined },
+function processSingleColumn(
+  element: TBlock,
+  pages: Array<Array<TBlocks>>,
+  heading: { current: TBlock | undefined },
   config: {
     size: string
     verticalMargin: number
@@ -156,24 +151,27 @@ function processSingleColumnElement(
   }
 
   if (currentHeight > 0 && currentHeight + totalHeight > pageHeightLimit) {
-    processedPages.push([])
+    pages.push([])
     currentHeight = 0
     isFirstPage = false
   }
 
   if (heading.current) {
-    processedPages.at(-1)?.push(heading.current)
+    pages.at(-1)?.push(heading.current)
     heading.current = undefined
   }
 
-  processedPages.at(-1)?.push(element)
+  pages.at(-1)?.push(element)
   currentHeight += totalHeight
 
   return { isFirstPage, currentHeight }
 }
 
-export function processPages({ blocks, elements }: IProcessPagesProps) {
-  const processedPages = [[]] as Array<Array<TResumeElements>>
+/**
+ * Process the generated page into multiple pages
+ */
+export function paginate({ blocks, page }: IProcessPagesProps) {
+  const pages = [[]] as Array<Array<TBlocks>>
 
   const configsStore = useConfigsStore()
   const { configs } = storeToRefs(configsStore)
@@ -187,15 +185,15 @@ export function processPages({ blocks, elements }: IProcessPagesProps) {
   const isTopPersonal = personalPosition === "top"
   const config = { size, verticalMargin, isTopPersonal }
 
-  const heading = { current: undefined as TResumeElement | undefined }
+  const heading = { current: undefined as TBlock | undefined }
   let currentHeight = 0
   let isFirstPage = true
 
-  for (const element of elements) {
+  for (const element of page) {
     if (!element) continue
 
-    if ("leftCol" in element && "rightCol" in element && (element.leftCol.length > 0 || element.rightCol.length > 0)) {
-      const result = processTwoColumnElement(element, blocks, processedPages, {
+    if ("left" in element && "right" in element && (element.left.length > 0 || element.right.length > 0)) {
+      const result = processTwoColumn(element, blocks, pages, {
         ...config,
         isFirstPage,
         currentHeight
@@ -204,7 +202,7 @@ export function processPages({ blocks, elements }: IProcessPagesProps) {
       isFirstPage = result.isFirstPage
       currentHeight = result.currentHeight
     } else if ("id" in element) {
-      const result = processSingleColumnElement(element, processedPages, heading, {
+      const result = processSingleColumn(element, pages, heading, {
         ...config,
         isFirstPage,
         currentHeight
@@ -214,5 +212,5 @@ export function processPages({ blocks, elements }: IProcessPagesProps) {
     }
   }
 
-  return processedPages
+  return pages
 }

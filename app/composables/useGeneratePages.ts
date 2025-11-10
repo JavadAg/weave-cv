@@ -1,27 +1,30 @@
-import { ref, unref, watch, type ComputedRef, type Ref } from "vue"
+import { ref, unref, watch, type Ref } from "vue"
 import type { TSectionsOrder } from "~/utils/preview/core/layoutGenerator"
-import { generateElements } from "~/utils/preview/core/pageOrchestrator"
-import type { TResumeElements } from "~/utils/preview/core/types"
-import { processPages } from "../utils/preview/core/pagination"
+import { generateBlocks } from "~/utils/preview/core/pageOrchestrator"
+import { paginate } from "~/utils/preview/core/pagination"
+import type { TBlocks } from "~/utils/preview/core/types"
 
 const DEBOUNCE_DELAY = 20
 
-export function useGeneratePages(sectionsOrder: Ref<TSectionsOrder> | ComputedRef<TSectionsOrder>) {
+export function useGeneratePages(sectionsOrder: Ref<TSectionsOrder>) {
   const resumeStore = useResumeStore()
-  const { core } = storeToRefs(resumeStore)
   const configsStore = useConfigsStore()
-  const { configs } = storeToRefs(configsStore)
-
-  const pages = ref<TResumeElements[][]>([[]])
-
   const previewStore = usePreviewStore()
 
-  const updatePages = () => {
-    const elements = generateElements(unref(sectionsOrder))
+  const { core } = storeToRefs(resumeStore)
+  const { configs } = storeToRefs(configsStore)
+  const { blocks } = storeToRefs(previewStore)
 
-    pages.value = processPages({
-      blocks: previewStore.blocks,
-      elements
+  const pages = ref<TBlocks[][]>([[]])
+
+  const updatePages = () => {
+    const page = generateBlocks(unref(sectionsOrder))
+
+    if (!blocks.value) return
+
+    pages.value = paginate({
+      blocks: blocks.value,
+      page
     })
   }
 

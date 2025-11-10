@@ -7,28 +7,28 @@ import InlineItems from "./basic/InlineItems.vue"
 import StackedItems from "./basic/StackedItems.vue"
 
 interface Props {
-  sectionId: string
+  sid: string
   sectionType: (typeof BasicSectionTypeSchema.options)[number]
 }
 
-const { sectionId, sectionType } = defineProps<Props>()
+const props = defineProps<Props>()
 
 const { updateHeight } = usePreviewStore()
 const { elementRef } = useSelfResizeObserver((height) => {
-  updateHeight(sectionId, height)
+  updateHeight(props.sid, height)
 })
 
 const resumeStore = useResumeStore()
 const { core } = storeToRefs(resumeStore)
-const section = computed(() => core.value[sectionId])
+const section = computed(() => core.value?.[props.sid])
 
 const contents = computed(() => section.value?.contents ?? [])
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
-const sectionConfigs = computed(() => configs.value[sectionType])
+const sectionConfigs = computed(() => configs.value[props.sectionType])
 
-const isSummary = computed(() => sectionType === "summary")
+const isSummary = computed(() => props.sectionType === "summary")
 
 const processedContents = computed(() => {
   if (isSummary.value) {

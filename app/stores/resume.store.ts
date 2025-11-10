@@ -1,37 +1,16 @@
-import { capitalize } from "vue"
-import {
-  DUMMY_AWARD_DATA,
-  DUMMY_CERTIFICATE_DATA,
-  DUMMY_CORE_SECTIONS,
-  DUMMY_COURSE_DATA,
-  DUMMY_EDUCATION_DATA,
-  DUMMY_EXPERIENCE_DATA,
-  DUMMY_LANGUAGE_DATA,
-  DUMMY_PERSONAL_SECTION,
-  DUMMY_PROJECT_DATA,
-  DUMMY_SKILL_DATA,
-  DUMMY_SUMMARY_DATA,
-  DUMMY_TITLE
-} from "~/constants/dummyData"
-import type {
-  TAdvancedContent,
-  TBasicContent,
-  TCoreSection,
-  TCoreSections,
-  TCoreSectionType,
-  TPersonalContent
-} from "~/utils/schemas/content.schema"
+import { DUMMY_CORE_SECTIONS, DUMMY_TITLE } from "~/constants/dummyData"
+import type { TCoreSection, TCoreSections, TCoreSectionType, TPersonalContent } from "~/utils/schemas/content.schema"
 
-export type ResumeData = {
+export type TResumeState = {
   title: string
-  personal: TPersonalContent
-  core: TCoreSections
+  personal: TPersonalContent | null
+  core: TCoreSections | null
 }
 
 export const useResumeStore = defineStore("resume", {
-  state: (): ResumeData => ({
-    personal: DUMMY_PERSONAL_SECTION,
-    core: DUMMY_CORE_SECTIONS,
+  state: (): TResumeState => ({
+    personal: null,
+    core: null,
     title: DUMMY_TITLE
   }),
   actions: {
@@ -45,9 +24,13 @@ export const useResumeStore = defineStore("resume", {
     updatePersonal(key: keyof TPersonalContent, value: unknown) {
       this.$patch((state) => {
         if (key === "details") {
-          state.personal.details = value as TPersonalContent["details"]
+          if (state.personal) {
+            state.personal.details = value as TPersonalContent["details"]
+          }
         } else {
-          state.personal[key] = value as TPersonalContent[typeof key]
+          if (state.personal) {
+            state.personal[key] = value as TPersonalContent[typeof key]
+          }
         }
       })
     },
@@ -85,41 +68,75 @@ export const useResumeStore = defineStore("resume", {
       })
     },
 
-    addSection(type: TCoreSectionType, title?: string) {
+    addSection(type: TCoreSectionType) {
       const sectionKey = `${type}-${crypto.randomUUID()}`
 
-      const sectionDataMap: Record<TCoreSectionType, TBasicContent[] | TAdvancedContent[]> = {
-        summary: DUMMY_SUMMARY_DATA,
-        experiences: DUMMY_EXPERIENCE_DATA,
-        educations: DUMMY_EDUCATION_DATA,
-        projects: DUMMY_PROJECT_DATA,
-        skills: DUMMY_SKILL_DATA,
-        languages: DUMMY_LANGUAGE_DATA,
-        certificates: DUMMY_CERTIFICATE_DATA,
-        courses: DUMMY_COURSE_DATA,
-        awards: DUMMY_AWARD_DATA
-      }
+      const section = DUMMY_CORE_SECTIONS[type]
+
+      if (!section) return
 
       const newSection = {
-        title: title || capitalize(type),
+        title: section.title,
         isTitleVisible: true,
         isSectionVisible: true,
         type,
-        contents: sectionDataMap[type]
+        contents: section.contents
       } as TCoreSection
 
       this.$patch((state) => {
-        state.core[sectionKey] = newSection
+        state.core = {
+          ...state.core,
+          [sectionKey]: newSection
+        }
       })
+
+      // Update order config with the section ID
+      const configsStore = useConfigsStore()
+      const isTwoColumnLayout = configsStore.configs.general.layout.columns === "2"
+
+      if (isTwoColumnLayout) {
+        const currentLeft = [...(configsStore.configs.general.layout.order.twoCol.left || [])]
+        const currentRight = [...(configsStore.configs.general.layout.order.twoCol.right || [])]
+
+        if (!currentLeft.includes(sectionKey) && !currentRight.includes(sectionKey)) {
+          currentLeft.push(sectionKey)
+          configsStore.updateOrder("twoCol", { left: currentLeft, right: currentRight })
+        }
+      } else {
+        const currentOrder = [...(configsStore.configs.general.layout.order.oneCol || [])]
+        if (!currentOrder.includes(sectionKey)) {
+          currentOrder.push(sectionKey)
+          configsStore.updateOrder("oneCol", currentOrder)
+        }
+      }
 
       return { sectionKey }
     },
 
     removeSection(sectionKey: string) {
       this.$patch((state) => {
-        const { [sectionKey]: removed, ...rest } = state.core
-        state.core = rest
+        if (state.core) {
+          const { [sectionKey]: _, ...rest } = state.core
+          state.core = Object.keys(rest).length > 0 ? rest : null
+        }
       })
+
+      // Update order config by removing the section ID
+      const configsStore = useConfigsStore()
+      const isTwoColumnLayout = configsStore.configs.general.layout.columns === "2"
+
+      if (isTwoColumnLayout) {
+        const currentLeft = (configsStore.configs.general.layout.order.twoCol.left || []).filter(
+          (id) => id !== sectionKey
+        )
+        const currentRight = (configsStore.configs.general.layout.order.twoCol.right || []).filter(
+          (id) => id !== sectionKey
+        )
+        configsStore.updateOrder("twoCol", { left: currentLeft, right: currentRight })
+      } else {
+        const currentOrder = (configsStore.configs.general.layout.order.oneCol || []).filter((id) => id !== sectionKey)
+        configsStore.updateOrder("oneCol", currentOrder)
+      }
     }
   }
 })

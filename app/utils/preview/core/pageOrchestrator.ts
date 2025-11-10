@@ -1,50 +1,38 @@
+import { generateSectionBlocks } from "./generateSectionBlocks"
 import type { TSectionsOrder } from "./layoutGenerator"
-import { generateSectionElements } from "./sectionElements"
-import type { TResumeElements } from "./types"
+import { isTwoColumnSection } from "./pageRenderUtils"
+import type { TBlocks } from "./types"
 
-interface TwoColumnSection {
-  left: string[]
-  right: string[]
+function generateBlocksSingleColumn(sid: string) {
+  return generateSectionBlocks(sid)
 }
 
-function isTwoColumnSection(section: unknown): section is TwoColumnSection {
-  if (typeof section !== "object" || section === null) {
-    return false
-  }
-
-  return "left" in section && "right" in section && Array.isArray(section.left) && Array.isArray(section.right)
-}
-
-function generateSingleColumnSectionElements(sectionId: string): TResumeElements[] {
-  return generateSectionElements(sectionId)
-}
-
-function generateTwoColumnSectionElements(section: TwoColumnSection): TResumeElements {
-  const leftElements = section.left.flatMap((sectionId) => generateSectionElements(sectionId))
-  const rightElements = section.right.flatMap((sectionId) => generateSectionElements(sectionId))
+function generateBlocksTwoColumn(item: { left: string[]; right: string[] }) {
+  const leftBlocks = item.left.flatMap((sid) => generateSectionBlocks(sid))
+  const rightBlocks = item.right.flatMap((sid) => generateSectionBlocks(sid))
 
   return {
-    leftCol: leftElements,
-    rightCol: rightElements
+    left: leftBlocks,
+    right: rightBlocks
   }
 }
 
-export function generateElements(sectionsOrder: TSectionsOrder) {
-  const pageElements: TResumeElements[] = []
+export function generateBlocks(sectionsOrder: TSectionsOrder) {
+  const page: TBlocks[] = []
 
-  for (const section of sectionsOrder) {
-    if (!section) {
+  for (const item of sectionsOrder) {
+    if (!item) {
       continue
     }
 
-    if (typeof section === "string") {
-      const sectionElements = generateSingleColumnSectionElements(section)
-      pageElements.push(...sectionElements)
-    } else if (isTwoColumnSection(section)) {
-      const columnElement = generateTwoColumnSectionElements(section)
-      pageElements.push(columnElement)
+    if (typeof item === "string") {
+      const blocks = generateBlocksSingleColumn(item)
+      page.push(...blocks)
+    } else if (isTwoColumnSection(item)) {
+      const blocks = generateBlocksTwoColumn(item)
+      page.push(blocks)
     }
   }
 
-  return pageElements
+  return page
 }

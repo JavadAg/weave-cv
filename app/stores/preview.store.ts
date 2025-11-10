@@ -1,37 +1,47 @@
-import type { TResumeElement } from "~/utils/preview/core/types"
+import type { TBlock } from "~/utils/preview/core/types"
+
+export type TPreviewStore = {
+  contentLines: Map<string, string[]> | null
+  blocks: Map<string, TBlock> | null
+  updateHeightCallback: (() => void) | null
+}
 
 export const usePreviewStore = defineStore("preview", {
-  state: () => ({
-    contentLines: new Map<string, string[]>(),
-    blocks: new Map<string, TResumeElement>(),
-    updateHeightCallback: undefined as (() => void) | undefined
+  state: (): TPreviewStore => ({
+    contentLines: null,
+    blocks: null,
+    updateHeightCallback: null
   }),
   actions: {
     setContentLines(lines: Map<string, string[]>) {
+      if (!this.contentLines) {
+        this.contentLines = new Map()
+      }
       this.contentLines.clear()
       for (const [key, value] of lines) {
         this.contentLines.set(key, value)
       }
     },
-    setBlock(id: string, block: TResumeElement) {
+    setBlock(id: string, block: TBlock) {
+      if (!this.blocks) {
+        this.blocks = new Map()
+      }
       this.blocks.set(id, block)
     },
     getContentLine(contentId: string) {
-      return this.contentLines.get(contentId) ?? []
+      return this.contentLines?.get(contentId) ?? []
     },
     getBlock(id: string) {
-      return this.blocks.get(id) ?? null
+      return this.blocks?.get(id) ?? null
     },
     setUpdateHeightCallback(callback: () => void) {
       this.updateHeightCallback = callback
     },
     updateHeight(id: string, height: number) {
-      const block = this.blocks.get(id)
+      const block = this.blocks?.get(id)
 
-      if (block) {
-        block.height = height
-        this.updateHeightCallback?.()
-      }
+      if (block) block.height = height
+      this.updateHeightCallback?.()
     }
   }
 })

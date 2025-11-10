@@ -10,15 +10,19 @@ interface ContentCacheEntry {
  * Uses cache to avoid re-processing unchanged content for performance.
  */
 export function processContents(
-  sections: TCoreSections,
+  sections: TResumeState["core"],
   cache: ContentCacheEntry,
   processedContents: Map<string, string[]>
 ) {
+  if (!sections) return
+
   const sectionKeys = Object.keys(sections)
 
   for (const sectionKey of sectionKeys) {
-    const currentSection = sections[sectionKey]
-    const currentContents = currentSection?.contents
+    if (!sections[sectionKey] || typeof sections[sectionKey] !== "object") continue
+
+    const currentSection = sections[sectionKey] as TCoreSections[typeof sectionKey]
+    const currentContents = currentSection.contents
 
     if (!currentContents?.length) {
       continue
