@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, inject } from "vue"
+import { computed, h, inject, type CSSProperties } from "vue"
 import { calculateLineHeight } from "~/utils/preview/helpers"
 import BulletIcon from "../../basic/basic/BulletIcon.vue"
 import { ColumnColorsKey } from "../../pages/columnColorsContext"
@@ -29,12 +29,12 @@ const createSquareMarker = (color: string, size: number) =>
     "svg",
     {
       xmlns: "http://www.w3.org/2000/svg",
-      width: size - 2,
-      height: size - 2,
+      width: size - 3.5,
+      height: size - 3,
       viewBox: `0 0 ${size} ${size}`,
       fill: "none"
     },
-    [h("rect", { x: 0.5, y: 0.5, width: size, height: size, fill: color })]
+    [h("rect", { width: size, height: size, fill: color })]
   )
 
 const listMarker = computed(() => {
@@ -46,7 +46,7 @@ const listMarker = computed(() => {
       return h(BulletIcon, { sizeInPx: markerSize.value, color: textColor.value, filled: false })
     }
     case "square": {
-      return createSquareMarker(textColor.value, markerSize.value - 2)
+      return createSquareMarker(textColor.value, markerSize.value)
     }
     default: {
       return null
@@ -58,12 +58,13 @@ const shouldShowMarker = computed(() => {
   return listMarker.value !== null
 })
 
-const markerContainerStyles = computed(() => ({
+const markerContainerStyles = computed<CSSProperties>(() => ({
   paddingLeft: "1.5px",
   width: "0.9em",
   minWidth: "0.9em",
   display: "flex",
   alignItems: "center",
+  flexShrink: 0,
   height: `${calculateLineHeight(typography.value.lineHeight, typography.value.fontSize)}px`
 }))
 
