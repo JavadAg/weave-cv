@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type CSSProperties } from "vue"
+import { computed, toRef, type CSSProperties } from "vue"
 import { useLinkConfigs } from "~/composables/useLinkConfigs"
 import type { TBasicSectionConfigs } from "~/utils/schemas/configs/sectionsConfigs.schema"
 import LinkIcon from "../../advanced/content/LinkIcon.vue"
@@ -37,7 +37,7 @@ const baseTextStyles = computed<CSSProperties>(() => ({
   fontStyle: titleConfigs.value.fontStyle
 }))
 
-const { isLink, linkAttributes, linkStyles } = useLinkConfigs(props.url)
+const { isLink, linkAttributes, linkStyles } = useLinkConfigs(toRef(props, "url"))
 
 const textStyles = computed(() => ({
   ...baseTextStyles.value,

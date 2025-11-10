@@ -6,16 +6,20 @@ import { convertHtmlToVNodes } from "~/utils/preview/core/html"
 interface Props {
   html: string
   isProfileSection?: boolean
+  isLast?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isProfileSection: false
+  isProfileSection: false,
+  isLast: false
 })
 
 const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 
 const contentLayout = computed(() => configs.value.general.layout.contentLayout)
+const typographyConfigs = computed(() => configs.value.general.typography)
+const layoutConfigs = computed(() => configs.value.general.layout)
 
 const htmlTransformers = computed(() => useHtmlTransformers())
 
@@ -30,7 +34,10 @@ const containerStyles = computed(() => ({
   width: "100%",
   paddingLeft: paddingLeft.value,
   whiteSpace: "pre-wrap" as const,
-  wordBreak: "break-word" as const
+  wordBreak: "break-word" as const,
+  paddingBottom: props.isLast
+    ? undefined
+    : `${0.1 * typographyConfigs.value.lineHeight * layoutConfigs.value.sectionGap}px`
 }))
 </script>
 

@@ -10,10 +10,19 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const configsStore = useConfigsStore()
+const { configs } = storeToRefs(configsStore)
+
+const layout = computed(() => configs.value.general.layout)
+const spacingFactor = computed(() => layout.value.sectionGap)
+const lineHeight = computed(
+  () => configs.value.general.typography.lineHeight / configs.value.general.typography.fontSize
+)
 </script>
 
 <template>
-  <div :style="{ display: 'grid', gap: '0.5em' }">
+  <div :style="{ display: 'grid', gap: `${0.2 * spacingFactor * lineHeight}em` }">
     <div v-for="(content, index) in contents" :key="index">
       <BasicTitle :title="content.title" :url="content.url" :section-configs="sectionConfigs" />
       <InfoHtml v-if="content.description" :description="content.description" :section-configs="sectionConfigs" />
