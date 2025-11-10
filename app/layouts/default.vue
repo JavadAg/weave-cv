@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import Theme from "~/components/layout/Theme.vue"
+import UserDropdown from "~/components/layout/UserDropdown.vue"
 
 const route = useRoute()
 const isLandingPage = computed(() => route.path === "/")
+const user = useSupabaseUser()
 </script>
 <template>
   <div
@@ -18,7 +20,10 @@ const isLandingPage = computed(() => route.path === "/")
         <NuxtLink to="/" class="flex h-full w-fit">
           <NuxtImg src="/images/logo.webp" alt="Logo" loading="eager" format="webp" />
         </NuxtLink>
-        <Theme />
+        <div class="flex items-center gap-3">
+          <UserDropdown v-if="user" />
+          <Theme />
+        </div>
       </div>
     </header>
     <main
