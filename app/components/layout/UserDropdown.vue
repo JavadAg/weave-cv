@@ -45,7 +45,7 @@ const handleLogout = async () => {
 }
 
 const menuItems = computed(() => {
-  const items: MenuItem[] = []
+  const items = []
 
   if (!isDashboard.value) {
     items.push({
