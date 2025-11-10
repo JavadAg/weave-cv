@@ -127,8 +127,7 @@ export const TEMPLATE_MODERN_PROFESSIONAL: Template = {
       typography: {
         fontSize: 11,
         fontFamily: "inter",
-        lineHeight: 1.5,
-        letterSpacing: 0
+        lineHeight: 1.5
       }
     },
     summary: {
@@ -286,7 +285,6 @@ export const TEMPLATE_CLASSIC_EXECUTIVE: Template = {
       typography: {
         fontFamily: "timesnewroman",
         lineHeight: 1.2,
-        letterSpacing: 0.2,
         fontSize: 11
       },
       colors: {
@@ -488,8 +486,7 @@ export const TEMPLATE_CREATIVE_PORTFOLIO: Template = {
       typography: {
         fontSize: 11,
         fontFamily: "lato",
-        lineHeight: 1.5,
-        letterSpacing: 0.4
+        lineHeight: 1.5
       }
     },
     summary: {
@@ -680,8 +677,7 @@ export const TEMPLATE_MINIMALIST: Template = {
       typography: {
         fontSize: 11,
         fontFamily: "helvetica",
-        lineHeight: 1.5,
-        letterSpacing: 0
+        lineHeight: 1.5
       }
     },
     summary: {
@@ -872,8 +868,7 @@ export const TEMPLATE_BOLD_MODERN: Template = {
       typography: {
         fontSize: 10,
         fontFamily: "firasans",
-        lineHeight: 1.4,
-        letterSpacing: 0.8
+        lineHeight: 1.4
       }
     },
     summary: {
@@ -1031,7 +1026,6 @@ export const TEMPLATE_ACADEMIC_TRADITIONAL: Template = {
       typography: {
         fontFamily: "garamond",
         lineHeight: 1.4,
-        letterSpacing: 0,
         fontSize: 11
       },
       colors: {
@@ -1233,8 +1227,7 @@ export const TEMPLATE_TECH_STARTUP: Template = {
       typography: {
         fontSize: 10,
         fontFamily: "opensans",
-        lineHeight: 1.6,
-        letterSpacing: 0.3
+        lineHeight: 1.6
       }
     },
     summary: {
@@ -1392,7 +1385,6 @@ export const TEMPLATE_ELEGANT_PROFESSIONAL: Template = {
       typography: {
         fontFamily: "georgia",
         lineHeight: 1.5,
-        letterSpacing: 0.1,
         fontSize: 11
       },
       colors: {
@@ -1561,7 +1553,6 @@ export const TEMPLATE_COMPACT_DENSE: Template = {
       typography: {
         fontFamily: "calibri",
         lineHeight: 1.3,
-        letterSpacing: 0,
         fontSize: 9
       },
       colors: {
@@ -1763,8 +1754,7 @@ export const TEMPLATE_COLORFUL_CREATIVE: Template = {
       typography: {
         fontSize: 10,
         fontFamily: "titilliumweb",
-        lineHeight: 1.5,
-        letterSpacing: 0.4
+        lineHeight: 1.5
       }
     },
     summary: {

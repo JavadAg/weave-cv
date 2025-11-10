@@ -26,7 +26,6 @@ const handleUpdate = async (key: string, value: unknown) => {
 
 const fontSizeConstraints = extractNumberConstraintsFromPath(TypographySchema, "fontSize")
 const lineHeightConstraints = extractNumberConstraintsFromPath(TypographySchema, "lineHeight")
-const letterSpacingConstraints = extractNumberConstraintsFromPath(TypographySchema, "letterSpacing")
 
 onMounted(async () => {
   await preloadLocalFont(configs.value.general.typography.fontFamily)
@@ -60,15 +59,6 @@ onMounted(async () => {
         :max="lineHeightConstraints.max"
         :step="0.1"
         @update:model-value="(v) => handleUpdate('lineHeight', v)"
-      />
-      <NumberInput
-        v-model="configs.general.typography.letterSpacing"
-        label-variant="stacked"
-        label="Letter Spacing"
-        :min="letterSpacingConstraints.min"
-        :max="letterSpacingConstraints.max"
-        :step="0.1"
-        @update:model-value="(v) => handleUpdate('letterSpacing', v)"
       />
     </ConfigWrapper>
     <SectionTypography

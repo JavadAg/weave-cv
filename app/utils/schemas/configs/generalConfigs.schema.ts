@@ -80,8 +80,7 @@ export const LinksSchema = z.object({
 export const TypographySchema = z.object({
   fontFamily: z.enum(FONT_OPTIONS.map((option) => option.value)),
   fontSize: z.number().min(6).max(24),
-  lineHeight: z.number().min(1).max(2),
-  letterSpacing: z.number().min(-2).max(10)
+  lineHeight: z.number().min(1).max(2)
 })
 
 export const ApplyableColorItems = z.enum(["name", "dates", "headings"])

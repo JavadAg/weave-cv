@@ -81,7 +81,6 @@ export const DEFAULT_CONFIGS: TConfigs = {
     typography: {
       fontFamily: "sourcesanspro",
       lineHeight: 1.1,
-      letterSpacing: 0,
       fontSize: 12
     },
     colors: {
