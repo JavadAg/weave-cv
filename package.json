@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "update-types": "bash scripts/update-types.sh"
+    "update-types": "bash scripts/update-types.sh",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.68",
@@ -41,9 +42,12 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@types/jsdom": "^21.1.7",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-unicorn": "^61.0.2",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.0",
     "prettier": "^3.6.2",
     "puppeteer": "^24.29.0"
