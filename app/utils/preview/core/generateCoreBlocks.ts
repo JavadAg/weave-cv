@@ -11,7 +11,7 @@ export function generateCoreBlocks(sid: string) {
 
   const section = core.value?.[sid]
 
-  if (!section) {
+  if (!section || !section.isSectionVisible) {
     return []
   }
 

@@ -47,7 +47,11 @@ const handleToggleVisibility = () => {
     >
       <span class="font-bold">{{ content.title }}</span>
     </button>
-    <Visibility :is-hidden="content.isHidden" :on-toggle="() => handleToggleVisibility()" />
-    <Delete :on-delete="() => emits('delete')" tooltip="Delete content" />
+    <Visibility
+      v-if="sectionType !== 'summary'"
+      :is-hidden="content.isHidden"
+      :on-toggle="() => handleToggleVisibility()"
+    />
+    <Delete v-if="sectionType !== 'summary'" :on-delete="() => emits('delete')" tooltip="Delete content" />
   </div>
 </template>
