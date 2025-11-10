@@ -28,6 +28,7 @@ const getConfigValue = (sectionType: string, key: string) => {
 <template>
   <template v-for="sectionType in BasicSectionTypeSchema.options" :key="sectionType">
     <ConfigsContainer
+      v-if="SECTION_CONFIGS_CONFIG[sectionType]?.length > 0"
       :title="SECTION_DISPLAY_CONFIG[sectionType].label"
       :icon="SECTION_DISPLAY_CONFIG[sectionType].icon"
     >

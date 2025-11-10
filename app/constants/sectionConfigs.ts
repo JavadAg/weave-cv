@@ -13,7 +13,7 @@ export type SectionConfigOption =
 // Configuration mapping for each section type
 export const SECTION_CONFIGS_CONFIG: Record<TCoreSectionType, SectionConfigOption[]> = {
   // Basic sections
-  summary: ["variant", "separator", "grids", "typography"],
+  summary: [],
   skills: ["variant", "separator", "grids", "typography"],
   languages: ["variant", "separator", "grids", "typography"],
   certificates: ["variant", "separator", "grids", "typography"],
