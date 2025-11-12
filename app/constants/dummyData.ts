@@ -52,6 +52,7 @@ export const DUMMY_EXPERIENCE_DATA: TAdvancedContent[] = [
     startDate: "2022-03-01",
     endDate: "2024-03-01",
     present: true,
+    showDateDay: true,
     location: "Seattle, WA",
     description:
       "<ul><li><p>Led development of microservices architecture serving 100K+ daily users.</p></li><li><p>Mentored junior developers and established code review best practices.</p></li><li><p>Implemented CI/CD pipelines reducing deployment time by 60%.</p></li><li><p>Architected scalable solutions using AWS, Docker, and Kubernetes.</p></li></ul>"
@@ -64,6 +65,7 @@ export const DUMMY_EXPERIENCE_DATA: TAdvancedContent[] = [
     startDate: "2020-07-01",
     endDate: "2022-02-01",
     present: false,
+    showDateDay: true,
     location: "San Francisco, CA",
     description:
       "<ul><li><p>Developed RESTful APIs using Node.js and Express framework.</p></li><li><p>Built responsive frontend applications with React and TypeScript.</p></li><li><p>Collaborated with UX designers to implement pixel-perfect interfaces.</p></li><li><p>Optimized database queries improving response time by 40%.</p></li></ul>"
@@ -79,6 +81,7 @@ export const DUMMY_EDUCATION_DATA: TAdvancedContent[] = [
     startDate: "2017-09-01",
     endDate: "2019-05-01",
     present: false,
+    showDateDay: true,
     location: "Stanford, CA",
     description:
       "<ul><li><p>Specialized in distributed systems and machine learning applications</p></li><li><p>Graduated Magna Cum Laude with GPA 3.8/4.0</p></li><li><p>Relevant coursework: Advanced Algorithms, Cloud Computing, Distributed Systems</p></li></ul>"
@@ -113,6 +116,7 @@ export const DUMMY_COURSE_DATA: TAdvancedContent[] = [
     startDate: "2023-06-01",
     endDate: "2023-08-01",
     present: false,
+    showDateDay: true,
     location: "Online",
     url: "https://frontendmasters.com",
     description:
@@ -129,6 +133,7 @@ export const DUMMY_AWARD_DATA: TAdvancedContent[] = [
     startDate: "2023-11-01",
     endDate: "2023-11-01",
     present: false,
+    showDateDay: true,
     location: "San Francisco, CA",
     url: "https://techindustryawards.com",
     description:
@@ -145,6 +150,7 @@ export const DUMMY_PROJECT_DATA: TAdvancedContent[] = [
     startDate: "2023-01-01",
     endDate: "2023-12-01",
     present: false,
+    showDateDay: true,
     location: "Remote",
     url: "https://cloudsync.enterprise.com",
     description:
