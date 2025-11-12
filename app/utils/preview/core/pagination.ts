@@ -144,16 +144,23 @@ function processSingleColumn(
   }
 
   const totalHeight = element.height + (heading.current?.height ?? 0)
-  const shouldSkipSpace = currentHeight === 0 && isSpace(element.id) && element.height !== 0
+  const isSpaceBlock = isSpace(element.id) && element.height !== 0
+  const willOverflow = currentHeight > 0 && currentHeight + totalHeight > pageHeightLimit
 
-  if (shouldSkipSpace) {
+  if (willOverflow && isSpaceBlock) {
     return { isFirstPage, currentHeight }
   }
 
-  if (currentHeight > 0 && currentHeight + totalHeight > pageHeightLimit) {
+  if (willOverflow) {
     pages.push([])
     currentHeight = 0
     isFirstPage = false
+  }
+
+  const shouldSkipSpace = currentHeight === 0 && isSpaceBlock
+
+  if (shouldSkipSpace) {
+    return { isFirstPage, currentHeight }
   }
 
   if (heading.current) {

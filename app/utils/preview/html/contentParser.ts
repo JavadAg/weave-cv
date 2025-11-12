@@ -56,10 +56,21 @@ export function nodeToHtmlString(node: ChildNode): string {
  */
 export function extractHtmlLines(htmlString: string): string[] {
   const parser = document.createElement("div")
+
   parser.innerHTML = htmlString
+
   const lines: string[] = []
 
   for (const childNode of parser.childNodes) {
+    if (
+      childNode instanceof HTMLElement &&
+      childNode.tagName.toLowerCase() === "p" &&
+      childNode.textContent?.trim() === "" &&
+      !childNode.querySelector("br, img, hr")
+    ) {
+      continue
+    }
+
     if (isWhitespaceOnlyNode(childNode)) {
       lines.push(EMPTY_BREAK_REPLACEMENT)
     } else {
