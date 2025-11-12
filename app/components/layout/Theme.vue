@@ -3,10 +3,10 @@ const colorMode = useColorMode()
 
 const isDark = computed({
   get() {
-    return colorMode.value === 'dark'
+    return colorMode.value === "dark"
   },
   set(_isDark) {
-    colorMode.preference = _isDark ? 'dark' : 'light'
+    colorMode.preference = _isDark ? "dark" : "light"
   }
 })
 </script>
@@ -14,6 +14,7 @@ const isDark = computed({
 <template>
   <ClientOnly v-if="!colorMode?.forced">
     <UButton
+      aria-label="Toggle theme"
       :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
       color="neutral"
       variant="ghost"

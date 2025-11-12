@@ -42,6 +42,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@types/jsdom": "^21.1.7",

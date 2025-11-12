@@ -1,8 +1,20 @@
+import { readFile } from "node:fs/promises"
+import path from "node:path"
 import type { LaunchOptions } from "puppeteer-core"
 import type { TFontFamily } from "~/constants/fonts"
 import { PAPER_SIZES, type TPaperSize } from "~/constants/papers"
 import { buildFontCss } from "~/utils/preview/core/fontUtils"
 import { requireAuth } from "../utils/auth"
+
+let tailwindCssCache: string | null = null
+
+const loadTailwindCss = async () => {
+  if (tailwindCssCache) return tailwindCssCache
+
+  const filePath = path.join(process.cwd(), "public", "tailwind-pdf.css")
+  tailwindCssCache = await readFile(filePath, "utf8")
+  return tailwindCssCache
+}
 
 export default defineEventHandler(async (event) => {
   await requireAuth(event)
@@ -57,18 +69,20 @@ export default defineEventHandler(async (event) => {
     const baseUrl = `${protocol}://${host}`
     const fontCss = buildFontCss(fontFamily as TFontFamily, baseUrl)
 
+    const tailwindCss = await loadTailwindCss()
+
     const wrappedHtml = `<!DOCTYPE html>
       <html>
         <head>
           <meta charset="UTF-8">
           <style>
             ${fontCss}
+            ${tailwindCss}
             * {
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
             }
           </style>
-          <script src="https://cdn.tailwindcss.com"></script>
         </head>
         <body>${html}</body>
       </html>`
