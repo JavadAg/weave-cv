@@ -7,6 +7,7 @@ import Subtitle from "./AdvancedSubtitle.vue"
 import Title from "./AdvancedTitle.vue"
 
 interface Props {
+  width?: number
   title?: string
   subtitle?: string
   url?: string
@@ -28,16 +29,12 @@ const typography = computed(() => configs.value.general.typography)
 const titleConfig = computed(() => layout.value.contentLayout.title)
 const subtitleConfig = computed(() => layout.value.contentLayout.subtitle)
 
-const titleFontSize = computed(() => typography.value.fontSize * titleConfig.value.fontSizeMultiplier)
-const paddingBottom = computed(() => {
-  return `${0.4 * typography.value.lineHeight * layout.value.sectionGap}px`
-})
-
 const columnColors = inject(ColumnColorsKey)
 
 const containerStyles = computed(() => ({
+  width: `${props.width}%`,
   display: props.title || props.subtitle ? "inline-block" : "",
-  paddingBottom: paddingBottom.value,
+  paddingBottom: `${0.4 * typography.value.lineHeight * layout.value.sectionGap}px`,
   color: columnColors?.value.textColor || ""
 }))
 
@@ -64,7 +61,7 @@ const subTitleFirst = computed(() => sectionConfigs.value.subTitleFirst)
     </component>
     <span
       v-if="subtitle && sectionConfigs.titleSubtitleVariant === 'inline'"
-      :style="{ fontSize: `${titleFontSize}pt` }"
+      :style="{ fontSize: `${typography.fontSize * titleConfig.fontSizeMultiplier}pt` }"
       >,
     </span>
     <component
