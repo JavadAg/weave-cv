@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, type CSSProperties } from "vue"
 import { determineDisplayMode, isContentEmpty } from "~/utils/preview/core/entryUtils"
 import type { AdvancedSectionTypeSchema, TAdvancedContent } from "~/utils/schemas/content.schema"
 import type { TAdvancedSectionVariant } from "~/utils/schemas/shared.schema"
@@ -47,9 +47,10 @@ const displayMode = computed<TAdvancedSectionVariant | "columns">(() =>
   })
 )
 
-const contentStyle = computed(() => ({
+const contentStyle = computed<CSSProperties>(() => ({
   width: "100%",
   display: "flex",
+  wordBreak: "break-word",
   flexDirection: displayMode.value === "columns" || displayMode.value === "stacked" ? ("column" as const) : undefined
 }))
 
@@ -58,101 +59,86 @@ const contentLayoutWidth = computed(() =>
     ? layout.value.contentLayout.contentFirstWidth
     : layout.value.contentLayout.dateFirstWidth
 )
-const hasDateOrLocation = computed(() => content.value.startDate || content.value.endDate || content.value.location)
-
-const dateLocationStyles = computed(() => ({
-  display: hasDateOrLocation.value ? "block" : "none",
-  paddingTop: `${0.1 * configs.value.general.typography.lineHeight}em`,
-  paddingBottom: `${0.1 * configs.value.general.typography.lineHeight}em`
-}))
 </script>
 <template>
-  <div
-    v-if="content && !isContentEmpty(content)"
-    ref="elementRef"
-    :style="{
-      wordBreak: 'break-word'
-    }"
-  >
-    <div :style="contentStyle">
-      <template v-if="displayMode === 'contentFirst'">
-        <div :style="{ width: `${contentLayoutWidth.left}%` }">
-          <TitleSubtitle
-            :title="titleSubTitle[0]"
-            :subtitle="titleSubTitle[1]"
-            :url="content.url"
-            :is-in-column="false"
-            :section-type="sectionType"
-          />
-        </div>
-        <div :style="{ width: `${contentLayoutWidth.right}%` }">
-          <DateLocation
-            :position="displayMode"
-            :start-date="content.startDate"
-            :end-date="content.endDate"
-            :location="content.location"
-            :present="content.present"
-          />
-        </div>
-      </template>
-      <template v-if="displayMode === 'dateFirst'">
-        <div :style="{ width: `${contentLayoutWidth.left}%` }">
-          <DateLocation
-            :position="displayMode"
-            :start-date="content.startDate"
-            :end-date="content.endDate"
-            :location="content.location"
-            :present="content.present"
-          />
-        </div>
-        <div :style="{ width: `${contentLayoutWidth.right}%` }">
-          <TitleSubtitle
-            :title="titleSubTitle[0]"
-            :subtitle="titleSubTitle[1]"
-            :url="content.url"
-            :is-in-column="false"
-            :section-type="sectionType"
-          />
-        </div>
-      </template>
-      <template v-if="displayMode === 'stacked'">
-        <div :style="{ display: 'flex', justifyContent: 'space-between' }">
-          <TitleSubtitle
-            :title="titleSubTitle[0]"
-            :subtitle="titleSubTitle[1]"
-            :url="content.url"
-            :is-in-column="false"
-            :section-type="sectionType"
-          />
-          <div :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'start' }">
-            <DateLocation
-              :position="displayMode"
-              :start-date="content.startDate"
-              :end-date="content.endDate"
-              :location="content.location"
-              :present="content.present"
-            />
-          </div>
-        </div>
-      </template>
-      <template v-if="displayMode === 'columns'">
+  <div v-if="content && !isContentEmpty(content)" ref="elementRef" :style="contentStyle">
+    <template v-if="displayMode === 'contentFirst'">
+      <TitleSubtitle
+        :width="contentLayoutWidth.left"
+        :title="titleSubTitle[0]"
+        :subtitle="titleSubTitle[1]"
+        :url="content.url"
+        :is-in-column="false"
+        :section-type="sectionType"
+      />
+      <DateLocation
+        :width="contentLayoutWidth.right"
+        :position="displayMode"
+        :start-date="content.startDate"
+        :end-date="content.endDate"
+        :location="content.location"
+        :present="content.present"
+        :show-date-day="content.showDateDay"
+      />
+    </template>
+    <template v-if="displayMode === 'dateFirst'">
+      <DateLocation
+        :width="contentLayoutWidth.left"
+        :position="displayMode"
+        :start-date="content.startDate"
+        :end-date="content.endDate"
+        :location="content.location"
+        :present="content.present"
+        :show-date-day="content.showDateDay"
+      />
+      <TitleSubtitle
+        :width="contentLayoutWidth.right"
+        :title="titleSubTitle[0]"
+        :subtitle="titleSubTitle[1]"
+        :url="content.url"
+        :is-in-column="false"
+        :section-type="sectionType"
+      />
+    </template>
+    <template v-if="displayMode === 'stacked'">
+      <div :style="{ display: 'flex', justifyContent: 'space-between' }">
         <TitleSubtitle
           :title="titleSubTitle[0]"
           :subtitle="titleSubTitle[1]"
           :url="content.url"
-          :is-in-column="true"
+          :is-in-column="false"
           :section-type="sectionType"
         />
-        <div v-if="content.startDate || content.endDate || content.location" :style="dateLocationStyles">
+        <div :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'start' }">
           <DateLocation
             :position="displayMode"
             :start-date="content.startDate"
             :end-date="content.endDate"
             :location="content.location"
             :present="content.present"
+            :show-date-day="content.showDateDay"
           />
         </div>
-      </template>
-    </div>
+      </div>
+    </template>
+    <template v-if="displayMode === 'columns'">
+      <TitleSubtitle
+        :title="titleSubTitle[0]"
+        :subtitle="titleSubTitle[1]"
+        :url="content.url"
+        :is-in-column="true"
+        :section-type="sectionType"
+      />
+      <div v-if="content.startDate || content.endDate || content.location">
+        <DateLocation
+          :position="displayMode"
+          :start-date="content.startDate"
+          :end-date="content.endDate"
+          :location="content.location"
+          :present="content.present"
+          :show-date-day="content.showDateDay"
+        />
+      </div>
+    </template>
   </div>
 </template>
