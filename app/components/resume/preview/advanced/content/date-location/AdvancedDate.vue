@@ -6,9 +6,10 @@ import { fmtDate } from "~/utils/preview/html/shared"
 
 interface Props {
   position: string
-  startDate?: string
-  endDate?: string
+  startDate?: string | null
+  endDate?: string | null
   present?: boolean
+  showDateDay?: boolean
 }
 
 const props = defineProps<Props>()
@@ -25,8 +26,10 @@ const color = computed(() =>
   colors.value.apply.includes("dates") ? columnColors?.value.accentColor : columnColors?.value.textColor
 )
 
-const startDateFormatted = computed(() => fmtDate(props.startDate, layout.value.dateFormat))
-const endDateFormatted = computed(() => fmtDate(props.endDate, layout.value.dateFormat))
+const hideDay = computed(() => props.showDateDay === false)
+
+const startDateFormatted = computed(() => fmtDate(props.startDate, layout.value.dateFormat, { hideDay: hideDay.value }))
+const endDateFormatted = computed(() => fmtDate(props.endDate, layout.value.dateFormat, { hideDay: hideDay.value }))
 const endDateDisplay = computed(() => (props.present ? "Present" : endDateFormatted.value))
 
 const dateStyles = computed<CSSProperties>(() => ({

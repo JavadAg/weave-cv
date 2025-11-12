@@ -5,11 +5,13 @@ import AdvancedDate from "./date-location/AdvancedDate.vue"
 import AdvancedLocation from "./date-location/AdvancedLocation.vue"
 
 interface Props {
+  width?: number
   position: TAdvancedSectionVariant | "columns"
-  startDate?: string
-  endDate?: string
+  startDate?: string | null
+  endDate?: string | null
   location?: string
   present?: boolean
+  showDateDay?: boolean
 }
 
 const props = defineProps<Props>()
@@ -22,17 +24,26 @@ const typography = computed(() => configs.value.general.typography)
 const titleFontSize = computed(() => typography.value.fontSize * layout.value.contentLayout.title.fontSizeMultiplier)
 
 const containerStyles = computed<CSSProperties>(() => ({
-  paddingBottom: `${0.4 * titleFontSize.value}px`,
+  width: `${props.width}%`,
+  paddingBottom: `${0.4 * typography.value.lineHeight * layout.value.sectionGap}px`,
   display: "flex",
-  flexDirection: "column",
-  ...(props.position === "contentFirst" ? { alignItems: "flex-end" } : {}),
-  ...(props.position === "stacked" ? { justifyContent: "flex-end" } : {})
+  flexWrap: "wrap",
+  rowGap: `${0.15 * titleFontSize.value}px`,
+  columnGap: `${0.4 * titleFontSize.value}px`,
+  ...(props.position === "contentFirst" ? { justifyContent: "flex-end" } : {}),
+  ...(props.position === "stacked" ? { alignItems: "flex-end" } : {})
 }))
 </script>
 
 <template>
   <div ref="containerRef" :style="containerStyles">
-    <AdvancedDate :position="position" :start-date="startDate" :end-date="endDate" :present="present" />
+    <AdvancedDate
+      :position="position"
+      :start-date="startDate"
+      :end-date="endDate"
+      :present="present"
+      :show-date-day="showDateDay"
+    />
     <AdvancedLocation :position="position" :location="location" />
   </div>
 </template>

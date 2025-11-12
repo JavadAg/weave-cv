@@ -31,9 +31,7 @@ const handleFieldUpdate = (field: EditorField, value: unknown) => {
   updateContent(`${props.sectionId}.contents.${props.content.id}.${field}`, value)
 }
 
-const getStringFieldValue = (
-  field: "title" | "subtitle" | "description" | "url" | "location" | "startDate" | "endDate"
-): string => {
+const getStringFieldValue = (field: "title" | "subtitle" | "description" | "url" | "location"): string => {
   const content = props.content
   if (field === "title" && "title" in content) {
     return content.title
@@ -47,24 +45,39 @@ const getStringFieldValue = (
   if (field === "url" && "url" in content) {
     return content.url ?? ""
   }
-  if (field === "startDate" && "startDate" in content) {
-    return content.startDate ?? ""
-  }
-  if (field === "endDate" && "endDate" in content) {
-    return content.endDate ?? ""
-  }
   if (field === "location" && "location" in content) {
     return content.location ?? ""
   }
   return ""
 }
 
-const getBooleanFieldValue = (field: "present"): boolean => {
-  const content = props.content
-  if (field === "present" && "present" in content) {
+const getDateFieldValue = (field: "startDate" | "endDate"): string | null => {
+  if (!props.isAdvancedSection) return null
+  const content = props.content as TAdvancedContent
+  if (field === "startDate") {
+    return content.startDate ?? null
+  }
+  return content.endDate ?? null
+}
+
+const getBooleanFieldValue = (field: "present" | "showDateDay"): boolean => {
+  if (!props.isAdvancedSection) {
+    return field === "showDateDay"
+  }
+
+  const content = props.content as TAdvancedContent
+  if (field === "present") {
     return content.present ?? false
   }
-  return false
+  return content.showDateDay ?? true
+}
+
+const handleDateUpdate = (field: "startDate" | "endDate", value: string | null) => {
+  handleFieldUpdate(field, value)
+}
+
+const clearDate = (field: "startDate" | "endDate") => {
+  handleFieldUpdate(field, null)
 }
 
 const handleDone = () => {
@@ -93,31 +106,63 @@ const handleDone = () => {
         />
       </div>
 
-      <div v-if="hasField('startDate') || hasField('endDate')" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <DatePicker
-          v-if="hasField('startDate')"
-          :model-value="getStringFieldValue('startDate')"
-          :label="getFieldConfig('startDate')?.label || 'Start Date'"
-          :placeholder="getFieldConfig('startDate')?.placeholder || 'e.g. 2020-01-01'"
-          @update:model-value="(value) => handleFieldUpdate('startDate', value)"
-        />
-        <div class="flex flex-col gap-2">
+      <div v-if="hasField('startDate') || hasField('endDate')" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div v-if="hasField('startDate')" class="flex flex-col gap-2">
+          <DatePicker
+            :model-value="getDateFieldValue('startDate')"
+            :label="getFieldConfig('startDate')?.label || 'Start Date'"
+            :placeholder="getFieldConfig('startDate')?.placeholder || 'e.g. 2020-01-01'"
+            @update:model-value="(value) => handleDateUpdate('startDate', value)"
+          />
+          <UButton
+            v-if="getDateFieldValue('startDate')"
+            size="xs"
+            variant="ghost"
+            color="neutral"
+            class="self-start"
+            @click="clearDate('startDate')"
+          >
+            Clear date
+          </UButton>
+        </div>
+        <div v-if="hasField('endDate') || hasField('present')" class="flex flex-col gap-2">
           <DatePicker
             v-if="hasField('endDate')"
-            :model-value="getStringFieldValue('endDate')"
+            :model-value="getDateFieldValue('endDate')"
             :label="getFieldConfig('endDate')?.label || 'End Date'"
             :disabled="getBooleanFieldValue('present')"
             :placeholder="getFieldConfig('endDate')?.placeholder || 'e.g. 2022-12-31'"
-            @update:model-value="(value) => handleFieldUpdate('endDate', value)"
+            @update:model-value="(value) => handleDateUpdate('endDate', value)"
           />
-          <ToggleInput
-            v-if="hasField('present')"
-            :model-value="getBooleanFieldValue('present')"
-            :label="getFieldConfig('present')?.label || 'Present'"
-            @update:model-value="(value) => handleFieldUpdate('present', value)"
-          />
+          <div class="flex flex-col gap-2">
+            <UButton
+              v-if="hasField('endDate') && getDateFieldValue('endDate')"
+              size="xs"
+              variant="ghost"
+              color="neutral"
+              class="self-start"
+              :disabled="getBooleanFieldValue('present')"
+              @click="clearDate('endDate')"
+            >
+              Clear date
+            </UButton>
+            <ToggleInput
+              v-if="hasField('present')"
+              :model-value="getBooleanFieldValue('present')"
+              :label="getFieldConfig('present')?.label || 'Present'"
+              :style="'start'"
+              @update:model-value="(value) => handleFieldUpdate('present', value)"
+            />
+          </div>
         </div>
       </div>
+      <ToggleInput
+        v-if="props.isAdvancedSection && hasField('showDateDay')"
+        :model-value="getBooleanFieldValue('showDateDay')"
+        :label="getFieldConfig('showDateDay')?.label || 'Show day in dates'"
+        :style="'start'"
+        @update:model-value="(value) => handleFieldUpdate('showDateDay', value)"
+      />
 
       <TextInput
         v-if="hasField('location')"

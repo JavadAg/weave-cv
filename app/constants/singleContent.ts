@@ -17,6 +17,7 @@ export const EXPERIENCE_ITEM: Omit<TAdvancedContent, "id"> = {
   startDate: "2022-03-01",
   endDate: "2024-08-01",
   present: false,
+  showDateDay: true,
   location: "Austin, TX",
   description:
     "<ul><li><p>Led development of microservices architecture serving 100K+ daily users.</p></li><li><p>Mentored junior developers and established code review best practices.</p></li><li><p>Implemented CI/CD pipelines reducing deployment time by 60%.</p></li></ul>"
@@ -28,6 +29,7 @@ export const EDUCATION_ITEM: Omit<TAdvancedContent, "id"> = {
   title: "Master of Science in Software Engineering",
   startDate: "2017-09-01",
   endDate: "2019-05-01",
+  showDateDay: true,
   location: "Stanford, CA",
   description:
     "<ul><li><p>Specialized in distributed systems and machine learning applications</p></li><li><p>Graduated Magna Cum Laude with GPA 3.8/4.0</p></li></ul>"
@@ -40,6 +42,7 @@ export const COURSE_ITEM: Omit<TAdvancedContent, "id"> = {
   startDate: "2023-06-01",
   endDate: "2023-08-01",
   present: false,
+  showDateDay: true,
   location: "Online",
   description:
     "<ul><li><p>Mastered advanced React concepts including hooks, context, and performance optimization</p></li><li><p>Built complex applications using modern React ecosystem tools</p></li></ul>"
@@ -52,6 +55,7 @@ export const AWARD_ITEM: Omit<TAdvancedContent, "id"> = {
   startDate: "2023-11-01",
   endDate: "2023-11-01",
   present: false,
+  showDateDay: true,
   location: "San Francisco, CA",
   description: "<p>Recognized for outstanding contribution to open-source projects and community building</p>"
 }
@@ -62,6 +66,7 @@ export const PROJECT_ITEM: Omit<TAdvancedContent, "id"> = {
   isHidden: false,
   startDate: "2023-01-01",
   endDate: "2023-12-01",
+  showDateDay: true,
   url: "https://cloudsync.enterprise.com",
   description:
     "<ul><li><p>Architected real-time data synchronization platform for enterprise clients.</p></li><li><p>Implemented advanced conflict resolution algorithms with 99.9% accuracy.</p></li><li><p>Scaled to handle 1M+ concurrent connections using Kubernetes.</p></li></ul>"

@@ -173,9 +173,10 @@ const AdvancedContentSchema = z.object({
   isHidden: z.boolean(),
   subtitle: z.string(),
   title: z.string(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
+  startDate: z.string().nullable().optional(),
+  endDate: z.string().nullable().optional(),
   present: z.boolean().optional(),
+  showDateDay: z.boolean().default(true),
   location: z.string().optional(),
   description: z.string(),
   url: z.url().optional()
