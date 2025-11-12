@@ -89,7 +89,7 @@ const processNode = (node: Node, isFirst: boolean, index: number): VNode | strin
       )
     }
     default: {
-      return childNodes.length > 0 ? h(Fragment, { key: `fragment-${index}` }, childNodes) : null
+      return childNodes.length > 0 ? h(Fragment, { key: `line-${index}` }, childNodes) : null
     }
   }
 }

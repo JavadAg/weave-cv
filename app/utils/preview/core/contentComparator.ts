@@ -1,5 +1,5 @@
 import type { TCoreSections } from "~/utils/schemas/content.schema"
-import { processDescriptionContent } from "../html/contentParser"
+import { processDescriptionLines } from "../html/contentParser"
 
 interface ContentCacheEntry {
   previousState: TCoreSections
@@ -39,9 +39,9 @@ export function processContents(
         typeof currentContent.description === "string" && previousContent?.description !== currentContent.description
 
       if (descriptionChanged) {
-        processedContents.set(currentContent.id, processDescriptionContent(currentContent.description))
+        processedContents.set(currentContent.id, processDescriptionLines(currentContent.description))
       } else if (!processedContents.has(currentContent.id) && currentContent.description) {
-        processedContents.set(currentContent.id, processDescriptionContent(currentContent.description))
+        processedContents.set(currentContent.id, processDescriptionLines(currentContent.description))
       }
     }
   }

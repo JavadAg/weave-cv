@@ -9,12 +9,12 @@ const LIST_TAG_PATTERNS = [
 /**
  * Removes trailing break tags from the end of a content array
  */
-export function trimTrailingEmptyTags(fragments: string[]): string[] {
-  const trimmed = [...fragments]
+export function trimTrailingEmptyTags(lines: string[]): string[] {
+  const trimmed = [...lines]
 
   while (trimmed.length > 0) {
-    const lastFragment = trimmed.at(-1)
-    if (!lastFragment || !EMPTY_BREAK_TAGS.includes(lastFragment as (typeof EMPTY_BREAK_TAGS)[number])) {
+    const lastLine = trimmed.at(-1)
+    if (!lastLine || !EMPTY_BREAK_TAGS.includes(lastLine as (typeof EMPTY_BREAK_TAGS)[number])) {
       break
     }
     trimmed.pop()
@@ -52,22 +52,22 @@ export function nodeToHtmlString(node: ChildNode): string {
 }
 
 /**
- * Parses an HTML string into an array of fragment strings
+ * Parses an HTML string into an array of line strings
  */
-export function extractHtmlFragments(htmlString: string): string[] {
+export function extractHtmlLines(htmlString: string): string[] {
   const parser = document.createElement("div")
   parser.innerHTML = htmlString
-  const fragments: string[] = []
+  const lines: string[] = []
 
   for (const childNode of parser.childNodes) {
     if (isWhitespaceOnlyNode(childNode)) {
-      fragments.push(EMPTY_BREAK_REPLACEMENT)
+      lines.push(EMPTY_BREAK_REPLACEMENT)
     } else {
-      fragments.push(nodeToHtmlString(childNode))
+      lines.push(nodeToHtmlString(childNode))
     }
   }
 
-  return fragments
+  return lines
 }
 
 /**
@@ -82,10 +82,10 @@ export function sanitizeListMarkup(htmlString: string): string {
 }
 
 /**
- * Processes HTML description into content fragments
+ * Processes HTML description into content lines
  */
-export function processDescriptionContent(description: string): string[] {
+export function processDescriptionLines(description: string): string[] {
   const sanitized = sanitizeListMarkup(description)
-  const fragments = extractHtmlFragments(sanitized)
-  return trimTrailingEmptyTags(fragments)
+  const lines = extractHtmlLines(sanitized)
+  return trimTrailingEmptyTags(lines)
 }

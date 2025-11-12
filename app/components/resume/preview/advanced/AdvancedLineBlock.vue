@@ -21,7 +21,7 @@ const { elementRef } = useSelfResizeObserver((height) => {
 
 const { getContentLine } = usePreviewStore()
 
-const fragment = computed(() => getContentLine(props.contentId)[props.index] ?? "")
+const contentLine = computed(() => getContentLine(props.contentId)[props.index] ?? "")
 
 const isLast = computed(() => getContentLine(props.contentId).length === props.index + 1)
 
@@ -70,20 +70,20 @@ const contentLayoutWidth = computed(() =>
     <div :style="contentStyle">
       <template v-if="displayMode === 'contentFirst'">
         <div :style="{ width: `${contentLayoutWidth.left}%` }">
-          <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
+          <DescriptionContent :html="contentLine ?? ''" :is-last="isLast" />
         </div>
       </template>
       <template v-if="displayMode === 'dateFirst'">
         <div :style="{ width: `${contentLayoutWidth.left}%` }"></div>
         <div :style="{ width: `${contentLayoutWidth.right}%` }">
-          <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
+          <DescriptionContent :html="contentLine ?? ''" :is-last="isLast" />
         </div>
       </template>
       <template v-if="displayMode === 'stacked'">
-        <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
+        <DescriptionContent :html="contentLine ?? ''" :is-last="isLast" />
       </template>
       <template v-if="displayMode === 'columns'">
-        <DescriptionContent :html="fragment ?? ''" :is-last="isLast" />
+        <DescriptionContent :html="contentLine ?? ''" :is-last="isLast" />
       </template>
     </div>
   </div>
