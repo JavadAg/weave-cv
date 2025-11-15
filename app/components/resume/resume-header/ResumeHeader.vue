@@ -30,13 +30,13 @@ const titleModel = computed({
       <UInput
         v-model="titleModel"
         :minlength="3"
-        :maxlength="30"
+        :maxlength="50"
         placeholder="Resume Title"
         size="lg"
         icon="i-heroicons-document-text"
       >
         <template #trailing>
-          <span class="text-xs text-muted">{{ titleModel.length }}/30</span>
+          <span class="text-xs text-muted">{{ titleModel.length }}/50</span>
         </template>
       </UInput>
     </div>
