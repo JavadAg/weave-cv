@@ -109,16 +109,15 @@ const contentLayoutWidth = computed(() =>
           :is-in-column="false"
           :section-type="sectionType"
         />
-        <div :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'start' }">
-          <DateLocation
-            :position="displayMode"
-            :start-date="content.startDate"
-            :end-date="content.endDate"
-            :location="content.location"
-            :present="content.present"
-            :show-date-day="content.showDateDay"
-          />
-        </div>
+        <DateLocation
+          :position="displayMode"
+          :style="{ display: 'flex', justifyContent: 'flex-end', alignItems: 'start' }"
+          :start-date="content.startDate"
+          :end-date="content.endDate"
+          :location="content.location"
+          :present="content.present"
+          :show-date-day="content.showDateDay"
+        />
       </div>
     </template>
     <template v-if="displayMode === 'columns'">
@@ -129,16 +128,15 @@ const contentLayoutWidth = computed(() =>
         :is-in-column="true"
         :section-type="sectionType"
       />
-      <div v-if="content.startDate || content.endDate || content.location">
-        <DateLocation
-          :position="displayMode"
-          :start-date="content.startDate"
-          :end-date="content.endDate"
-          :location="content.location"
-          :present="content.present"
-          :show-date-day="content.showDateDay"
-        />
-      </div>
+      <DateLocation
+        v-if="content.startDate || content.endDate || content.location"
+        :position="displayMode"
+        :start-date="content.startDate"
+        :end-date="content.endDate"
+        :location="content.location"
+        :present="content.present"
+        :show-date-day="content.showDateDay"
+      />
     </template>
   </div>
 </template>
