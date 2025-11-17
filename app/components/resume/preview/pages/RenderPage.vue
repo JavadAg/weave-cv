@@ -21,9 +21,7 @@ const pageStyles = computed<CSSProperties>(() => {
     textRendering: "geometricPrecision",
     fontVariantLigatures: "none",
     width: `${paperSize.w}mm`,
-    minWidth: `${paperSize.w}mm`,
-    height: `${paperSize.h}mm`,
-    minHeight: `${paperSize.h}mm`
+    height: `${paperSize.h}mm`
   }
 })
 </script>

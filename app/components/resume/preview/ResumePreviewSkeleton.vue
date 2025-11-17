@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { PAPER_SIZES } from "~/constants/papers"
+interface Props {
+  isResponsive?: boolean
+}
+defineProps<Props>()
 
-const pageStyles = computed(() => {
+/* const pageStyles = computed(() => {
   const paperSize = PAPER_SIZES.A4
   return {
     width: `${paperSize.w}mm`,
@@ -9,11 +12,14 @@ const pageStyles = computed(() => {
     height: `${paperSize.h}mm`,
     minHeight: `${paperSize.h}mm`
   }
-})
+}) */
 </script>
 
 <template>
-  <div class="resumePage bg-default shadow-lg rounded-sm border border-muted" :style="pageStyles">
+  <div
+    class="resumePage bg-default w-full h-full shadow-lg rounded-sm border border-muted"
+    :class="{ absolute: isResponsive }"
+  >
     <div class="p-8 space-y-6 animate-pulse">
       <div class="space-y-3 border-b border-accented pb-4">
         <div class="h-9 bg-accented rounded w-2/3"></div>

@@ -11,12 +11,7 @@ const user = useSupabaseUser()
     class="w-full relative grid min-h-dvh mx-auto grid-rows-[auto_1fr] after:content-[''] after:absolute after:top-0 after:z-[-2] after:size-full after:bg-[radial-gradient(#ddd_1px,#efefef_1px)] after:[background-size:16px_16px] dark:after:bg-[radial-gradient(#3b3b3b_1px,#222226_1px)] dark:after:[background-size:20px_20px]"
   >
     <header class="h-16 bg-default/80 border-b border-default/30">
-      <div
-        :class="[
-          'mx-auto max-w-[1600px] h-full flex justify-between py-2 px-4 items-center',
-          !isLandingPage && 'max-w-[1600px]'
-        ]"
-      >
+      <div class="mx-auto max-w-[1600px] h-full flex justify-between py-2 px-4 items-center">
         <NuxtLink to="/" class="flex h-full w-fit">
           <NuxtImg src="/images/logo.webp" alt="Logo" loading="eager" format="webp" />
         </NuxtLink>

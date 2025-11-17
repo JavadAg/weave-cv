@@ -46,7 +46,7 @@ const hasReachedLimit = computed(() => resumeCount.value >= MAX_RESUMES_PER_USER
 
 <template>
   <div>
-    <div class="flex justify-between items-center mb-8">
+    <div class="flex justify-between items-center flex-wrap gap-4 mb-8">
       <div>
         <h1 class="text-3xl font-bold text-default">My Resumes</h1>
         <p class="text-muted mt-2">Manage and edit your resumes</p>
