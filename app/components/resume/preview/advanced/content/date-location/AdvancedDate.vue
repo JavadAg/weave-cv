@@ -39,5 +39,7 @@ const dateStyles = computed<CSSProperties>(() => ({
 </script>
 
 <template>
-  <span :style="dateStyles"> {{ startDateFormatted }} {{ endDateDisplay ? `- ${endDateDisplay}` : "" }} </span>
+  <span :style="dateStyles">
+    {{ startDateFormatted }} {{ startDate && endDate ? " - " : "" }} {{ endDateDisplay ? `${endDateDisplay}` : "" }}
+  </span>
 </template>

@@ -89,7 +89,7 @@ const spacerStyles = computed<CSSProperties>(() => ({
       :present="present"
       :show-date-day="showDateDay"
     />
-    <span v-if="!isWrapped" ref="sepratorRef" :style="spacerStyles">|</span>
+    <span v-if="!isWrapped && (startDate || endDate)" ref="sepratorRef" :style="spacerStyles">|</span>
 
     <div style="display: flex; align-items: center">
       <AdvancedLocation ref="locationRef" :position="position" :location="location" />
