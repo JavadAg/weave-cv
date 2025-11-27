@@ -110,14 +110,6 @@ const breakpoints = useBreakpoints({
 })
 
 const isXlScreen = breakpoints.greaterOrEqual("xl")
-
-watch(
-  isXlScreen,
-  (value) => {
-    console.log(value)
-  },
-  { immediate: true }
-)
 </script>
 
 <template>
