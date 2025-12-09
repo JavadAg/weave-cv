@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises"
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 import type { LaunchOptions } from "puppeteer-core"
 import type { TFontFamily } from "~/constants/fonts"
 import { PAPER_SIZES, type TPaperSize } from "~/constants/papers"
@@ -8,12 +9,58 @@ import { requireAuth } from "../utils/auth"
 
 let tailwindCssCache: string | null = null
 
-const loadTailwindCss = async () => {
+const loadTailwindCss = async (baseUrl?: string) => {
   if (tailwindCssCache) return tailwindCssCache
 
-  const filePath = path.join(process.cwd(), "public", "tailwind-pdf.css")
-  tailwindCssCache = await readFile(filePath, "utf8")
-  return tailwindCssCache
+  // Try using Nitro storage (works in serverless environments like Vercel)
+  try {
+    const storage = useStorage()
+    const cssContent = await storage.getItem("public:tailwind-pdf.css")
+    if (cssContent) {
+      tailwindCssCache = typeof cssContent === "string" ? cssContent : cssContent.toString()
+      return tailwindCssCache
+    }
+  } catch (error) {
+    // Fall through to file system approach
+    console.warn("Failed to load CSS from Nitro storage, trying file system:", error)
+  }
+
+  // Fallback: Try different path resolution strategies
+  const possiblePaths = [
+    // Vercel/serverless: Nitro outputs public files here
+    path.join(process.cwd(), ".output", "public", "tailwind-pdf.css"),
+    // Alternative Vercel path
+    path.join(process.cwd(), "public", "tailwind-pdf.css"),
+    // Local development: relative to project root
+    path.join(process.cwd(), "public", "tailwind-pdf.css"),
+    // Alternative: relative to current file location (for local dev)
+    path.join(path.dirname(fileURLToPath(import.meta.url)), "../../public/tailwind-pdf.css")
+  ]
+
+  for (const filePath of possiblePaths) {
+    try {
+      tailwindCssCache = await readFile(filePath, "utf8")
+      return tailwindCssCache
+    } catch {
+      // Try next path
+      continue
+    }
+  }
+
+  // Final fallback: Fetch from public URL (works in all environments)
+  if (baseUrl) {
+    try {
+      const response = await fetch(`${baseUrl}/tailwind-pdf.css`)
+      if (response.ok) {
+        tailwindCssCache = await response.text()
+        return tailwindCssCache
+      }
+    } catch (error) {
+      console.warn("Failed to fetch CSS from public URL:", error)
+    }
+  }
+
+  throw new Error("Could not find tailwind-pdf.css file in any expected location")
 }
 
 export default defineEventHandler(async (event) => {
@@ -69,7 +116,7 @@ export default defineEventHandler(async (event) => {
     const baseUrl = `${protocol}://${host}`
     const fontCss = buildFontCss(fontFamily as TFontFamily, baseUrl)
 
-    const tailwindCss = await loadTailwindCss()
+    const tailwindCss = await loadTailwindCss(baseUrl)
 
     const wrappedHtml = `<!DOCTYPE html>
       <html>
