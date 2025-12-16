@@ -21,11 +21,7 @@ const configsStore = useConfigsStore()
 const { configs } = storeToRefs(configsStore)
 const { updateConfig } = configsStore
 
-const fontSizeFieldName = props.schema
-  ? extractNumberConstraintsFromPath(props.schema, "fontSizeMultiplier")
-    ? "fontSizeMultiplier"
-    : "fontSize"
-  : "fontSize"
+const fontSizeFieldName = props.schema && "fontSizeMultiplier" in props.schema.shape ? "fontSizeMultiplier" : "fontSize"
 
 const fontSizeConstraints = props.schema ? extractNumberConstraintsFromPath(props.schema, fontSizeFieldName) : undefined
 

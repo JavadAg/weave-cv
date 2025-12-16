@@ -31,25 +31,27 @@ const containerStyles = computed<CSSProperties>(() => ({
   paddingBottom: isSameLine ? undefined : `${mainConfigs.value.bottomSpace}px`
 }))
 
+console.log(personalConfigs.value.main)
+
 const nameStyles = computed<CSSProperties>(() => ({
-  fontSize: `${mainConfigs.value.title.fontSize}pt`,
-  fontWeight: mainConfigs.value.title.fontWeight,
+  fontSize: `${personalConfigs.value.main.title.fontSize}pt`,
+  fontWeight: personalConfigs.value.main.title.fontWeight,
   marginRight: isStacked.value ? "0" : "0.3em"
 }))
 
 const jobTitleStyles = computed<CSSProperties>(() => ({
-  fontWeight: mainConfigs.value.subtitle.fontWeight,
-  fontSize: `${mainConfigs.value.subtitle.fontSize}pt`
+  fontWeight: personalConfigs.value.main.subtitle.fontWeight,
+  fontSize: `${personalConfigs.value.main.subtitle.fontSize}pt`
 }))
 </script>
 
 <template>
   <div :style="containerStyles">
     <span :style="nameStyles">
-      {{ personal.title }}
+      {{ personal?.title }}
     </span>
-    <span v-if="personal.subtitle" :style="jobTitleStyles">
-      {{ personal.subtitle }}
+    <span v-if="personal?.subtitle" :style="jobTitleStyles">
+      {{ personal?.subtitle }}
     </span>
   </div>
 </template>
